@@ -195,7 +195,7 @@ location              = "${LOCATION}"
 dns_suffix            = "${PKS_DOMAIN_NAME}"
 dns_subdomain         = "${PKS_SUBDOMAIN_NAME}"
 pcf_infrastructure_subnet = "10.10.8.0/26"
-pcf_virtual_network_address_space ["10.0.0.0/16"]
+pcf_virtual_network_address_space = ["10.0.0.0/16"]
 EOF
 
 
