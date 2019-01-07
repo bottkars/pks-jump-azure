@@ -18,25 +18,25 @@ networks-configuration:
  - name: pks-infrastructure-subnet
    subnets:
    - iaas_identifier: ((infrastructure-subnet))
-     cidr: 10.10.8.0/26
-     reserved_ip_ranges: 10.10.8.0-10.10.8.4
+     cidr: 10.12.8.0/26
+     reserved_ip_ranges: 10.12.8.0-10.12.8.4
      dns: 168.63.129.16
-     gateway: 10.10.8.1
- - name: pks-pks-subnet
+     gateway: 10.12.8.1
+ - name: pks-pas-subnet
    subnets:
-   - iaas_identifier: ((pks-subnet))
-     cidr: 10.10.0.0/22
-     reserved_ip_ranges: 10.10.0.0-10.10.0.4
+   - iaas_identifier: ((pas-subnet))
+     cidr: 10.12.0.0/22
+     reserved_ip_ranges: 10.12.0.0-10.12.0.4
      dns: 168.63.129.16
-     gateway: 10.0.0.1
+     gateway: 10.12.0.1
  - name: pks-services-subnet
    service_network: true
    subnets:
    - iaas_identifier: ((services-subnet))
-     cidr: 10.10.4.0/22
-     reserved_ip_ranges: 10.10.4.0-10.10.4.4
+     cidr: 10.12.4.0/22
+     reserved_ip_ranges: 10.12.4.0-10.12.4.4
      dns: 168.63.129.16
-     gateway: 10.10.4.1
+     gateway: 10.12.4.1
 network-assignment:
  network:
   name: pks-infrastructure-subnet

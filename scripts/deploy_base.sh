@@ -194,7 +194,10 @@ ops_manager_image_uri = "${OPS_MANAGER_IMAGE_URI}"
 location              = "${LOCATION}"
 dns_suffix            = "${PKS_DOMAIN_NAME}"
 dns_subdomain         = "${PKS_SUBDOMAIN_NAME}"
+ops_manager_private_ip = "10.12.8.4"
 pcf_infrastructure_subnet = "10.12.8.0/26"
+pcf_pas_subnet = "10.12.0.0/22"
+pcf_services_subnet = "10.12.4.0/22"
 pcf_virtual_network_address_space = ["10.12.0.0/16"]
 EOF
 
