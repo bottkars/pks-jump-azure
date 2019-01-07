@@ -180,7 +180,7 @@ curl \
   ${URL}
 sudo -S -u ubuntu unzip ${FILENAME}
 cd ./pivotal-cf-terraforming-azure-*/
-cd terraforming-pks
+cd terraforming-pas
 
  # preparation work for terraform
 cat << EOF > terraform.tfvars
