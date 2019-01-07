@@ -1,0 +1,58 @@
+product-name: cf
+network-properties:
+  network:
+    name: ((pks_pks_network))
+  other_availability_zones:
+  - name: "null"
+  singleton_availability_zone:
+    name: "null"
+product-properties:
+  .cloud_controller.apps_domain:
+    value: ((pks_apps_domain))
+  .cloud_controller.system_domain:
+    value: ((pks_system_domain))
+  .properties.haproxy_forward_tls:
+    value: disable
+  .ha_proxy.skip_cert_verify:
+    value: true
+  .properties.security_acknowledgement:
+    value: X
+  .mysql_monitor.recipient_email:
+    value: ((pks_notifications_email))
+  .uaa.service_provider_key_credentials:
+    value:
+      private_key_pem: |
+        ((pks_key_pem))
+      cert_pem: |
+        ((pks_cert_pem))
+  .properties.networking_poe_ssl_certs:
+    value:
+    - name: default
+      certificate:
+        private_key_pem: |
+          ((pks_key_pem))
+        cert_pem: |
+          ((pks_cert_pem))
+  .properties.credhub_key_encryption_pksswords:
+    value:
+    - name: default
+      provider: internal
+      key:
+        secret: ((pks_credhub_key))
+      primary: true
+resource-config:
+  diego_cell:
+    instances: 3
+  diego_brain:
+    elb_names:
+    - ((pks_diego_ssh_lb))
+  mysql_proxy:
+    instances: 3
+  mysql_proxy:
+    elb_names:
+    - ((pks_mysql_lb))
+  router:
+    instances: 3
+  router:
+    elb_names:
+    - ((pks_web_lb))
