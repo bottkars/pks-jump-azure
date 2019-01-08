@@ -35,13 +35,15 @@ EOF
 pushd ${HOME_DIR}
 
 cd ./pivotal-cf-terraforming-azure-*/
-cd terraforming-pks
+cd terraforming-pas
 AZURE_NAMESERVERS=$(terraform output env_dns_zone_name_servers)
 SSH_PRIVATE_KEY="$(terraform output -json ops_manager_ssh_private_key | jq .value)"
 SSH_PUBLIC_KEY="$(terraform output ops_manager_ssh_public_key)"
 BOSH_DEPLOYED_VMS_SECURITY_GROUP_NAME="$(terraform output bosh_deployed_vms_security_group_name)"
 echo "checking opsman api ready using the new fqdn, 
-if the . keeps showing, check if ns record for ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} has ${AZURE_NAMESERVERS}"
+if the . keeps showing, check if ns record for ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} has 
+${AZURE_NAMESERVERS}
+as server entries"
 until $(curl --output /dev/null --silent --head --fail -k -X GET "https://${PKS_OPSMAN_FQDN}/api/v0/info"); do
     printf '.'
     sleep 5
