@@ -50,11 +50,11 @@ echo "done"
 
 export OM_TARGET=${PKS_OPSMAN_FQDN}
 export OM_USERNAME=${PKS_OPSMAN_USERNAME}
-export OM_PKSSWORD="${PIVNET_UAA_TOKEN}"
+export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
 
 om --skip-ssl-validation \
 configure-authentication \
---decryption-pkssphrase ${PIVNET_UAA_TOKEN}
+--decryption-passphrase ${PIVNET_UAA_TOKEN}
 
 echo checking deployed products
 om --skip-ssl-validation \
