@@ -10,11 +10,11 @@ START_PKS_DEPLOY_TIME="${START_PKS_DEPLOY_TIME}"
 EOF
 )
 
-PKS_OPSMAN_ADMIN_PKSSWD=${PIVNET_UAA_TOKEN}
+PKS_OPSMAN_ADMIN_PASSWD=${PIVNET_UAA_TOKEN}
 PKS_KEY_PEM=$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key | awk '{printf "%s\\r\\n", $0}')
 PKS_CERT_PEM=$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.cert | awk '{printf "%s\\r\\n", $0}')
 PKS_CREDHUB_KEY="01234567890123456789"
-PRODUCT_NAME=cf
+PRODUCT_NAME=pivotal-container-service
 PKS_APPS_DOMAIN="apps.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
 PKS_SYSTEM_DOMAIN="sys.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
 PKS_WEB_LB="${ENV_NAME}-web-lb"
@@ -34,8 +34,9 @@ PIVNET_ACCESS_TOKEN=$(curl \
 
 # release by slug
 RELEASE_JSON=$(curl \
+  --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
   --fail \
-  "https://network.pivotal.io/api/v2/products/${PRODUCT_SLUG}/releases/${RELEASE_ID}")
+  "https://network.pivotal.io/api/v2/products/${PRODUCT_NAME}/releases/${RELEASE_ID}")
 # eula acceptance link
 EULA_ACCEPTANCE_URL=$(echo ${RELEASE_JSON} |\
   jq -r '._links.eula_acceptance.href')
@@ -53,9 +54,9 @@ echo $(date) start downloading PKS
 om --skip-ssl-validation \
   download-product \
  --pivnet-api-token ${PIVNET_UAA_TOKEN} \
- --pivnet-file-glob "cf*.pivotal" \
- --pivnet-product-slug elastic-runtime \
- --product-version ${PKS_PKS_VERSION} \
+ --pivnet-file-glob "*.pivotal" \
+ --pivnet-product-slug ${PRODUCT_NAME} \
+ --product-version ${PKS_VERSION} \
  --stemcell-iaas azure \
  --download-stemcell \
  --output-directory /mnt/downloads
@@ -91,17 +92,32 @@ om --skip-ssl-validation \
 echo $(date) end staging PKS 
 
 cat << EOF > vars.yaml
-pks_pks_network: ${ENV_NAME}-pks-subnet
-pks_system_domain: ${PKS_SYSTEM_DOMAIN}
-pks_apps_domain: ${PKS_APPS_DOMAIN}
-pks_notifications_email: ${PKS_NOTIFICATIONS_EMAIL}
+network: ${ENV_NAME}-pas-subnet
+services_network: ${ENV_NAME}-services-subnet
+subscription_id: ${AZURE_SUBSCRIPTION_ID}
+tenant_id: ${AZURE_TENANT_ID}
+client_id: ${AZURE_CLIENT_ID}
+client_secret: ${AZURE_CLIENT_SECRET}
+resource_group_name: ${ENV_NAME}
+azure_location: ${LOCATION}
+pks_web_lb: ${PKS_WEB_LB}
+vnet_name: ${ENV_NAME}-virtual-network
+default_security_group: ${ENV_NAME}-bosh-deployed-vms-security-group
 pks_cert_pem: "${PKS_CERT_PEM}"
 pks_key_pem: "${PKS_KEY_PEM}"
-pks_credhub_key: "${PKS_CREDHUB_KEY}"
-pks_diego_ssh_lb: ${PKS_DIEGO_SSH_LB}
-pks_mysql_lb: ${PKS_MYSQL_LB}
-pks_web_lb: ${PKS_WEB_LB}
 EOF
+
+#
+#pks_system_domain: ${PKS_SYSTEM_DOMAIN}
+#pks_apps_domain: ${PKS_APPS_DOMAIN}
+#pks_notifications_email: ${PKS_NOTIFICATIONS_EMAIL}
+#pks_cert_pem: "${PKS_CERT_PEM}"
+#pks_key_pem: "${PKS_KEY_PEM}"
+#pks_credhub_key: "${PKS_CREDHUB_KEY}"
+#pks_diego_ssh_lb: ${PKS_DIEGO_SSH_LB}
+#pks_mysql_lb: ${PKS_MYSQL_LB}
+#>
+
 
 om --skip-ssl-validation \
   configure-product \
@@ -111,6 +127,7 @@ om --skip-ssl-validation \
 om --skip-ssl-validation \
   upload-stemcell \
   --stemcell ${STEMCELL_FILENAME}
+  
 echo $(date) start apply PKS
 om --skip-ssl-validation \
   apply-changes

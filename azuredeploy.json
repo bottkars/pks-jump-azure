@@ -384,7 +384,7 @@
                             "PKS_NOTIFICATIONS_EMAIL": "[parameters('notificationsEmail')]",
                             "NET_16_BIT_MASK": "[parameters('net_16_bit_mask')]",
                             "PKS_AUTOPILOT": "[parameters('pksAutopilot')]",
-                            "PKS_PKS_VERSION": "[parameters('pksVersion')]"
+                            "PKS_VERSION": "[parameters('pksVersion')]"
                         }
                     }
                 }

@@ -32,7 +32,7 @@ the .env vile requires the following variables to be set:
 **PKS_NOTIFICATIONS_EMAIL**=*"user@example.com"*  
 **PKS_OPSMAN_USERNAME**=*opsman*  
 **PKS_AUTOPILOT**=*FALSE* Autoinstall PKS when set to true  
-**PKS_PKS_VERSION**=*2.4.1* the version of PKS, must be 2.4.0 or greater
+**PKS_VERSION**=*2.4.1* the version of PKS, must be 2.4.0 or greater
 **16_BIT_MASK**=*10.12* the first 16 bit of Network
 
 source the env file  
@@ -71,7 +71,7 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     release_id=${RELEASE_ID} \
     notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
     pksAutopilot=${PKS_AUTOPILOT} \
-    pksVersion=${PKS_PKS_VERSION} \
+    pksVersion=${PKS_VERSION} \
     net_16_bit_mask=${NET_16_BIT_MASK}
 ```
 
