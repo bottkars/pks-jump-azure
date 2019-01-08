@@ -7,9 +7,9 @@ iaas-configuration:
  tenant_id: ((tenant_id))
  client_id: ((client_id))
  client_secret: ((client_secret))
- resource_group_name: pks
- bosh_storage_account_name: pkskbdirector
- default_security_group: pks-bosh-deployed-vms-security-group
+ resource_group_name: ((resource_group_name))
+ bosh_storage_account_name: ((bosh_storage_account_name))
+ default_security_group: ((default_security_group))
  ssh_public_key: ((ssh_public_key))
  ssh_private_key: ((ssh_private_key))
 networks-configuration:
@@ -18,25 +18,25 @@ networks-configuration:
  - name: pks-infrastructure-subnet
    subnets:
    - iaas_identifier: ((infrastructure-subnet))
-     cidr: 10.12.8.0/26
-     reserved_ip_ranges: 10.12.8.0-10.12.8.4
+     cidr: ((infrastructure_cidr))
+     reserved_ip_ranges: ((infrastructure_range))
      dns: 168.63.129.16
-     gateway: 10.12.8.1
+     gateway: ((infrastructure_gateway))
  - name: pks-pas-subnet
    subnets:
    - iaas_identifier: ((pas-subnet))
-     cidr: 10.12.0.0/22
-     reserved_ip_ranges: 10.12.0.0-10.12.0.4
+     cidr: ((pas_cidr))
+     reserved_ip_ranges: ((pas_range))
      dns: 168.63.129.16
-     gateway: 10.12.0.1
+     gateway: ((pas_gateway))
  - name: pks-services-subnet
    service_network: true
    subnets:
    - iaas_identifier: ((services-subnet))
-     cidr: 10.12.4.0/22
-     reserved_ip_ranges: 10.12.4.0-10.12.4.4
+     cidr: ((services_cidr))
+     reserved_ip_ranges: ((services_range))
      dns: 168.63.129.16
-     gateway: 10.12.4.1
+     gateway: ((services_gateway))
 network-assignment:
  network:
   name: pks-infrastructure-subnet
