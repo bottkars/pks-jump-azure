@@ -72,7 +72,7 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
     pksAutopilot=${PKS_AUTOPILOT} \
     pksVersion=${PKS_PKS_VERSION} \
-    16_bit_mask=${16_BIT_MASK}
+    net_16_bit_mask=${NET_16_BIT_MASK}
 ```
 
 ## debugging/ monitoring

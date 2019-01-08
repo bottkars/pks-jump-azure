@@ -54,7 +54,7 @@ PKS_NOTIFICATIONS_EMAIL=$(get_setting PKS_NOTIFICATIONS_EMAIL)
 PKS_OPSMAN_FQDN="${ENV_NAME}.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
 PKS_AUTOPILOT=$(get_setting PKS_AUTOPILOT)
 PKS_PKS_VERSION=$(get_setting PKS_PKS_VERSION)
-16_BIT_MASK=$(get_setting 16_BIT_MASK)
+NET_16_BIT_MASK=$(get_setting NET_16_BIT_MASK)
 
 
 HOME_DIR="/home/${ADMIN_USERNAME}"
@@ -90,7 +90,7 @@ PKS_OPSMAN_USERNAME="${PKS_OPSMAN_USERNAME}"
 PKS_NOTIFICATIONS_EMAIL="${PKS_NOTIFICATIONS_EMAIL}"
 PKS_AUTOPILOT="${PKS_AUTOPILOT}"
 PKS_PKS_VERSION="${PKS_PKS_VERSION}"
-16_BIT_MASK="${16_BIT_MASK}"
+NET_16_BIT_MASK="${NET_16_BIT_MASK}"
 START_BASE_DEPLOY_TIME="${START_BASE_DEPLOY_TIME}"
 EOF
 )
@@ -196,11 +196,11 @@ ops_manager_image_uri = "${OPS_MANAGER_IMAGE_URI}"
 location              = "${LOCATION}"
 dns_suffix            = "${PKS_DOMAIN_NAME}"
 dns_subdomain         = "${PKS_SUBDOMAIN_NAME}"
-ops_manager_private_ip = "${16_BIT_MASK}.8.4"
-pcf_infrastructure_subnet = "${16_BIT_MASK}.8.0/26"
-pcf_pas_subnet = "${16_BIT_MASK}.0.0/22"
-pcf_services_subnet = "${16_BIT_MASK}.4.0/22"
-pcf_virtual_network_address_space = ["${16_BIT_MASK}.0.0/16"]
+ops_manager_private_ip = "${NET_16_BIT_MASK}.8.4"
+pcf_infrastructure_subnet = "${NET_16_BIT_MASK}.8.0/26"
+pcf_pas_subnet = "${NET_16_BIT_MASK}.0.0/22"
+pcf_services_subnet = "${NET_16_BIT_MASK}.4.0/22"
+pcf_virtual_network_address_space = ["${NET_16_BIT_MASK}.0.0/16"]
 EOF
 
 

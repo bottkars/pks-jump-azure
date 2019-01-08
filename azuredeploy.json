@@ -106,7 +106,7 @@
                 "description": "subdomain for pks"
             }
         },
-        "16_bit_mask": {
+        "net_16_bit_mask": {
             "type": "string",
             "minLength": "3",
             "defaultValue": "10.12",
@@ -382,7 +382,7 @@
                             "SSH_PUBLIC_KEY": "[parameters('sshkeyData')]",
                             "PKS_OPSMAN_USERNAME": "[parameters('opsmanUsername')]",
                             "PKS_NOTIFICATIONS_EMAIL": "[parameters('notificationsEmail')]",
-                            "!&_BIT_MASK": "[parameters('16_bit_mask')]",
+                            "NET_16_BIT_MASK": "[parameters('net_16_bit_mask')]",
                             "PKS_AUTOPILOT": "[parameters('pksAutopilot')]",
                             "PKS_PKS_VERSION": "[parameters('pksVersion')]"
                         }
