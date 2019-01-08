@@ -22,9 +22,6 @@ function retryop()
   fi
 }
 source ~/.env.sh 
-export OM_TARGET=${PKS_OPSMAN_FQDN}
-export OM_USERNAME=${PKS_OPSMAN_USERNAME}
-export OM_PKSSWORD="${PIVNET_UAA_TOKEN}"
 START_OPSMAN_DEPLOY_TIME=$(date)
 echo ${START_OPSMAN_DEPLOY_TIME} start opsman deployment
 $(cat <<-EOF >> ${HOME_DIR}/.env.sh
@@ -40,7 +37,8 @@ AZURE_NAMESERVERS=$(terraform output env_dns_zone_name_servers)
 SSH_PRIVATE_KEY="$(terraform output -json ops_manager_ssh_private_key | jq .value)"
 SSH_PUBLIC_KEY="$(terraform output ops_manager_ssh_public_key)"
 BOSH_DEPLOYED_VMS_SECURITY_GROUP_NAME="$(terraform output bosh_deployed_vms_security_group_name)"
-echo "checking opsman api ready using the new fqdn, 
+PKS_OPSMAN_FQDN="$(terraform output ops_manager_dns)"
+echo "checking opsman api ready using the new fqdn ${PKS_OPSMAN_FQDN}, 
 if the . keeps showing, check if ns record for ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} has 
 ${AZURE_NAMESERVERS}
 as server entries"
@@ -49,6 +47,10 @@ until $(curl --output /dev/null --silent --head --fail -k -X GET "https://${PKS_
     sleep 5
 done
 echo "done"
+
+export OM_TARGET=${PKS_OPSMAN_FQDN}
+export OM_USERNAME=${PKS_OPSMAN_USERNAME}
+export OM_PKSSWORD="${PIVNET_UAA_TOKEN}"
 
 om --skip-ssl-validation \
 configure-authentication \
@@ -91,6 +93,7 @@ popd
 END_OPSMAN_DEPLOY_TIME=$(date)
 echo ${END_OPSMAN_DEPLOY_TIME} finished opsman deployment
 $(cat <<-EOF >> ${HOME_DIR}/.env.sh
+PKS_OPSMAN_FQDN="${PKS_OPSMAN_FQDN}"
 END_OPSMAN_DEPLOY_TIME="${END_OPSMAN_DEPLOY_TIME}"
 EOF
 )
