@@ -22,13 +22,13 @@ networks-configuration:
      reserved_ip_ranges: ((infrastructure_range))
      dns: 168.63.129.16
      gateway: ((infrastructure_gateway))
- - name: pks-pas-subnet
+ - name: pks-subnet
    subnets:
-   - iaas_identifier: ((pas-subnet))
-     cidr: ((pas_cidr))
-     reserved_ip_ranges: ((pas_range))
+   - iaas_identifier: ((pks-subnet))
+     cidr: ((pks_cidr))
+     reserved_ip_ranges: ((pks_range))
      dns: 168.63.129.16
-     gateway: ((pas_gateway))
+     gateway: ((pks_gateway))
  - name: pks-services-subnet
    service_network: true
    subnets:

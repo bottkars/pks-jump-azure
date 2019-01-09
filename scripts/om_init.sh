@@ -32,7 +32,7 @@ EOF
 pushd ${HOME_DIR}
 
 cd ./pivotal-cf-terraforming-azure-*/
-cd terraforming-pas
+cd terraforming-pls
 AZURE_NAMESERVERS=$(terraform output env_dns_zone_name_servers)
 SSH_PRIVATE_KEY="$(terraform output -json ops_manager_ssh_private_key | jq .value)"
 SSH_PUBLIC_KEY="$(terraform output ops_manager_ssh_public_key)"
@@ -74,15 +74,15 @@ ssh_public_key: ${SSH_PUBLIC_KEY}
 ssh_private_key: ${SSH_PRIVATE_KEY}
 ntp_servers_string: 'time.windows.com'
 infrastructure-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-infrastructure-subnet"
-pks-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-pas-subnet"
+pks-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-pks-subnet"
 services-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-services-subnet"
 bosh_deployed_vms_security_group_name: ${BOSH_DEPLOYED_VMS_SECURITY_GROUP_NAME}
 infrastructure_cidr: "${NET_16_BIT_MASK}.8.0/26"
 infrastructure_range: "${NET_16_BIT_MASK}.8.1-${NET_16_BIT_MASK}.8.10"
 infrastructure_gateway: "${NET_16_BIT_MASK}.8.1"
-pas_cidr: "${NET_16_BIT_MASK}.0.0/22"
-pas_range: "${NET_16_BIT_MASK}.0.1-${NET_16_BIT_MASK}.0.4"
-pas_gateway: "${NET_16_BIT_MASK}.0.1"
+pks_cidr: "${NET_16_BIT_MASK}.0.0/22"
+pks_range: "${NET_16_BIT_MASK}.0.1-${NET_16_BIT_MASK}.0.4"
+pks_gateway: "${NET_16_BIT_MASK}.0.1"
 services_cidr: "${NET_16_BIT_MASK}.4.0/22"
 services_range: "${NET_16_BIT_MASK}.4.1-${NET_16_BIT_MASK}.4.4"
 services_gateway: "${NET_16_BIT_MASK}.4.1"

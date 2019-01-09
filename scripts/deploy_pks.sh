@@ -92,8 +92,8 @@ om --skip-ssl-validation \
 echo $(date) end staging PKS 
 
 cat << EOF > vars.yaml
-network: ${ENV_NAME}-pas-subnet
-services_network: ${ENV_NAME}-services-subnet
+network: ${ENV_NAME}-pks-subnet
+services_network: ${ENV_NAME}-pks-services-subnet
 subscription_id: ${AZURE_SUBSCRIPTION_ID}
 tenant_id: ${AZURE_TENANT_ID}
 client_id: ${AZURE_CLIENT_ID}
