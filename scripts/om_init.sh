@@ -75,7 +75,7 @@ ssh_private_key: ${SSH_PRIVATE_KEY}
 ntp_servers_string: 'time.windows.com'
 infrastructure-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-infrastructure-subnet"
 pks-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-pks-subnet"
-services-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-services-subnet"
+services-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-pks-services-subnet"
 bosh_deployed_vms_security_group_name: ${BOSH_DEPLOYED_VMS_SECURITY_GROUP_NAME}
 infrastructure_cidr: "${NET_16_BIT_MASK}.8.0/26"
 infrastructure_range: "${NET_16_BIT_MASK}.8.1-${NET_16_BIT_MASK}.8.10"
