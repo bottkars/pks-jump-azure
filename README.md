@@ -77,6 +77,18 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
 
 ## debugging/ monitoring
 
+watching the JUMPHost resource group creation  
+
+```bash
+watch az resource list --output table --resource-group ${JUMPBOX_RG}
+```
+
+watching the pks resource group creation  
+
+```bash
+watch az resource list --output table --resource-group ${ENV_NAME}
+```
+
 ssh into the Jumpbox  
 
 ```bash
