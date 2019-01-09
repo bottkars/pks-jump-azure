@@ -142,6 +142,8 @@
         },
         "pksVersion": {
             "type": "string",
+            "minLength": 5,
+            "maxLength": 13,
             "defaultValue": "1.3.0-beta.2"
         },
         "dnsLabelPrefix": {
