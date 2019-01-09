@@ -142,7 +142,7 @@
         },
         "pksVersion": {
             "type": "string",
-            "defaultValue": "1.3-0beta.1"
+            "defaultValue": "1.3.0-beta.2"
         },
         "dnsLabelPrefix": {
             "minLength": "3",
