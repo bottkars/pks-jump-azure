@@ -33,11 +33,18 @@ pushd ${HOME_DIR}
 
 cd ./pivotal-cf-terraforming-azure-*/
 cd terraforming-pks
+NET_16_BIT_MASK="10.0" #this is static in terraform 0.29
 AZURE_NAMESERVERS=$(terraform output env_dns_zone_name_servers)
 SSH_PRIVATE_KEY="$(terraform output -json ops_manager_ssh_private_key | jq .value)"
 SSH_PUBLIC_KEY="$(terraform output ops_manager_ssh_public_key)"
 BOSH_DEPLOYED_VMS_SECURITY_GROUP_NAME="$(terraform output bosh_deployed_vms_security_group_name)"
 PKS_OPSMAN_FQDN="$(terraform output ops_manager_dns)"
+INFRASTRUCTURE_SUBNET_CIDRS="$(terraform output infrastructure_subnet_cidrs)"
+SERVICES_SUBNET_CIDRS="$(terraform output services_subnet_cidrs)"
+PKS_SUBNET_CIDRS="$(terraform output pks_subnet_cidrs)"
+SERVICES_SUBNET_GATEWAY="(terraform output services_subnet_gateway)"
+PKS_SUBNET_GATEWAY="(terraform output pks_subnet_gateway)"
+INFRASTRUCTURE_SUBNET_GATEWAY="(terraform output infrastructure_subnet_gateway)"
 echo "checking opsman api ready using the new fqdn ${PKS_OPSMAN_FQDN}, 
 if the . keeps showing, check if ns record for ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} has 
 ${AZURE_NAMESERVERS}
@@ -77,16 +84,23 @@ infrastructure-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-infrastructure-s
 pks-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-pks-subnet"
 services-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-pks-services-subnet"
 bosh_deployed_vms_security_group_name: ${BOSH_DEPLOYED_VMS_SECURITY_GROUP_NAME}
-infrastructure_cidr: "${NET_16_BIT_MASK}.8.0/26"
-infrastructure_range: "${NET_16_BIT_MASK}.8.1-${NET_16_BIT_MASK}.8.10"
-infrastructure_gateway: "${NET_16_BIT_MASK}.8.1"
-pks_cidr: "${NET_16_BIT_MASK}.0.0/22"
-pks_range: "${NET_16_BIT_MASK}.0.1-${NET_16_BIT_MASK}.0.4"
-pks_gateway: "${NET_16_BIT_MASK}.0.1"
-services_cidr: "${NET_16_BIT_MASK}.4.0/22"
-services_range: "${NET_16_BIT_MASK}.4.1-${NET_16_BIT_MASK}.4.4"
-services_gateway: "${NET_16_BIT_MASK}.4.1"
+services_cidr: "${SERVICES_CIDR}"
+infrastructure_subnet_cidrs: "${INFRASTRUCTURE_SUBNET_CIDRS}"
+infrastructure_subnet_range: "${NET_16_BIT_MASK}.8.1-${NET_16_BIT_MASK}.8.10"
+infrastructure_subnet_gateway: "${INFRASTRUCTURE_SUBNET_GATEWAY}"
+services_subnet_range: "${NET_16_BIT_MASK}.16.1-${NET_16_BIT_MASK}.16.4"
+services_subnet_gateway: "$SERVICES_SUBNET_GATEWAY"
+pks_subnet_cidrs: "${PKS_SUBNET_CIDRS}"
+pks_subnet_gateway: "${PKS_SUBNET_GATEWAY}.12.1"
+pks_subnet_range: "${NET_16_BIT_MASK}.12.1-${NET_16_BIT_MASK}.12.4"
+
+
 EOF
+
+#infrastructure_cidr: "${INFRASTRUCTURE_CIDR}"
+
+#pks_gateway: "${NET_16_BIT_MASK}.0.1"
+#services_cidr: "${SERVICES_CIDR}"
 
 om --skip-ssl-validation \
  configure-director --config ${HOME_DIR}/director_config.yaml --vars-file ${HOME_DIR}/director_vars.yaml

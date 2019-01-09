@@ -181,7 +181,7 @@ curl \
 sudo -S -u ubuntu unzip ${FILENAME}
 cd ./pivotal-cf-terraforming-azure-*/
 cd terraforming-pks
-
+NET_16_BIT_MASK="10.0" # stic for now due to bug
  # preparation work for terraform
 cat << EOF > terraform.tfvars
 client_id             = "${AZURE_CLIENT_ID}"
@@ -195,9 +195,9 @@ location              = "${LOCATION}"
 dns_suffix            = "${PKS_DOMAIN_NAME}"
 dns_subdomain         = "${PKS_SUBDOMAIN_NAME}"
 ops_manager_private_ip = "${NET_16_BIT_MASK}.8.4"
-pcf_infrastructure_subnet = "${NET_16_BIT_MASK}.8.0/26"
-pks_subnet_cidrs = "${NET_16_BIT_MASK}.0.0/22"
-services_subnet_cidrs = "${NET_16_BIT_MASK}.4.0/22"
+# pcf_infrastructure_subnet = "${NET_16_BIT_MASK}.8.0/26"
+# pks_subnet_cidrs = "${NET_16_BIT_MASK}.0.0/22"
+# services_subnet_cidrs = "${NET_16_BIT_MASK}.4.0/22"
 pcf_virtual_network_address_space = ["${NET_16_BIT_MASK}.0.0/16"]
 EOF
 
