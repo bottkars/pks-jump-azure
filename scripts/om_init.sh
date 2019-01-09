@@ -21,7 +21,7 @@ function retryop()
     exit 1
   fi
 }
-source ~/.env.sh 
+source ~/.env.sh
 START_OPSMAN_DEPLOY_TIME=$(date)
 echo ${START_OPSMAN_DEPLOY_TIME} start opsman deployment
 $(cat <<-EOF >> ${HOME_DIR}/.env.sh
@@ -42,11 +42,11 @@ PKS_OPSMAN_FQDN="$(terraform output ops_manager_dns)"
 INFRASTRUCTURE_SUBNET_CIDRS="$(terraform output infrastructure_subnet_cidrs)"
 SERVICES_SUBNET_CIDRS="$(terraform output services_subnet_cidrs)"
 PKS_SUBNET_CIDRS="$(terraform output pks_subnet_cidrs)"
-SERVICES_SUBNET_GATEWAY="(terraform output services_subnet_gateway)"
-PKS_SUBNET_GATEWAY="(terraform output pks_subnet_gateway)"
-INFRASTRUCTURE_SUBNET_GATEWAY="(terraform output infrastructure_subnet_gateway)"
-echo "checking opsman api ready using the new fqdn ${PKS_OPSMAN_FQDN}, 
-if the . keeps showing, check if ns record for ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} has 
+SERVICES_SUBNET_GATEWAY="$(terraform output services_subnet_gateway)"
+PKS_SUBNET_GATEWAY="$(terraform output pks_subnet_gateway)"
+INFRASTRUCTURE_SUBNET_GATEWAY="$(terraform output infrastructure_subnet_gateway)"
+echo "checking opsman api ready using the new fqdn ${PKS_OPSMAN_FQDN},
+if the . keeps showing, check if ns record for ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} has
 ${AZURE_NAMESERVERS}
 as server entries"
 until $(curl --output /dev/null --silent --head --fail -k -X GET "https://${PKS_OPSMAN_FQDN}/api/v0/info"); do
@@ -84,14 +84,14 @@ infrastructure-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-infrastructure-s
 pks-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-pks-subnet"
 services-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-pks-services-subnet"
 bosh_deployed_vms_security_group_name: ${BOSH_DEPLOYED_VMS_SECURITY_GROUP_NAME}
-services_cidr: "${SERVICES_CIDR}"
+services_subnet_cidrs: "${SERVICES_SUBNET_CIDRS}"
 infrastructure_subnet_cidrs: "${INFRASTRUCTURE_SUBNET_CIDRS}"
 infrastructure_subnet_range: "${NET_16_BIT_MASK}.8.1-${NET_16_BIT_MASK}.8.10"
 infrastructure_subnet_gateway: "${INFRASTRUCTURE_SUBNET_GATEWAY}"
 services_subnet_range: "${NET_16_BIT_MASK}.16.1-${NET_16_BIT_MASK}.16.4"
 services_subnet_gateway: "$SERVICES_SUBNET_GATEWAY"
 pks_subnet_cidrs: "${PKS_SUBNET_CIDRS}"
-pks_subnet_gateway: "${PKS_SUBNET_GATEWAY}.12.1"
+pks_subnet_gateway: "${PKS_SUBNET_GATEWAY}"
 pks_subnet_range: "${NET_16_BIT_MASK}.12.1-${NET_16_BIT_MASK}.12.4"
 
 
