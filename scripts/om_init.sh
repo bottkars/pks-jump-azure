@@ -32,7 +32,7 @@ EOF
 pushd ${HOME_DIR}
 
 cd ./pivotal-cf-terraforming-azure-*/
-cd terraforming-pls
+cd terraforming-pks
 AZURE_NAMESERVERS=$(terraform output env_dns_zone_name_servers)
 SSH_PRIVATE_KEY="$(terraform output -json ops_manager_ssh_private_key | jq .value)"
 SSH_PUBLIC_KEY="$(terraform output ops_manager_ssh_public_key)"
