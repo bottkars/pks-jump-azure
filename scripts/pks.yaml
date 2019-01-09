@@ -70,3 +70,5 @@ product-properties:
         ((pks_key_pem))
       cert_pem: |
         ((pks_cert_pem))
+  .properties.pks_api_hostname: 
+    value: ((pks_api_hostname))
