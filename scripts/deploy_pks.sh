@@ -19,7 +19,7 @@ PKS_API_HOSTNAME="api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
 PKS_LB="${ENV_NAME}-pks-lb"
 cd ${HOME_DIR}
 #Authenticate pivnet 
-mkdir /mnt/downloads
+mkdir ${DOWNLOAD_DIR}
 
 PIVNET_ACCESS_TOKEN=$(curl \
   --fail \
@@ -55,12 +55,12 @@ om --skip-ssl-validation \
  --product-version ${PKS_VERSION} \
  --stemcell-iaas azure \
  --download-stemcell \
- --output-directory /mnt/downloads
+ --output-directory ${DOWNLOAD_DIR}
 
 echo $(date) end downloading PKS 
 
-TARGET_FILENAME=$(cat /mnt/downloads/download-file.json | jq -r '.product_path')
-STEMCELL_FILENAME=$(cat /mnt/downloads/download-file.json | jq -r '.stemcell_path')
+TARGET_FILENAME=$(cat ${DOWNLOAD_DIR}/download-file.json | jq -r '.product_path')
+STEMCELL_FILENAME=$(cat ${DOWNLOAD_DIR}/download-file.json | jq -r '.stemcell_path')
 
 # Import the tile to Ops Manager.
 echo $(date) start uploading PKS

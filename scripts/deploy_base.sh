@@ -54,11 +54,10 @@ PKS_NOTIFICATIONS_EMAIL=$(get_setting PKS_NOTIFICATIONS_EMAIL)
 PKS_AUTOPILOT=$(get_setting PKS_AUTOPILOT)
 PKS_VERSION=$(get_setting PKS_VERSION)
 NET_16_BIT_MASK=$(get_setting NET_16_BIT_MASK)
-
+DOWNLOAD_DIR="/datadisks/disk1"
 
 HOME_DIR="/home/${ADMIN_USERNAME}"
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} /mnt
-chmod 755 /mnt
 cp *.sh ${HOME_DIR}
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${HOME_DIR}/*.sh
 chmod 755 ${HOME_DIR}/*.sh
@@ -66,6 +65,10 @@ chmod +X ${HOME_DIR}/*.sh
 cp *.yaml ${HOME_DIR}
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${HOME_DIR}/*.yaml
 chmod 755 ${HOME_DIR}/*.yaml
+${HOME_DIR}/vm-disk-utils-0.1.sh
+
+chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${DOWNLOAD_DIR}
+chmod ${DOWNLOAD_DIR}
 
 $(cat <<-EOF > ${HOME_DIR}/.env.sh
 #!/usr/bin/env bash
@@ -90,6 +93,7 @@ PKS_AUTOPILOT="${PKS_AUTOPILOT}"
 PKS_VERSION="${PKS_VERSION}"
 NET_16_BIT_MASK="${NET_16_BIT_MASK}"
 START_BASE_DEPLOY_TIME="${START_BASE_DEPLOY_TIME}"
+DOWNLOAD_DIR="${DOWNLOAD_DIR}"
 EOF
 )
 
