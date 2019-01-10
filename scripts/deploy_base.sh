@@ -66,7 +66,6 @@ cp *.yaml ${HOME_DIR}
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${HOME_DIR}/*.yaml
 chmod 755 ${HOME_DIR}/*.yaml
 ${HOME_DIR}/vm-disk-utils-0.1.sh
-
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${DOWNLOAD_DIR}
 chmod ${DOWNLOAD_DIR}
 
