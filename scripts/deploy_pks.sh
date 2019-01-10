@@ -115,16 +115,20 @@ EOF
 #pks_diego_ssh_lb: ${PKS_DIEGO_SSH_LB}
 #pks_mysql_lb: ${PKS_MYSQL_LB}
 #>
-
-
-
 om --skip-ssl-validation \
   upload-stemcell \
   --stemcell ${STEMCELL_FILENAME}
+
+om --skip-ssl-validation \
+  configure-product \
+  -c pks.yaml -l vars.yaml
+###
+
+
   
 echo $(date) start apply PKS
 om --skip-ssl-validation \
-  apply-changes 
+  apply-changes
 echo $(date) end apply PKS
 
 END_PKS_DEPLOY_TIME=$(date)
