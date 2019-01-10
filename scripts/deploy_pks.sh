@@ -102,7 +102,7 @@ default_security_group: ${ENV_NAME}-bosh-deployed-vms-security-group
 pks_cert_pem: "${PKS_CERT_PEM}"
 pks_key_pem: "${PKS_KEY_PEM}"
 pks_api_hostname: "${PKS_API_HOSTNAME}"
-pks_lb: "${PKS_LB}
+pks_lb: "${PKS_LB}"
 EOF
 
 #
