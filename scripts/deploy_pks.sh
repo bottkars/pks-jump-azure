@@ -117,10 +117,6 @@ EOF
 #>
 
 
-om --skip-ssl-validation \
-  configure-product \
-  -c pks.yaml -l vars.yaml
-###
 
 om --skip-ssl-validation \
   upload-stemcell \
@@ -128,7 +124,7 @@ om --skip-ssl-validation \
   
 echo $(date) start apply PKS
 om --skip-ssl-validation \
-  apply-changes
+  apply-changes 
 echo $(date) end apply PKS
 
 END_PKS_DEPLOY_TIME=$(date)

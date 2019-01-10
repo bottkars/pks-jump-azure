@@ -32,7 +32,7 @@ product-properties:
   .properties.cloud_provider.azure.default_security_group:
     value: ((default_security_group))
   .properties.cloud_provider.azure.primary_availability_set:
-    value: ((pks_web_lb))
+    value: pks_aset
   .properties.plan1_selector:
     value: Plan Active
     selected_option: active
@@ -75,4 +75,4 @@ product-properties:
 resource-config:
   pivotal-container-service:
     elb_names:
-    - ((pks-lb))
+    - ((pks_more va lb))
