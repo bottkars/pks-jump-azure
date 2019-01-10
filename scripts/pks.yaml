@@ -72,3 +72,7 @@ product-properties:
         ((pks_cert_pem))
   .properties.pks_api_hostname: 
     value: ((pks_api_hostname))
+resource-config:
+  pivotal-container-service:
+    elb_names:
+    - ((pks-lb))

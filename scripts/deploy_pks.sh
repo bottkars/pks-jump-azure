@@ -15,13 +15,8 @@ PKS_KEY_PEM=$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key | awk
 PKS_CERT_PEM=$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.cert | awk '{printf "%s\\r\\n", $0}')
 PKS_CREDHUB_KEY="01234567890123456789"
 PRODUCT_NAME=pivotal-container-service
-PKS_APPS_DOMAIN="apps.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
-PKS_SYSTEM_DOMAIN="sys.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
-PKS_API_HOSTNAME="api.${PKS_SYSTEM_DOMAIN}"
-PKS_WEB_LB="${ENV_NAME}-web-lb"
-PKS_DIEGO_SSH_LB="${ENV_NAME}-diego-ssh-lb"
-PKS_MYSQL_LB="${ENV_NAME}-mysql-lb"
-
+PKS_API_HOSTNAME="api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
+PKS_LB="${ENV_NAME}-pks-lb"
 cd ${HOME_DIR}
 #Authenticate pivnet 
 mkdir /mnt/downloads
@@ -107,6 +102,7 @@ default_security_group: ${ENV_NAME}-bosh-deployed-vms-security-group
 pks_cert_pem: "${PKS_CERT_PEM}"
 pks_key_pem: "${PKS_KEY_PEM}"
 pks_api_hostname: "${PKS_API_HOSTNAME}"
+pks_lb: "${PKS_LB}
 EOF
 
 #
