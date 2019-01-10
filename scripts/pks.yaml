@@ -75,4 +75,4 @@ product-properties:
 resource-config:
   pivotal-container-service:
     elb_names:
-    - ((pks_more va lb))
+    - ((pks_lb))
