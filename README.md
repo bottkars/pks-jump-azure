@@ -46,7 +46,7 @@ source .env
 ## create a ssh keypair for the admin user ( if not already done ) 
 
 ```bash
-ssh-keygen -t rsa -f ~/opsman -C ${ADMIN_USERNAME}
+ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
 ```
 
 ## start the deployment
@@ -95,7 +95,7 @@ watch az resource list --output table --resource-group ${ENV_NAME}
 ssh into the Jumpbox  
 
 ```bash
- ssh -i ~/opsman ubuntu@${JUMPBOX_NAME}.${AZURE_REGION}.cloudapp.azure.com
+ ssh -i ~/${JUMPBOX_NAME} ubuntu@${JUMPBOX_NAME}.${AZURE_REGION}.cloudapp.azure.com
 ```
 
 tail the installation log  
