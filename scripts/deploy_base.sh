@@ -204,8 +204,9 @@ ops_manager_private_ip = "${NET_16_BIT_MASK}.8.4"
 pcf_virtual_network_address_space = ["${NET_16_BIT_MASK}.0.0/16"]
 EOF
 # patch terraform for managed identity if tf is 0.29
-wget https://raw.githubusercontent.com/pivotal-cf/terraforming-azure/5683d82f48abb091a76c248fd8b09102a05d42ed/terraforming-pks/main.tf
-wget https://raw.githubusercontent.com/pivotal-cf/terraforming-azure/5683d82f48abb091a76c248fd8b09102a05d42ed/terraforming-pks/variables.tf
+
+wget -q https://raw.githubusercontent.com/pivotal-cf/terraforming-azure/5683d82f48abb091a76c248fd8b09102a05d42ed/terraforming-pks/main.tf -O ./main.tf
+wget -q https://raw.githubusercontent.com/pivotal-cf/terraforming-azure/5683d82f48abb091a76c248fd8b09102a05d42ed/terraforming-pks/variables.tf -O ./variables.tf
 # end patch 
 
 
