@@ -16,11 +16,6 @@ product-properties:
     value: ((subscription_id))
   .properties.cloud_provider.azure.tenant_id:
     value: ((tenant_id))
-  .properties.cloud_provider.azure.client_creds:
-    type: simple_credentials
-    value:
-      identity: ((client_id))
-      password: ((client_secret))
   .properties.cloud_provider.azure.location:
     value: ((azure_location))
   .properties.cloud_provider.azure.resource_group_name:
@@ -33,6 +28,10 @@ product-properties:
     value: ((default_security_group))
   .properties.cloud_provider.azure.primary_availability_set:
     value: pks_aset
+  .properties.cloud_provider.azure.azure_master_managed_identity:
+    value: pks-master
+  .properties.cloud_provider.azure.azure_worker_managed_identity:
+    value: pks-worker      
   .properties.plan1_selector:
     value: Plan Active
     selected_option: active
