@@ -129,7 +129,7 @@ wget -O bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-5.3.1-linux-am
 wget -O /tmp/bbr.tar https://github.com/cloudfoundry-incubator/bosh-backup-and-restore/releases/download/v1.2.8/bbr-1.2.8.tar && \
   tar xvC /tmp/ -f /tmp/bbr.tar && \
   sudo mv /tmp/releases/bbr /usr/local/bin/
-# get pivnet UAA TOKEN
+
 
 cd ${HOME_DIR}
 
@@ -210,6 +210,35 @@ chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} terraform.tfvars
 sudo -S -u ubuntu terraform init
 sudo -S -u ubuntu terraform plan -out=plan
 retryop "sudo -S -u ubuntu terraform apply -auto-approve" 3 1
+
+terraform output ops_manager_ssh_private_key > ~/.ssh/opsman
+chmod 600 ~/opsman
+
+## creating dns record for api
+az login --service-principal \
+  --username ${AZURE_CLIENT_ID} \
+  --password ${AZURE_CLIENT_SECRET} \
+  --tenant ${AZURE_TENANT_ID}
+ 
+AZURE_LB_PUBLIC_IP=$(az network public-ip show \
+  --resource-group ${ENV_NAME} \
+  --name ${ENV_NAME}-pks-lb-ip \
+  --query "{address: ipAddress}" \
+  --output tsv)
+
+az network dns record-set a create \
+--resource-group ${ENV_NAME} \
+--zone-name ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} \
+--name api --ttl 60 
+
+
+az network dns record-set a add-record \
+--resource-group ${ENV_NAME} \
+--zone-name ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} \
+--record-set-name api \
+--ipv4-address ${AZURE_LB_PUBLIC_IP}
+
+
 END_BASE_DEPLOY_TIME=$(date)
 echo ${END_BASE_DEPLOY_TIME} end base deployment
 $(cat <<-EOF >> ${HOME_DIR}/.env.sh

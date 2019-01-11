@@ -104,6 +104,14 @@ tail the installation log
 tail -f ~/install.log
 ```
 
+## ssh into the opsmanager vm
+
+from the jumpbox, you can  
+
+```bash
+source .env.sh
+ssh -i opsman ubuntu@${PKS_OPSMAN_FQDN}
+```
 ## cleanup
 
 ```bash

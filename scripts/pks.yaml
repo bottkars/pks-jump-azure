@@ -74,5 +74,6 @@ product-properties:
     value: ((pks_api_hostname))
 resource-config:
   pivotal-container-service:
+    internet_connected: true
     elb_names:
     - ((pks_lb))
