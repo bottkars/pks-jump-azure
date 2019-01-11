@@ -27,7 +27,7 @@ product-properties:
   .properties.cloud_provider.azure.default_security_group:
     value: ((default_security_group))
   .properties.cloud_provider.azure.primary_availability_set:
-    value: pks_aset
+    value: ((primary_availability_set))
   .properties.cloud_provider.azure.azure_master_managed_identity:
     value: pks-master
   .properties.cloud_provider.azure.azure_worker_managed_identity:

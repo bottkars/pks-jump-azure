@@ -214,10 +214,11 @@ chmod 755 terraform.tfvars
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} terraform.tfvars
 sudo -S -u ubuntu terraform init
 sudo -S -u ubuntu terraform plan -out=plan
-retryop "sudo -S -u ubuntu terraform apply -auto-approve" 3 1
+retryop "sudo -S -u ubuntu terraform apply -auto-approve" 3 10
 
-terraform output ops_manager_ssh_private_key > ~/.ssh/opsman
-chmod 600 ~/opsman
+sudo -S -u ubuntu terraform output ops_manager_ssh_private_key > ${HOME_DIR}/opsman
+sudo -S -u ubuntu chmod 600 ${HOME_DIR}/opsman
+
 
 ## creating dns record for api
 az login --service-principal \

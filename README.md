@@ -35,11 +35,11 @@ the .env vile requires the following variables to be set:
 **PKS_DOMAIN_NAME**=*yourdomain.com*  
 **PKS_SUBDOMAIN_NAME**=*yourpks*  
 **PRODUCT_SLUG**=*elastic-runtime*  
-**RELEASE_ID**=*259105*  
+**RELEASE_ID**=*275389*  
 **PKS_NOTIFICATIONS_EMAIL**=*"user@example.com"*  
 **PKS_OPSMAN_USERNAME**=*opsman*  
 **PKS_AUTOPILOT**=*FALSE* Autoinstall PKS when set to true  
-**PKS_VERSION**=*2.4.1* the version of PKS, must be 2.4.0 or greater
+**PKS_VERSION**=*1.3.0-RC2* the version of PKS, must be 1.3.0-RC2 or greater
 **16_BIT_MASK**=*10.12* the first 16 bit of Network
 
 source the env file  
@@ -47,7 +47,7 @@ source the env file
 source .env
 ```
 
-## create a ssh keypair for the admin user ( if not already done ) 
+## create a ssh keypair for the admin user ( if not already done )
 
 ```bash
 ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
