@@ -9,6 +9,10 @@ It will pave the infrastructure using Pivotal [terraforming-azure](https://githu
 Pivotal Operations Manager will be installed and configured using Pivotal [om cli](https://github.com/pivotal-cf/om).  
 Optionally, PKS will be deployed using [om cli](https://github.com/pivotal-cf/om).  
 For that, the Tile and required Stemcell is downloaded automatically.
+## requirements
+
+- service principal needs to have owner rights on subscription in order to create custom roles
+- a [pivotal network account ( pivnet )](network.pivotal.io) and access token
 
 ## usage  
 
@@ -24,7 +28,7 @@ the .env vile requires the following variables to be set:
 **AZURE_REGION**=*westeurope*  
 **AZURE_SUBSCRIPTION_ID**=*fake your azure subscription id*  
 **AZURE_TENANT_ID**=*fake your azure tenant*  
-**PIVNET_UAA_TOKEN**=*fave your pivnet refresh token*  
+**PIVNET_UAA_TOKEN**=*fave your pivnet access token*  
 **ENV_NAME**=*pks* this name will be prefix for azure resources and you opsman hostname  
 **ENV_SHORT_NAME**=*pkskb* will be used as prefix for storage accounts and other azure resources  
 **OPS_MANAGER_IMAGE_URI**=*"https://opsmanagerwesteurope.blob.core.windows.net/images/ops-manager-2.4-build.131.vhd"* a 2.4 opsman image   
