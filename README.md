@@ -115,7 +115,11 @@ from the jumpbox, you can
 ```bash
 source .env.sh
 ssh -i opsman ubuntu@${PKS_OPSMAN_FQDN}
+
+bosh alias-env pks -e 10.0.8.11 --ca-cert /var/tempest/workspaces/default/root_ca_certificate
+
 ```
+
 ## cleanup
 
 ```bash
