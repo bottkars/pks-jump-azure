@@ -20,5 +20,3 @@ DOMAIN="${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
  -d *.login.sys.${DOMAIN} \
  -d *.uaa.sys.${DOMAIN} \
  -d *.pks.${DOMAIN}
-
-
