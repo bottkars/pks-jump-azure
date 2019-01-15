@@ -12,7 +12,7 @@ EOF
 
 PKS_OPSMAN_ADMIN_PASSWD=${PIVNET_UAA_TOKEN}
 PKS_KEY_PEM=$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key | awk '{printf "%s\\r\\n", $0}')
-PKS_CERT_PEM=$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.cert | awk '{printf "%s\\r\\n", $0}')
+PKS_CERT_PEM=$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.crt | awk '{printf "%s\\r\\n", $0}')
 PKS_CREDHUB_KEY="01234567890123456789"
 PRODUCT_NAME=pivotal-container-service
 PKS_API_HOSTNAME="api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
