@@ -161,6 +161,7 @@ curl \
 
 # GET TERRAFORM FOR PKS AZURE
 
+
 DOWNLOAD_ELEMENT=$(echo ${RELEASE_JSON} |\
   jq -r '.product_files[] | select(.aws_object_key | contains("terraforming-azure"))')
 
