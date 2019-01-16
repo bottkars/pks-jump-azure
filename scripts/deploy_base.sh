@@ -56,7 +56,10 @@ DOWNLOAD_DIR="/datadisks/disk1"
 USE_SELF_CERTS=$(get_setting USE_SELF_CERTS)
 
 HOME_DIR="/home/${ADMIN_USERNAME}"
-chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} /mnt
+
+cp *.env ${HOME_DIR}
+chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${HOME_DIR}/*.env
+chmod 755 ${HOME_DIR}/*.env
 cp *.sh ${HOME_DIR}
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${HOME_DIR}/*.sh
 chmod 755 ${HOME_DIR}/*.sh
@@ -96,7 +99,6 @@ EOF
 chmod 600 ${HOME_DIR}/.env.sh
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${HOME_DIR}/.env.sh
 
-cp * ${HOME_DIR}
 
 sudo apt-get install apt-transport-https lsb-release software-properties-common -y
 AZ_REPO=$(lsb_release -cs)
