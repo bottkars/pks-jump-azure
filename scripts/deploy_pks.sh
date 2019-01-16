@@ -9,11 +9,13 @@ $(cat <<-EOF >> ${HOME_DIR}/.env.sh
 START_PKS_DEPLOY_TIME="${START_PKS_DEPLOY_TIME}"
 EOF
 )
+cd ${HOME_DIR}
+source ${HOME_DIR}/pks.env
+
 PKS_OPSMAN_ADMIN_PASSWD=${PIVNET_UAA_TOKEN}
 PKS_KEY_PEM=$(cat ${HOME_DIR}/.acme.sh/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key | awk '{printf "%s\\r\\n", $0}')
 PKS_CERT_PEM=$(cat ${HOME_DIR}/.acme.sh/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/fullchain.cer | awk '{printf "%s\\r\\n", $0}')
 PKS_CREDHUB_KEY="01234567890123456789"
-PRODUCT_NAME=pivotal-container-service
 PKS_API_HOSTNAME="api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
 PKS_LB="${ENV_NAME}-pks-lb"
 cd ${HOME_DIR}
@@ -31,7 +33,7 @@ PIVNET_ACCESS_TOKEN=$(curl \
 RELEASE_JSON=$(curl \
   --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
   --fail \
-  "https://network.pivotal.io/api/v2/products/${PRODUCT_NAME}/releases/${RELEASE_ID}")
+  "https://network.pivotal.io/api/v2/products/${PRODUCT_SLUG}/releases/${RELEASE_ID}")
 # eula acceptance link
 EULA_ACCEPTANCE_URL=$(echo ${RELEASE_JSON} |\
   jq -r '._links.eula_acceptance.href')
@@ -50,7 +52,7 @@ om --skip-ssl-validation \
   download-product \
  --pivnet-api-token ${PIVNET_UAA_TOKEN} \
  --pivnet-file-glob "*.pivotal" \
- --pivnet-product-slug ${PRODUCT_NAME} \
+ --pivnet-product-slug ${PRODUCT_SLUG} \
  --product-version ${PKS_VERSION} \
  --stemcell-iaas azure \
  --download-stemcell \
@@ -76,13 +78,13 @@ PRODUCTS=$(om --skip-ssl-validation \
     --format json)
 
 VERSION=$(echo ${PRODUCTS} |\
-  jq --arg product_name ${PRODUCT_NAME} -r 'map(select(.name==$product_name)) | first | .version')
+  jq --arg product_name ${PRODUCT_SLUG} -r 'map(select(.name==$product_name)) | first | .version')
 
 # 2.  Stage using om cli
 echo $(date) start staging PKS 
 om --skip-ssl-validation \
   stage-product \
-  --product-name ${PRODUCT_NAME} \
+  --product-name ${PRODUCT_SLUG} \
   --product-version ${VERSION}
 echo $(date) end staging PKS 
 
@@ -95,7 +97,7 @@ resource_group_name: ${ENV_NAME}
 azure_location: ${LOCATION}
 pks_web_lb: ${PKS_WEB_LB}
 vnet_name: ${ENV_NAME}-virtual-network
-default_security_group: ${ENV_NAME}-pks-api-sg
+default_security_group: ${ENV_NAME}-bosh-deployed-vms-security-group
 pks_cert_pem: "${PKS_CERT_PEM}"
 pks_key_pem: "${PKS_KEY_PEM}"
 pks_api_hostname: "${PKS_API_HOSTNAME}"

@@ -48,13 +48,13 @@ LOCATION=$(get_setting LOCATION)
 PKS_DOMAIN_NAME=$(get_setting PKS_DOMAIN_NAME)
 PKS_SUBDOMAIN_NAME=$(get_setting PKS_SUBDOMAIN_NAME)
 PRODUCT_SLUG=$(get_setting PRODUCT_SLUG)
-RELEASE_ID=$(get_setting RELEASE_ID)
 PKS_OPSMAN_USERNAME=$(get_setting PKS_OPSMAN_USERNAME)
 PKS_NOTIFICATIONS_EMAIL=$(get_setting PKS_NOTIFICATIONS_EMAIL)
 PKS_AUTOPILOT=$(get_setting PKS_AUTOPILOT)
 PKS_VERSION=$(get_setting PKS_VERSION)
 NET_16_BIT_MASK=$(get_setting NET_16_BIT_MASK)
 DOWNLOAD_DIR="/datadisks/disk1"
+USE_SELF_CERTS=$(get_setting USE_SELF_CERTS)
 
 HOME_DIR="/home/${ADMIN_USERNAME}"
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} /mnt
@@ -84,7 +84,6 @@ LOCATION="${LOCATION}"
 PKS_DOMAIN_NAME="${PKS_DOMAIN_NAME}"
 PKS_SUBDOMAIN_NAME="${PKS_SUBDOMAIN_NAME}"
 PRODUCT_SLUG="${PRODUCT_SLUG}"
-RELEASE_ID="${RELEASE_ID}"
 HOME_DIR="${HOME_DIR}"
 PKS_OPSMAN_USERNAME="${PKS_OPSMAN_USERNAME}"
 PKS_NOTIFICATIONS_EMAIL="${PKS_NOTIFICATIONS_EMAIL}"
@@ -255,6 +254,10 @@ EOF
 sudo -S -u ubuntu ${HOME_DIR}/om_init.sh
 
 if [ "${PKS_AUTOPILOT}" = "TRUE" ]; then
-    sudo -S -u ubuntu ${HOME_DIR}/create_certs.sh
+    if [ "${USE_SELF_CERTS}" = "TRUE" ]; then
+      sudo -S -u ubuntu ${HOME_DIR}/create_self_certs.sh
+    else  
+      sudo -S -u ubuntu ${HOME_DIR}/create_certs.sh
+    fi
     sudo -S -u ubuntu ${HOME_DIR}/deploy_pks.sh
 fi

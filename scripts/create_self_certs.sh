@@ -3,7 +3,7 @@ set -e
 source ~/.env.sh
 cd ${HOME_DIR}
 
-DOMAIN="${PCF_SUBDOMAIN_NAME}.${PCF_DOMAIN_NAME}"
+DOMAIN="${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
 
 : ${DOMAIN:?must be set the DNS domain root (ex: example.cf-app.com)}
 : ${KEY_BITS:=2048}

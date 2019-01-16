@@ -76,14 +76,13 @@ client_id: ${AZURE_CLIENT_ID}
 client_secret: ${AZURE_CLIENT_SECRET}
 resource_group_name: ${ENV_NAME}
 bosh_storage_account_name: ${ENV_SHORT_NAME}director
-default_security_group: ${ENV_NAME}-bosh-deployed-vms-security-group
+default_security_group: ${ENV_NAME}-pks-api-sg
 ssh_public_key: ${SSH_PUBLIC_KEY}
 ssh_private_key: ${SSH_PRIVATE_KEY}
 ntp_servers_string: 'time.windows.com'
 infrastructure-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-infrastructure-subnet"
 pks-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-pks-subnet"
 services-subnet: "${ENV_NAME}-virtual-network/${ENV_NAME}-pks-services-subnet"
-bosh_deployed_vms_security_group_name: ${BOSH_DEPLOYED_VMS_SECURITY_GROUP_NAME}
 services_subnet_cidrs: "${SERVICES_SUBNET_CIDRS}"
 infrastructure_subnet_cidrs: "${INFRASTRUCTURE_SUBNET_CIDRS}"
 infrastructure_subnet_range: "${NET_16_BIT_MASK}.8.1-${NET_16_BIT_MASK}.8.10"

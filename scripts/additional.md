@@ -9,6 +9,13 @@ gem install cf-uaac
 ```
 
 
+
+properties.pks_uaa_management_admin_client
+uaac user add bottk --emails kbott@pivotal.io -p Breda1208
+uaac member add pks.clusters.admin bottk
+
+pks login -a api.pksazuredev.labbuildr.com -u bottk --skip-ssl-validation
+
 ```bash
 uaac target ${PKS_OPSMAN_FQDN}/uaa --skip-ssl-validation
 uaac token owner get opsman "${PKS_OPSMAN_USERNAME}" -s "" -p ${PIVNET_UAA_TOKEN}

@@ -19,3 +19,6 @@ DOMAIN="${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
  -d *.login.sys.${DOMAIN} \
  -d *.uaa.sys.${DOMAIN} \
  -d *.pks.${DOMAIN}
+
+cp ${HOME_DIR}/.acme.sh/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key ${HOME_DIR}
+cp ${HOME_DIR}/.acme.sh/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/fullchain.cer ${HOME_DIR}
