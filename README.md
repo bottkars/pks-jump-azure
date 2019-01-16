@@ -72,8 +72,6 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     pks_domain_name=${PKS_DOMAIN_NAME} \
     pks_subdomain_name=${PKS_SUBDOMAIN_NAME} \
     opsmanUsername=${PKS_OPSMAN_USERNAME} \
-    product_slug=${PRODUCT_SLUG} \
-    release_id=${RELEASE_ID} \
     notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
     pksAutopilot=${PKS_AUTOPILOT} \
     pksVersion=${PKS_VERSION} \
