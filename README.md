@@ -34,8 +34,6 @@ the .env vile requires the following variables to be set:
 **OPS_MANAGER_IMAGE_URI**=*"https://opsmanagerwesteurope.blob.core.windows.net/images/ops-manager-2.4-build.131.vhd"* a 2.4 opsman image   
 **PKS_DOMAIN_NAME**=*yourdomain.com*  
 **PKS_SUBDOMAIN_NAME**=*yourpks*  
-**PRODUCT_SLUG**=*elastic-runtime*  
-**RELEASE_ID**=*275389*  
 **PKS_NOTIFICATIONS_EMAIL**=*"user@example.com"*  
 **PKS_OPSMAN_USERNAME**=*opsman*  
 **PKS_AUTOPILOT**=*FALSE* Autoinstall PKS when set to true  
@@ -79,7 +77,9 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
     pksAutopilot=${PKS_AUTOPILOT} \
     pksVersion=${PKS_VERSION} \
-    net_16_bit_mask=${NET_16_BIT_MASK}
+    net_16_bit_mask=${NET_16_BIT_MASK} \
+    useSelfCerts=${USE_SELF_CERTS}
+
 ```
 
 ## debugging/ monitoring

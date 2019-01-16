@@ -55,13 +55,6 @@
                 "description": "pivnet refresh token"
             }
         },
-        "product_slug": {
-            "type": "string",
-            "defaultValue": "elastic-runtime",
-            "metadata": {
-                "description": "product slug from pivnet, eg elastic-runtime"
-            }
-        },
         "env_name": {
             "type": "string",
             "defaultValue": "pks",
@@ -387,7 +380,6 @@
                             "LOCATION": "[parameters('location')]",
                             "PKS_DOMAIN_NAME": "[parameters('pks_domain_name')]",
                             "PKS_SUBDOMAIN_NAME": "[parameters('pks_subdomain_name')]",
-                            "PRODUCT_SLUG": "[parameters('product_slug')]",
                             "SSH_PUBLIC_KEY": "[parameters('sshkeyData')]",
                             "PKS_OPSMAN_USERNAME": "[parameters('opsmanUsername')]",
                             "PKS_NOTIFICATIONS_EMAIL": "[parameters('notificationsEmail')]",
