@@ -43,4 +43,4 @@ subjectKeyIdentifier = hash
 EOF
 )
 
-cat ${DOMAIN}.host.crt ${DOMAIN}.ca.crt > ${DOMAIN}.crt
+cat ${DOMAIN}.host.crt ${DOMAIN}.ca.crt >  fullchain.cer
