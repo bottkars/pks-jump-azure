@@ -35,10 +35,11 @@ ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
 
 there are multiple deployment options, using az cli, powershell, from variables/parameters or from parameter file
 
-[deployment using default parameters](#using-default-parameters)
-[deployment using customized parameters](#using-customized-parameters)
+[deployment using default parameters](#using-default-parameters)  
+[deployment using customized parameters](#using-customized-parameters)  
+[getting started after deployment](./initial_tasks.md)
 
-for debugging, see debugging section
+for debugging, see [debugging section](#debugging-monitoring)
 
 ### using default parameters
 
@@ -70,6 +71,7 @@ az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
 az group deployment create --resource-group ${JUMPBOX_RG} \
     --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/azuredeploy.json \
     --parameters \
+    adminUsername=${ADMIN_USERNAME} \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
     dnsLabelPrefix=${JUMPBOX_NAME} \
     clientSecret=${AZURE_CLIENT_SECRET} \
