@@ -34,7 +34,7 @@ enter the client secret
 
 create a use and assign roles:
 ```bash
-uaac user add bottk --emails kbott@pivotal.io -p ${PIVNET_UAAC_TOKEN}
+uaac user add bottk --emails kbott@pivotal.io -p ${PIVNET_UAA_TOKEN}
 uaac member add pks.clusters.admin bottk
 ```
 
