@@ -71,8 +71,21 @@ bosh deployments
 ![image](https://user-images.githubusercontent.com/8255007/51325284-e3136500-1a6c-11e9-993a-8e5afe31c150.png)
 
 ```bash
-bosh -d bosh -d service-instance_19047a14-5c09-4837-92c2-e9144f218ca7 vms --details
+bosh -d service-instance_19047a14-5c09-4837-92c2-e9144f218ca7 vms --details
 ```
 ![image](https://user-images.githubusercontent.com/8255007/51325297-eb6ba000-1a6c-11e9-8a9e-62456cc7fb0b.png)
 
+view the tasks
+```bash
+bosh tasks
+```
 
+
+![image](https://user-images.githubusercontent.com/8255007/51326253-fc1d1580-1a6e-11e9-8cb0-39d8cf9522e0.png)
+
+view the tasks with debug, all or cpi
+```bash
+bosh task 38 --debug
+```
+
+![image](https://user-images.githubusercontent.com/8255007/51326455-7b124e00-1a6f-11e9-897d-eadee2bf826e.png)
