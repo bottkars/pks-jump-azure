@@ -104,4 +104,3 @@ bosh task 38 --debug
 ```
 
 ![image](https://user-images.githubusercontent.com/8255007/51326455-7b124e00-1a6f-11e9-897d-eadee2bf826e.png)
-![image](https://user-images.githubusercontent.com/8255007/51299130-978a9800-1a27-11e9-9da9-84887c6e08f6.png)
