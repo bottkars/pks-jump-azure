@@ -4,8 +4,8 @@
 <img src="https://docs.pivotal.io/images/icon_microsoft_azure@2x.png" width="100">
 
 pks-jump-azure creates an ubuntu based jumpbox to deploy Pivotal PKS (1.3 and above) on azure.  
-it is based on an  [azure rm deployment template](./azuredeploy.json).
-<img src="https://user-images.githubusercontent.com/8255007/51332226-9e42fa80-1a7b-11e9-97ec-c91de80ace1c.png" width="400">
+it is based on an  [azure rm deployment template](./azuredeploy.json).  
+<img src="https://user-images.githubusercontent.com/8255007/51332226-9e42fa80-1a7b-11e9-97ec-c91de80ace1c.png" width="400">  
 
 *Cloning or downloading the repo is not required, as the arm automation takes care for all scripts* 
 
