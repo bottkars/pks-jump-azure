@@ -49,7 +49,6 @@ az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
 az group deployment create --resource-group ${JUMPBOX_RG} \
     --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/azuredeploy.json \
     --parameters \
-    adminUsername=${ADMIN_USERNAME} \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
     dnsLabelPrefix=${JUMPBOX_NAME} \
     clientSecret=${AZURE_CLIENT_SECRET} \
@@ -71,7 +70,6 @@ az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
 az group deployment create --resource-group ${JUMPBOX_RG} \
     --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/azuredeploy.json \
     --parameters \
-    adminUsername=${ADMIN_USERNAME} \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
     dnsLabelPrefix=${JUMPBOX_NAME} \
     clientSecret=${AZURE_CLIENT_SECRET} \

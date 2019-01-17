@@ -95,6 +95,9 @@ PKS_VERSION="${PKS_VERSION}"
 NET_16_BIT_MASK="${NET_16_BIT_MASK}"
 START_BASE_DEPLOY_TIME="${START_BASE_DEPLOY_TIME}"
 DOWNLOAD_DIR="${DOWNLOAD_DIR}"
+JUMP_VNET="${JUMP_VNET}"
+JUMP_RG="${JUMP_RG}"
+
 EOF
 )
 
@@ -250,8 +253,7 @@ az network dns record-set a add-record \
 --ipv4-address ${AZURE_LB_PUBLIC_IP}
 
 # network peerings for bosh
-JUMP_RG=PKSJUMPBOX
-JUMP_VNET=jumpVNET
+echo creating network peerings
 
 VNet1Id=$(az network vnet show \
   --resource-group ${JUMP_RG} \
