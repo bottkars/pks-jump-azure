@@ -4,9 +4,9 @@
 <img src="https://docs.pivotal.io/images/icon_microsoft_azure@2x.png" width="100">
 
 pks-jump-azure creates an ubuntu based jumpbox to deploy Pivotal PKS (1.3 and above) on azure.  
-it is based on an deployment [azure rm deployment template](./azuredeploy.json).
+it is based on an  [azure rm deployment template](./azuredeploy.json).
 
-Cloning or downloading the repo is not required, as the arm automation takes care for all scripts.  
+*Cloning or downloading the repo is not required, as the arm automation takes care for all scripts* 
 
 It will pave the infrastructure using Pivotal [terraforming-azure](https://github.com/pivotal-cf/terraforming-azure).  
 Pivotal Operations Manager will be installed and configured using Pivotal [om cli](https://github.com/pivotal-cf/om).  
