@@ -162,6 +162,7 @@ END_PKS_DEPLOY_TIME="${END_PKS_DEPLOY_TIME}"
 EOF
 )
 
+./create_lb.sh --PKS_CLUSTER k8s1
 
 echo Finished
 echo Started BASE deployment at ${START_BASE_DEPLOY_TIME}

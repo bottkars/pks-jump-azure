@@ -1,7 +1,24 @@
 #!/usr/bin/env bash
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    -c|--PKS_CLUSTER)
+    CLUSTER="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    *)    # unknown option
+    POSITIONAL+=("$1") # save it in an array for later
+    shift # past argument
+    ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
 source ~/.env.sh
 
-CLUSTER=k8s1
 az login --service-principal \
   --username ${AZURE_CLIENT_ID} \
   --password ${AZURE_CLIENT_SECRET} \
