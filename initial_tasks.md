@@ -25,6 +25,18 @@ You will get the secrets from the credentials tab in the PKS Tile:
 
 <img src="https://user-images.githubusercontent.com/8255007/51299444-ce14e280-1a28-11e9-8628-1c9a6c8c5c16.png" width="400">
 
+run 
+
+```bash
+uaac token client get admin
+```
+enter the client secret
+
+create a use and assign roles:
+```bash
+uaac user add bottk --emails kbott@pivotal.io -p ${PIVNET_UAAC_TOKEN}
+uaac member add pks.clusters.admin bottk
+```
 
 ## create your first cluster
 
