@@ -7,6 +7,11 @@ az login --service-principal \
   --password ${AZURE_CLIENT_SECRET} \
   --tenant ${AZURE_TENANT_ID}
 
+az network public-ip create \
+ --resource-group ${ENV_NAME} \
+ --name ${CLUSTER}_ip \
+ --sku standard \
+ --allocation-method static
 
 az network lb create \
 --resource-group ${ENV_NAME} \
