@@ -1,4 +1,7 @@
 # pks-jump-azure
+<img src="https://docs.pivotal.io/images/pks.png" width="100"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/800px-Heart_coraz%C3%B3n.svg.png" width="100">
+<img src="https://docs.pivotal.io/images/icon_microsoft_azure@2x.png" width="100">
+
 
 pks-jump-azure creates an ubuntu based jumpbox to deploy Pivotal PKS (1.3 and above) on azure.  
 it is based on an deployment [azure rm deployment template](./azuredeploy.json).
@@ -9,6 +12,16 @@ It will pave the infrastructure using Pivotal [terraforming-azure](https://githu
 Pivotal Operations Manager will be installed and configured using Pivotal [om cli](https://github.com/pivotal-cf/om).  
 Optionally, PKS will be deployed using [om cli](https://github.com/pivotal-cf/om).  
 For that, the Tile and required Stemcell is downloaded automatically.
+## features
+
+- automated opsman deployment and configuration
+- pks infrastructure paving
+- autopilot for deploying pks
+- certificate generation using selfsigned or let´s encrypt [certificates](#certificates)
+- dns registration of api loadbalancer ip
+- network peering from jumphost to pks networks
+- installation of cf-uaac, bosh cli 
+- dns configuration and check
 
 ## requirements
 
