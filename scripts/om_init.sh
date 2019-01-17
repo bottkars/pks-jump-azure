@@ -76,7 +76,7 @@ client_id: ${AZURE_CLIENT_ID}
 client_secret: ${AZURE_CLIENT_SECRET}
 resource_group_name: ${ENV_NAME}
 bosh_storage_account_name: ${ENV_SHORT_NAME}director
-default_security_group: ${ENV_NAME}-pks-api-sg
+default_security_group: ${BOSH_DEPLOYED_VMS_SECURITY_GROUP_NAME}
 ssh_public_key: ${SSH_PUBLIC_KEY}
 ssh_private_key: ${SSH_PRIVATE_KEY}
 ntp_servers_string: 'time.windows.com'

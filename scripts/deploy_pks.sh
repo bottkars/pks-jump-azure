@@ -122,7 +122,7 @@ resource_group_name: ${ENV_NAME}
 azure_location: ${LOCATION}
 pks_web_lb: ${PKS_WEB_LB}
 vnet_name: ${ENV_NAME}-virtual-network
-default_security_group: ${ENV_NAME}-bosh-deployed-vms-security-group
+default_security_group: ${ENV_NAME}-pks-api-sg
 pks_cert_pem: "${PKS_CERT_PEM}"
 pks_key_pem: "${PKS_KEY_PEM}"
 pks_api_hostname: "${PKS_API_HOSTNAME}"
