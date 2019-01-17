@@ -25,7 +25,7 @@ function retryop()
 START_BASE_DEPLOY_TIME=$(date)
 echo ${START_BASE_DEPLOY_TIME} starting base deployment
 echo "Installing jq"
-retryop "apt-get update && apt-get install -y jq" 10 30
+retryop "apt update && apt install -y jq" 10 30
 
 function get_setting() {
   key=$1
@@ -54,6 +54,8 @@ PKS_VERSION=$(get_setting PKS_VERSION)
 NET_16_BIT_MASK=$(get_setting NET_16_BIT_MASK)
 DOWNLOAD_DIR="/datadisks/disk1"
 USE_SELF_CERTS=$(get_setting USE_SELF_CERTS)
+JUMP_RG=$(get_setting JUMP_RG)
+JUMP_VNET=$(get_setting JUMP_VNET)
 
 HOME_DIR="/home/${ADMIN_USERNAME}"
 
@@ -100,7 +102,7 @@ chmod 600 ${HOME_DIR}/.env.sh
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${HOME_DIR}/.env.sh
 
 
-sudo apt-get install apt-transport-https lsb-release software-properties-common -y
+retryop "sudo apt -y install apt-transport-https lsb-release software-properties-common" 10 30
 AZ_REPO=$(lsb_release -cs)
 echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | \
     sudo tee /etc/apt/sources.list.d/azure-cli.list
@@ -111,7 +113,10 @@ sudo apt-key --keyring /etc/apt/trusted.gpg.d/Microsoft.gpg adv \
 
 sudo apt-get update
 
-sudo apt-get install azure-cli && sudo apt --yes install unzip 
+retryop "sudo apt -y install azure-cli unzip" 10 30
+
+retryop "sudo apt -y install ruby ruby-dev gcc build-essential g++" 10 30
+sudo gem install cf-uaac
 
 wget -O terraform.zip https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip && \
   unzip terraform.zip && \
@@ -243,6 +248,37 @@ az network dns record-set a add-record \
 --zone-name ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} \
 --record-set-name api \
 --ipv4-address ${AZURE_LB_PUBLIC_IP}
+
+# network peerings for bosh
+JUMP_RG=PKSJUMPBOX
+JUMP_VNET=jumpVNET
+
+VNet1Id=$(az network vnet show \
+  --resource-group ${JUMP_RG} \
+  --name ${JUMP_VNET} \
+  --query id --out tsv)
+
+VNet2Id=$(az network vnet show \
+  --resource-group ${ENV_NAME} \
+  --name ${ENV_NAME}-virtual-network \
+  --query id --out tsv)
+
+az network vnet peering create --name PKS-Peer \
+--remote-vnet-id ${VNet2Id} \
+--resource-group ${JUMP_RG} \
+--vnet-name ${JUMP_VNET} \
+--allow-forwarded-traffic \
+--allow-gateway-transit \
+--allow-vnet-access
+
+az network vnet peering create --name JUMP-Peer \
+--remote-vnet-id ${VNet1Id} \
+--resource-group ${ENV_NAME} \
+--vnet-name ${ENV_NAME}-virtual-network \
+--allow-forwarded-traffic \
+--allow-gateway-transit \
+--allow-vnet-access
+
 
 
 END_BASE_DEPLOY_TIME=$(date)

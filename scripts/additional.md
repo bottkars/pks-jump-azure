@@ -11,6 +11,8 @@ gem install cf-uaac
 
 
 properties.pks_uaa_management_admin_client
+uaac target api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}:8443 --skip-ssl-validation
+uaac token client get admin -s ADMIN-CLIENT-SECRET
 uaac user add bottk --emails kbott@pivotal.io -p Breda1208
 uaac member add pks.clusters.admin bottk
 

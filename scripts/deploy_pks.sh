@@ -1,5 +1,22 @@
 #!/usr/bin/env bash
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
 
+case $key in
+    -n|--NO_DOWNLOAD)
+    NO_DOWNLOAD="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    *)    # unknown option
+    POSITIONAL+=("$1") # save it in an array for later
+    shift # past argument
+    ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
 source ~/.env.sh
 export OM_TARGET=${PKS_OPSMAN_FQDN}
 export OM_USERNAME=${PKS_OPSMAN_USERNAME}
@@ -46,7 +63,12 @@ curl \
   --request POST \
   ${EULA_ACCEPTANCE_URL}
 
+
+
 # download product using om cli
+if  [ -z ${NO_DOWNLOAD+x} ] ; then
+
+
 echo $(date) start downloading PKS
 om --skip-ssl-validation \
   download-product \
@@ -59,6 +81,9 @@ om --skip-ssl-validation \
  --output-directory ${DOWNLOAD_DIR}
 
 echo $(date) end downloading PKS 
+else 
+echo ignoring download by user 
+fi
 
 TARGET_FILENAME=$(cat ${DOWNLOAD_DIR}/download-file.json | jq -r '.product_path')
 STEMCELL_FILENAME=$(cat ${DOWNLOAD_DIR}/download-file.json | jq -r '.stemcell_path')
@@ -97,7 +122,7 @@ resource_group_name: ${ENV_NAME}
 azure_location: ${LOCATION}
 pks_web_lb: ${PKS_WEB_LB}
 vnet_name: ${ENV_NAME}-virtual-network
-default_security_group: ${ENV_NAME}-pks-api-sg
+default_security_group: ${ENV_NAME}-bosh-deployed-vms-security-group
 pks_cert_pem: "${PKS_CERT_PEM}"
 pks_key_pem: "${PKS_KEY_PEM}"
 pks_api_hostname: "${PKS_API_HOSTNAME}"

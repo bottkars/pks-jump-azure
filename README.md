@@ -1,7 +1,7 @@
 # pks-jump-azure
 
 pks-jump-azure creates an ubuntu based jumpbox to deploy Pivotal PKS (1.3 and above) on azure.  
-it is based ojn a deployment azure deployment template.
+it is based on an deployment [azure rm deployment template](./azuredeploy.json).
 
 Cloning or downloading the repo is not required, as the arm automation takes care for all scripts.  
 
@@ -9,36 +9,16 @@ It will pave the infrastructure using Pivotal [terraforming-azure](https://githu
 Pivotal Operations Manager will be installed and configured using Pivotal [om cli](https://github.com/pivotal-cf/om).  
 Optionally, PKS will be deployed using [om cli](https://github.com/pivotal-cf/om).  
 For that, the Tile and required Stemcell is downloaded automatically.
+
 ## requirements
 
-- service principal needs to have owner rights on subscription in order to create custom roles
-- a [pivotal network account ( pivnet )](network.pivotal.io) and access token
+- service principal needs to have owner rights on subscription in order to create custom roles and Managed Identities
+- a [pivotal network account ( pivnet )](network.pivotal.io) and a UAA access token
 
 ## usage  
 
 create an .env file using the .env.example  
-the .env vile requires the following variables to be set:  
-
-**IAAS**=*azure* the environment, azure
-**JUMPBOX_RG**=*JUMPBOX* ,the name of the ressource group for the JumpBox  
-**JUMPBOX_NAME**=*pksjumpbox* ,the JumpBox hostname  
-**ADMIN_USERNAME**=*ubuntu*  
-**AZURE_CLIENT_ID**=*fake your azure client id*  
-**AZURE_CLIENT_SECRET**=*fake your azure client secret*  
-**AZURE_REGION**=*westeurope*  
-**AZURE_SUBSCRIPTION_ID**=*fake your azure subscription id*  
-**AZURE_TENANT_ID**=*fake your azure tenant*  
-**PIVNET_UAA_TOKEN**=*fave your pivnet access token*  
-**ENV_NAME**=*pks* this name will be prefix for azure resources and you opsman hostname  
-**ENV_SHORT_NAME**=*pkskb* will be used as prefix for storage accounts and other azure resources  
-**OPS_MANAGER_IMAGE_URI**=*"https://opsmanagerwesteurope.blob.core.windows.net/images/ops-manager-2.4-build.131.vhd"* a 2.4 opsman image   
-**PKS_DOMAIN_NAME**=*yourdomain.com*  
-**PKS_SUBDOMAIN_NAME**=*yourpks*  
-**PKS_NOTIFICATIONS_EMAIL**=*"user@example.com"*  
-**PKS_OPSMAN_USERNAME**=*opsman*  
-**PKS_AUTOPILOT**=*FALSE* Autoinstall PKS when set to true  
-**PKS_VERSION**=*1.3.0-RC2* the version of PKS, must be 1.3.0-RC2 or greater
-**16_BIT_MASK**=*10.12* the first 16 bit of Network
+see [parameters and variables](#parameters-and-variables) for details.  
 
 source the env file  
 ```bash
@@ -53,6 +33,17 @@ ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
 
 ## start the deployment
 
+there are multiple deployment options, using az cli, powershell, from variables/parameters or from parameter file
+
+[deployment using default parameters](#using-default-parameters)
+[deployment using customized parameters](#using-customized-parameters)
+
+for debugging, see debugging section
+
+### using default parameters
+
+deployment using the default parameters only passes a minimum required parameters to the az command. all other values are set to their default.
+
 ```bash
 az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
 az group deployment create --resource-group ${JUMPBOX_RG} \
@@ -66,19 +57,72 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     tenantID=${AZURE_TENANT_ID} \
     subscriptionID=${AZURE_SUBSCRIPTION_ID} \
     pivnetToken=${PIVNET_UAA_TOKEN} \
-    env_name=${ENV_NAME} \
-    env_short_name=${ENV_SHORT_NAME} \
-    ops_manager_image_uri=${OPS_MANAGER_IMAGE_URI} \
-    pks_domain_name=${PKS_DOMAIN_NAME} \
-    pks_subdomain_name=${PKS_SUBDOMAIN_NAME} \
+    envShortName=${ENV_SHORT_NAME} \
+    pksDomainName=${PKS_DOMAIN_NAME} \
+    pksSubdomainName=${PKS_SUBDOMAIN_NAME} \
+```
+
+### using customized parameters
+
+installation using customized parameter set´s all required parameters from variables in your .env file
+
+```bash
+az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
+az group deployment create --resource-group ${JUMPBOX_RG} \
+    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/azuredeploy.json \
+    --parameters \
+    adminUsername=${ADMIN_USERNAME} \
+    sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
+    dnsLabelPrefix=${JUMPBOX_NAME} \
+    clientSecret=${AZURE_CLIENT_SECRET} \
+    clientID=${AZURE_CLIENT_ID} \
+    tenantID=${AZURE_TENANT_ID} \
+    subscriptionID=${AZURE_SUBSCRIPTION_ID} \
+    pivnetToken=${PIVNET_UAA_TOKEN} \
+    envName=${ENV_NAME} \
+    envShortName=${ENV_SHORT_NAME} \
+    opsmanImageUri=${OPS_MANAGER_IMAGE_URI} \
+    pksDomainName=${PKS_DOMAIN_NAME} \
+    pksSubdomainName=${PKS_SUBDOMAIN_NAME} \
     opsmanUsername=${PKS_OPSMAN_USERNAME} \
     notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
     pksAutopilot=${PKS_AUTOPILOT} \
     pksVersion=${PKS_VERSION} \
-    net_16_bit_mask=${NET_16_BIT_MASK} \
+    net16bitmask=${NET_16_BIT_MASK} \
     useSelfCerts=${USE_SELF_CERTS}
 
 ```
+
+## using a parameter file
+
+tbd
+
+## parameters and variables
+
+ variable  | parameter  | default value  | mandatory | description  
+--:|---|---|---|---
+ IAAS  |   |   |   |
+ JUMPBOX_RG  |   |   | no, only to create RG/ Deployment  |
+ JUMPBOX_NAME  |   |   | yes  |
+ ADMIN_USERNAME  |   | ubuntu  | no  |
+ AZURE_CLIENT_ID  |   |   |  yes |
+ AZURE_CLIENT_SECRET |   |   | yes  |
+ AZURE_REGION  |   | westeurope  | no  |
+ AZURE_SUBSCRIPTION_ID  |   |   | yes  |
+ AZURE_TENANT_ID   |   |   | yes  |
+ PIVNET_UAA_TOKEN  |   |   | yes  |
+ ENV_NAME  |   | pks  | no  |
+ ENV_SHORT_NAME  |   |   |yes |
+ OPS_MANAGER_IMAGE_URI  |   |   | no  |
+ PKS_DOMAIN_NAME  |   |   | yes  |
+ PKS_SUBDOMAIN_NAME  |   |   | yes  |
+ PKS_VERSION  |   |1.3.0 |no|
+ PKS_OPSMAN_USERNAME  |   | opsman  | no  |
+ PKS_NOTIFICATIONS_EMAIL  |   | user@example.com  | no  |
+ PKS_AUTOPILOT  |   |TRUE   |no   |
+ NET_16_BIT_MASK  |   |   | no  |
+ USE_SELF_CERTS  |   | true  | no  |
+   |   |   |   |
 
 ## debugging/ monitoring
 
