@@ -63,14 +63,12 @@ az network lb rule create \
 AZURE_LB_PUBLIC_IP=$(az network public-ip show \
     --resource-group ${ENV_NAME} \
     --name ${CLUSTER}-public-ip \
-    
     --output tsv)
 
 az network dns record-set a create \
     --resource-group ${ENV_NAME} \
     --zone-name ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} \
     --name ${CLUSTER} --ttl 60
-
 
 az network dns record-set a add-record \
     --resource-group ${ENV_NAME} \
