@@ -95,7 +95,7 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     pivnetToken=${PIVNET_UAA_TOKEN} \
     envName=${ENV_NAME} \
     envShortName=${ENV_SHORT_NAME} \
-    opsmanImageUri=${OPS_MANAGER_IMAGE_URI} \
+    opsmanImage=${OPS_MANAGER_IMAGE} \
     pksDomainName=${PKS_DOMAIN_NAME} \
     pksSubdomainName=${PKS_SUBDOMAIN_NAME} \
     opsmanUsername=${PKS_OPSMAN_USERNAME} \
@@ -127,7 +127,7 @@ tbd
  PIVNET_UAA_TOKEN  |   |   | yes  |
  ENV_NAME  |   | pks  | no  |
  ENV_SHORT_NAME  |   |   |yes |
- OPS_MANAGER_IMAGE_URI  |   |   | no  |
+ OPS_MANAGER_IMAGE  |opsManImage   |   | no  |
  PKS_DOMAIN_NAME  |   |   | yes  |
  PKS_SUBDOMAIN_NAME  |   |   | yes  |
  PKS_VERSION  |   |1.3.0 |no|
