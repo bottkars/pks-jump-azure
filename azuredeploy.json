@@ -75,10 +75,10 @@
         "opsmanImageUri": {
             "type": "string",
             "minLength": 3,
-            "allowedValues": ["[concat('https://opsmanager',resourceGroup().location,'.blob.core.windows.net/images/ops-manager-2.4-build.131.vhd')]",
+            "allowedValues": ["[concat('https://opsmanager',parameters('location'),'.blob.core.windows.net/images/ops-manager-2.4-build.131.vhd')]",
                 "[concat('https://opsmanager',resourceGroup().location,'.blob.core.windows.net/images/ops-manager-2.4-build.131.vhd')]"
             ],
-            "defaultValue": "[concat('https://opsmanager',resourceGroup().location,'.blob.core.windows.net/images/ops-manager-2.4-build.131.vhd')]",
+            "defaultValue": "[concat('https://opsmanager',parameters('location'),'.blob.core.windows.net/images/ops-manager-2.4-build.131.vhd')]",
             "metadata": {
                 "description": "URL for Operation Manager Image"
             }
