@@ -44,23 +44,35 @@ product-properties:
     value:
     - 'null'
   .properties.plan1_selector.active.master_instances:
-    value: 3
+    value: 1
   .properties.plan1_selector.active.max_worker_instances:
     value: 10
   .properties.plan1_selector.active.worker_instances:
     value: 1
-  .properties.plan1_selector.active.master_vm_type: 
-    value: Standard_DS2_v2
-  .properties.plan1_selector.active.worker_vm_type: 
-    value: Standard_DS12_v2
-  .properties.plan1_selector.active.errand_vm_type: 
-    value: Standard_DS1_v2         
   .properties.plan2_selector:
-    value: Plan Inactive
-    selected_option: inactive
+    value: Plan Active
+    selected_option: active
+  .properties.plan2_selector.active.name:
+    value: medium
+  .properties.plan2_selector.active.master_az_placement:
+    value:
+    - 'null'
+  .properties.plan2_selector.active.worker_az_placement:
+    value:
+    - 'null'
   .properties.plan3_selector:
-    value: Plan Inactive
-    selected_option: inactive
+    value: Plan Active
+    selected_option: active
+  .properties.plan3_selector.active.name:
+    value: large
+  .properties.plan3_selector.active.worker_instances:
+    value: 10
+  .properties.plan3_selector.active.master_az_placement:
+    value:
+    - 'null'
+  .properties.plan3_selector.active.worker_az_placement:
+    value:
+    - 'null'
   .properties.telemetry_selector:
     value: disabled
   .pivotal-container-service.pks_tls:

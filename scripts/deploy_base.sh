@@ -251,6 +251,32 @@ az network dns record-set a add-record \
 --record-set-name api \
 --ipv4-address ${AZURE_LB_PUBLIC_IP}
 
+az network nsg rule create \
+--nsg-name ${ENV_NAME}-bosh-deployed-vms-security-group \
+--resource-group ${ENV_NAME} \
+--name Port_8443 \
+--priority 220 \
+--source-address-prefixes '*' \
+--source-port-ranges '*' \
+--destination-address-prefixes '*' \
+--destination-port-ranges 8443 \
+--access allow \
+--protocol Tcp \
+--description "Allow UAA and K8S Access"
+
+az network nsg rule create \
+--nsg-name ${ENV_NAME}-bosh-deployed-vms-security-group \
+--resource-group ${ENV_NAME} \
+--name Port_9021 \
+--priority 230 \
+--source-address-prefixes '*' \
+--source-port-ranges '*' \
+--destination-address-prefixes '*' \
+--destination-port-ranges 9021 \
+--access allow \
+--protocol Tcp \
+--description "Allow UAA and K8S Access"
+
 # network peerings for bosh
 echo creating network peerings
 

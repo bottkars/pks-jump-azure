@@ -75,12 +75,12 @@
         "opsmanImageUri": {
             "type": "string",
             "minLength": 3,
-            "allowedValues": ["https://opsmanagerwesteurope.blob.core.windows.net/images/ops-manager-2.4-build.131.vhd",
-                "https://opsmanagerwesteurope.blob.core.windows.net/images/ops-manager-2.4-build.117.vhd"
+            "allowedValues": ["[concat('https://opsmanager',resourceGroup().location,'.blob.core.windows.net/images/ops-manager-2.4-build.131.vhd')]",
+                "[concat('https://opsmanager',resourceGroup().location,'.blob.core.windows.net/images/ops-manager-2.4-build.131.vhd')]"
             ],
-            "defaultValue": "https://opsmanagerwesteurope.blob.core.windows.net/images/ops-manager-2.4-build.131.vhd",
+            "defaultValue": "[concat('https://opsmanager',resourceGroup().location,'.blob.core.windows.net/images/ops-manager-2.4-build.131.vhd')]",
             "metadata": {
-                "description": "url for latest osmanager image"
+                "description": "URL for Operation Manager Image"
             }
         },
         "pksDomainName": {
