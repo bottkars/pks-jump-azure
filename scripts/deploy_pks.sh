@@ -84,6 +84,20 @@ echo $(date) end downloading PKS
 else 
 echo ignoring download by user 
 fi
+echo $(date) start downloading PKS CLI
+om --skip-ssl-validation \
+  download-product \
+ --pivnet-api-token ${PIVNET_UAA_TOKEN} \
+ --pivnet-file-glob "pks-linux-amd64*" \
+ --pivnet-product-slug ${PRODUCT_SLUG} \
+ --product-version ${PKS_VERSION} \
+ --output-directory ${HOME_DIR}
+
+
+echo $(date) end downloading PKS CLI
+chmod +x ./pks-linux-amd*
+chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./pks-linux-amd*
+sudo cp ./pks-linux-amd* /usr/local/bin/pks
 
 TARGET_FILENAME=$(cat ${DOWNLOAD_DIR}/download-file.json | jq -r '.product_path')
 STEMCELL_FILENAME=$(cat ${DOWNLOAD_DIR}/download-file.json | jq -r '.stemcell_path')
@@ -161,8 +175,9 @@ $(cat <<-EOF >> ${HOME_DIR}/.env.sh
 END_PKS_DEPLOY_TIME="${END_PKS_DEPLOY_TIME}"
 EOF
 )
-
+./create_user.sh
 ./create_lb.sh --PKS_CLUSTER k8s1
+./create_cluster.sh --PKS_CLUSTER k8s1
 
 echo Finished
 echo Started BASE deployment at ${START_BASE_DEPLOY_TIME}
