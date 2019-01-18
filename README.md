@@ -58,10 +58,11 @@ or
 
 Monitor your Deployment using [debugging section](#debugging-monitoring)
 
-the deployment might stop at the moment your opsmanager director fqdn is not resolvable  
-the log file will, at this stage, show the azure Name Servers that need to be added to your DNS NS Record  
+the deployment might pause after opsmanager deployment, if your  opsmanager  fqdn is not resolvable  
+the log file will, at this stage, show the Azure Name Servers that need to be added to your DNS NS Record  
 
-![image](https://user-images.githubusercontent.com/8255007/51382000-ed3d6e00-1b15-11e9-8318-04c9f0993a1d.png)
+![image](https://user-images.githubusercontent.com/8255007/51382000-ed3d6e00-1b15-11e9-8318-04c9f0993a1d.png)  
+once fixed, the deployment will continue.
 
 [getting started after deployment](./initial_tasks.md)
 
