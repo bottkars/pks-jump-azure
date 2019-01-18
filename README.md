@@ -23,6 +23,9 @@ For that, the Tile and required Stemcell is downloaded automatically.
 - network peering from jumphost to pks networks
 - installation of cf-uaac, bosh cli
 - dns configuration and check
+- creation of public lb and dns a records for k8s clusters
+- script for additional k8s clusters
+- load balanver rules for uaa and api access
 
 ## requirements
 
