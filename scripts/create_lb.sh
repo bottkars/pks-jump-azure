@@ -63,6 +63,7 @@ az network lb rule create \
 AZURE_LB_PUBLIC_IP=$(az network public-ip show \
     --resource-group ${ENV_NAME} \
     --name ${CLUSTER}-public-ip \
+    --query "{address: ipAddress}" \
     --output tsv)
 
 az network dns record-set a create \
