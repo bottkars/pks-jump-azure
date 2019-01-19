@@ -170,6 +170,18 @@
                 "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version."
             }
         },
+        "vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_D2S_v2",
+            "allowedValues": [
+                "Standard_F2s_v2",
+                "Standard_D2s_v2",
+                "Standard_D2s_v3"
+            ],
+            "metadata": {
+                "description": "VM Size for Jumphost"
+            }
+        },
         "location": {
             "type": "string",
             "defaultValue": "[resourceGroup().location]",
@@ -198,7 +210,6 @@
         "publicIPAddressName": "myPublicIP",
         "publicIPAddressType": "Dynamic",
         "vmName": "pksjumphost",
-        "vmSize": "Standard_F2s_v2",
         "virtualNetworkName": "jumpVNET",
         "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
         "baseUri": "https://raw.githubusercontent.com/bottkars/pks-jump-azure/master",
@@ -303,7 +314,7 @@
             },
             "properties": {
                 "hardwareProfile": {
-                    "vmSize": "[variables('vmSize')]"
+                    "vmSize": "[parameters('vmSize')]"
                 },
                 "osProfile": {
                     "computerName": "[variables('vmName')]",
