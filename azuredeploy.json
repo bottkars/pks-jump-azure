@@ -199,7 +199,7 @@
                 "southeastasia"
             ],
             "metadata": {
-                "description": "Location for all resources."    
+                "description": "Location for OPSMAN  Download resources."    
             }
         },        
         "_artifactsLocation": {

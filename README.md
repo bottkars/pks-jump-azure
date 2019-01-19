@@ -148,7 +148,7 @@ tbd
  PKS_AUTOPILOT  |   |TRUE   |no   |
  NET_16_BIT_MASK  |   |   | no  |
  USE_SELF_CERTS  |   | true  | no  |
-   |   |   |   |
+   | opsmanImageRegion  | westeurope  | yes  |opsmanager image region, westus, easus, westeurope or southeasasia
 
 ## debugging/ monitoring
 
