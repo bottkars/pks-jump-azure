@@ -135,15 +135,15 @@ tbd
  AZURE_REGION  |   | westeurope  | no  |
  AZURE_SUBSCRIPTION_ID  |   |   | yes  |
  AZURE_TENANT_ID   |   |   | yes  |
- PIVNET_UAA_TOKEN  |   |   | yes  |
+ PIVNET_UAA_TOKEN  |   |   | yes  | will also be password for OpsManager and k8sadmin
  ENV_NAME  |   | pks  | no  |
  ENV_SHORT_NAME  |   |   |yes |
- OPS_MANAGER_IMAGE  |opsManImage   |   | no  |
+ OPS_MANAGER_IMAGE  |opsManImage   | ops-manager-2.4-build.142.vhd | no  |
  PKS_DOMAIN_NAME  |   |   | yes  |
  PKS_SUBDOMAIN_NAME  |   |   | yes  |
  PKS_VERSION  |   |1.3.0 |no|
  PKS_OPSMAN_USERNAME  |   | opsman  | no  |
- PKS_NOTIFICATIONS_EMAIL  |   | user@example.com  | no  |
+ PKS_NOTIFICATIONS_EMAIL  |   | user@example.com  | no  | will also be used as k8sadmin email field
  PKS_AUTOPILOT  |   |TRUE   |no   |
  NET_16_BIT_MASK  |   |   | no  |
  USE_SELF_CERTS  |   | true  | no  |

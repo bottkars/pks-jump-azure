@@ -75,12 +75,14 @@
         "opsmanImage": {
             "type": "string",
             "minLength": 3,
-            "allowedValues": ["ops-manager-2.4-build.131.vhd",
+            "allowedValues": [
+                "ops-manager-2.4-build.142.vhd",
+                "ops-manager-2.4-build.131.vhd",                
                 "ops-manager-2.4-build.117.vhd']"
             ],
-            "defaultValue": "ops-manager-2.4-build.131.vhd",
+            "defaultValue": "ops-manager-2.4-build.144.vhd",
             "metadata": {
-                "description": "URL for Operation Manager Image"
+                "description": "Image Name of Operation Manager Image"
             }
         },
         "pksDomainName": {
