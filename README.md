@@ -114,8 +114,9 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     pksAutopilot=${PKS_AUTOPILOT} \
     pksVersion=${PKS_VERSION} \
     net16bitmask=${NET_16_BIT_MASK} \
-    useSelfCerts=${USE_SELF_CERTS}
-
+    useSelfCerts=${USE_SELF_CERTS} \
+    _artifactsLocation=${ARTIFACTS_LOCATION} \
+    vmSize=${VMSIZE}
 ```
 
 ## using a parameter file
