@@ -29,12 +29,43 @@ the clusters UUID is the value to identify worker and master Aset´s .
 
 download the [pks cli](https://network.pivotal.io/products/pivotal-container-service/) from pivnet to you local machine
 
-with your sourced local .env, login to pks
+with your sourced local .env, login to pks and run `pks get-credentials`
 
 ```bash
 source .env
 pks login -a api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} -u k8sadmin -p ${PIVNET_UAA_TOKEN} --skip-ssl-validation
-
+pks get-credentials k8s1
 ```
 
-## description here to connect to first cluster
+<img width="512" alt="asets_uuid" src="https://user-images.githubusercontent.com/8255007/51424121-e112e880-1bc9-11e9-87d3-c509d296a356.png">  
+
+this will create a local ~/.kube/config file.  
+once done, start `kubectl proxy` on you local host.
+
+start you browser and navigate to [kube dashboard](http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy)  
+<img width="512" alt="asets_uuid" src="http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy">  
+
+at the sign in windows, select *Browse to a kube config file*  
+
+<img width="512" alt="asets_uuid" src="https://user-images.githubusercontent.com/8255007/51424181-bd9c6d80-1bca-11e9-99a8-7488d665700f.png">  
+
+select the your `~/.kube/config` file created earlier  
+<img width="512" alt="asets_uuid" src="https://user-images.githubusercontent.com/8255007/51424199-f4728380-1bca-11e9-9901-06a22ac869f9.png">  
+
+*hint: mac users, `<shift><commad><g>` is your friend*  
+
+<img width="800" alt="asets_uuid" src="https://user-images.githubusercontent.com/8255007/51424240-6d71db00-1bcb-11e9-9404-d90ffba6b29a.png">  
+
+## next steps
+
+tbd
+
+### kubectl commands
+
+tbd
+
+### pks commands
+
+tbd
+
+### helm
