@@ -19,6 +19,7 @@ done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 source ~/.env.sh
 pks login -a api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} -u k8sadmin -p ${PIVNET_UAA_TOKEN} --skip-ssl-validation
+echo "creating cluster ${CLUSTER}, this may take a while"
 pks create-cluster ${CLUSTER} \
 -e ${CLUSTER}.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} \
  --plan small \
