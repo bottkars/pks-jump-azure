@@ -66,7 +66,7 @@ curl \
 
 
 # download product using om cli
-if  [ -z ${NO_DOWNLOAD+x} ] ; then
+if  [ -z ${NO_DOWNLOAD} ] ; then
 
 
 echo $(date) start downloading PKS
