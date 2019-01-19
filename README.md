@@ -116,7 +116,8 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     net16bitmask=${NET_16_BIT_MASK} \
     useSelfCerts=${USE_SELF_CERTS} \
     _artifactsLocation=${ARTIFACTS_LOCATION} \
-    vmSize=${VMSIZE}
+    vmSize=${VMSIZE} \
+    opsmanagerImageregion=${OPS_MANAGER_IMAGE_REGION}
 ```
 
 ## using a parameter file
@@ -148,7 +149,7 @@ tbd
  PKS_AUTOPILOT  |   |TRUE   |no   |
  NET_16_BIT_MASK  |   |   | no  |
  USE_SELF_CERTS  |   | true  | no  |
-   | opsmanImageRegion  | westeurope  | yes  |opsmanager image region, westus, easus, westeurope or southeasasia
+ OPS_MANAGER_IMAGE_REGION  | opsmanImageRegion  | westeurope  | yes  |opsmanager image region, westus, easus, westeurope or southeasasia
 
 ## debugging/ monitoring
 
