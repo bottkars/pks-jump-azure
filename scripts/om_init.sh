@@ -1,4 +1,9 @@
-#!/usr/bin/env bash
+cd $1
+source .env.sh
+MYSELF=$(basename $0)
+mkdir -p ${HOME_DIR}/logs
+exec &> >(tee -a "${HOME_DIR}/logs/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
+exec 2>&1
 function retryop()
 {
   retry=0
@@ -123,3 +128,12 @@ echo Started BASE deployment at ${START_BASE_DEPLOY_TIME}
 echo Fimnished BASE deployment at ${END_BASE_DEPLOY_TIME}
 echo Started OPSMAN deployment at ${START_OPSMAN_DEPLOY_TIME}
 echo Finished OPSMAN Deployment at ${END_OPSMAN_DEPLOY_TIME}
+
+if [ "${PKS_AUTOPILOT}" = "TRUE" ]; then
+    if [ "${USE_SELF_CERTS}" = "TRUE" ]; then
+      sudo -S -u ${ADMIN_USERNAME} ${HOME_DIR}/create_self_certs.sh
+    else  
+      sudo -S -u ${ADMIN_USERNAME} ${HOME_DIR}/create_certs.sh
+    fi
+    sudo -S -u ${ADMIN_USERNAME} ${HOME_DIR}/deploy_pks.sh
+fi

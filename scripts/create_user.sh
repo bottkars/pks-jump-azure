@@ -1,4 +1,9 @@
-source ~/.env.sh
+cd $1
+source .env.sh
+MYSELF=$(basename $0)
+mkdir -p ${HOME_DIR}/logs
+exec &> >(tee -a "${HOME_DIR}/logs/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
+exec 2>&1
 export OM_TARGET=${PKS_OPSMAN_FQDN}
 export OM_USERNAME=${PKS_OPSMAN_USERNAME}
 export OM_PASSWORD="${PIVNET_UAA_TOKEN}"

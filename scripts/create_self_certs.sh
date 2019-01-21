@@ -1,5 +1,10 @@
 #!/bin/bash
-set -e
+cd $1
+source .env.sh
+MYSELF=$(basename $0)
+mkdir -p ${HOME_DIR}/logs
+exec &> >(tee -a "${HOME_DIR}/logs/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
+exec 2>&1
 source ~/.env.sh
 cd ${HOME_DIR}
 

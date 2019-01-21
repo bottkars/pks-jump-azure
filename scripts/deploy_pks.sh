@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
-POSITIONAL=()
-while [[ $# -gt 0 ]]
+cd $1
+source .env.sh
+MYSELF=$(basename $0)
+mkdir -p ${HOME_DIR}/logs
+exec &> >(tee -a "${HOME_DIR}/logs/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
+exec 2>&1while [[ $# -gt 0 ]]
 do
 key="$1"
 
@@ -26,7 +30,6 @@ $(cat <<-EOF >> ${HOME_DIR}/.env.sh
 START_PKS_DEPLOY_TIME="${START_PKS_DEPLOY_TIME}"
 EOF
 )
-cd ${HOME_DIR}
 source ${HOME_DIR}/pks.env
 
 PKS_OPSMAN_ADMIN_PASSWD=${PIVNET_UAA_TOKEN}
