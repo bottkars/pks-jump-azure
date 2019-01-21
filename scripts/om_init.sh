@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 cd $1
 source .env.sh
 MYSELF=$(basename $0)
