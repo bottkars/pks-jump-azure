@@ -117,7 +117,7 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     useSelfCerts=${USE_SELF_CERTS} \
     _artifactsLocation=${ARTIFACTS_LOCATION} \
     vmSize=${VMSIZE} \
-    opsmanagerImageregion=${OPS_MANAGER_IMAGE_REGION}
+    opsmanImageRegion=${OPS_MANAGER_IMAGE_REGION}
 ```
 
 ## using a parameter file
@@ -176,6 +176,13 @@ tail the installation log
 ```bash
 tail -f ~/install.log
 ```
+
+gernerate a parameter report for opsman deployment
+
+```bash
+az group deployment show --name generate-customdata --resource-group ${JUMPBOX_RG} --query properties.parameters.customData.value
+```
+
 
 ## ssh into the opsmanager vm
 
