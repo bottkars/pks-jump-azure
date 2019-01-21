@@ -73,7 +73,7 @@ deployment using the default parameters only passes a minimum required parameter
 ```bash
 az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
 az group deployment create --resource-group ${JUMPBOX_RG} \
-    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/azuredeploy.json \
+    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/${BRANCH}/azuredeploy.json \
     --parameters \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
     dnsLabelPrefix=${JUMPBOX_NAME} \
@@ -94,7 +94,7 @@ installation using customized parameter set´s all required parameters from vari
 ```bash
 az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
 az group deployment create --resource-group ${JUMPBOX_RG} \
-    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/azuredeploy.json \
+    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/${BRANCH}/azuredeploy.json \
     --parameters \
     adminUsername=${ADMIN_USERNAME} \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
