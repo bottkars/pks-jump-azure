@@ -168,7 +168,7 @@ watch az resource list --output table --resource-group ${ENV_NAME}
 ssh into the Jumpbox  
 
 ```bash
- ssh -i ~/${JUMPBOX_NAME} ubuntu@${JUMPBOX_NAME}.${AZURE_REGION}.cloudapp.azure.com
+ ssh -i ~/${JUMPBOX_NAME} ${ADMIN_USERNAME}@${JUMPBOX_NAME}.${AZURE_REGION}.cloudapp.azure.com
 ```
 
 tail the installation log  
@@ -190,7 +190,7 @@ from the jumpbox, you can
 
 ```bash
 source .env.sh
-ssh -i opsman ubuntu@${PKS_OPSMAN_FQDN}
+ssh -i opsman ${ADMIN_USERNAME}@${PKS_OPSMAN_FQDN}
 
 bosh alias-env pks -e 10.0.8.11 --ca-cert /var/tempest/workspaces/default/root_ca_certificate
 
