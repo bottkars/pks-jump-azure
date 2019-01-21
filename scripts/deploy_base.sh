@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-source .env.sh
-MYSELF=$(basename $0)
-mkdir -p ${HOME_DIR}/logs
-exec &> >(tee -a "${HOME_DIR}/logs/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
-exec 2>&1
 function retryop()
 {
   retry=0
@@ -102,6 +97,7 @@ START_BASE_DEPLOY_TIME="${START_BASE_DEPLOY_TIME}"
 DOWNLOAD_DIR="${DOWNLOAD_DIR}"
 JUMP_VNET="${JUMP_VNET}"
 JUMP_RG="${JUMP_RG}"
+_CERTS=${USE_SELF_CERTS}
 EOF
 )
 
