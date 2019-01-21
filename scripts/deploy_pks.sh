@@ -27,6 +27,18 @@ source ~/.env.sh
 export OM_TARGET=${PKS_OPSMAN_FQDN}
 export OM_USERNAME=${PKS_OPSMAN_USERNAME}
 export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
+
+declare -a FILES=("${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key" \
+"${HOME_DIR}/fullchain.cer")
+for FILE in "${FILES[@]}"; do
+    if [ ! -f $FILE ]; then
+    echo "$FILE not found. Please run create_self_certs.sh "
+    exit
+    fi
+done
+
+
+
 START_PKS_DEPLOY_TIME=$(date)
 $(cat <<-EOF >> ${HOME_DIR}/.env.sh
 START_PKS_DEPLOY_TIME="${START_PKS_DEPLOY_TIME}"
