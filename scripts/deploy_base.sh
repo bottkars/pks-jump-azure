@@ -1,4 +1,4 @@
-cd $1
+#!/usr/bin/env bash
 source .env.sh
 MYSELF=$(basename $0)
 mkdir -p ${HOME_DIR}/logs
