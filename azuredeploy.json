@@ -80,7 +80,7 @@
                 "ops-manager-2.4-build.131.vhd",                
                 "ops-manager-2.4-build.117.vhd']"
             ],
-            "defaultValue": "ops-manager-2.4-build.144.vhd",
+            "defaultValue": "ops-manager-2.4-build.142.vhd",
             "metadata": {
                 "description": "Image Name of Operation Manager Image"
             }
