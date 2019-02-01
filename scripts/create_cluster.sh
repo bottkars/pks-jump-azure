@@ -36,7 +36,7 @@ az login --service-principal \
   --tenant ${AZURE_TENANT_ID}
 
 PKS_UUID=$(pks show-cluster ${CLUSTER}  --json | jq -r '.uuid')
-pks get-credentials
+pks get-credentials ${CLUSTER} 
 MASTER_VM_ID=$(az vm availability-set show  \
 --name p-bosh-service-instance-${PKS_UUID}-master \
 --resource-group ${ENV_NAME} \
