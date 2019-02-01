@@ -11,9 +11,9 @@ key="$1"
 
 case $key in
     -n|--NO_DOWNLOAD)
-    NO_DOWNLOAD="$2"
+    NO_DOWNLOAD=TRUE
     shift # past argument
-    shift # past value
+    #shift # past value
     ;;
     *)    # unknown option
     POSITIONAL+=("$1") # save it in an array for later
@@ -53,7 +53,8 @@ PKS_API_HOSTNAME="api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
 PKS_LB="${ENV_NAME}-pks-lb"
 cd ${HOME_DIR}
 #Authenticate pivnet 
-mkdir ${DOWNLOAD_DIR}
+DOWNLOAD_DIR_FULL=${DOWNLOAD_DIR}/${PRODUCT_SLUG}/${PKS_VERSION}
+mkdir  -p ${DOWNLOAD_DIR_FULL}
 
 PIVNET_ACCESS_TOKEN=$(curl \
   --fail \
@@ -94,12 +95,9 @@ om --skip-ssl-validation \
  --product-version ${PKS_VERSION} \
  --stemcell-iaas azure \
  --download-stemcell \
- --output-directory ${DOWNLOAD_DIR}
+ --output-directory ${DOWNLOAD_DIR_FULL}
 
-echo $(date) end downloading PKS 
-else 
-echo ignoring download by user 
-fi
+
 echo $(date) start downloading PKS CLI
 om --skip-ssl-validation \
   download-product \
@@ -115,8 +113,40 @@ chmod +x ./pks-linux-amd*
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./pks-linux-amd*
 sudo cp ./pks-linux-amd* /usr/local/bin/pks
 
-TARGET_FILENAME=$(cat ${DOWNLOAD_DIR}/download-file.json | jq -r '.product_path')
-STEMCELL_FILENAME=$(cat ${DOWNLOAD_DIR}/download-file.json | jq -r '.stemcell_path')
+
+echo $(date) start downloading kubectl
+om --skip-ssl-validation \
+  download-product \
+ --pivnet-api-token ${PIVNET_UAA_TOKEN} \
+ --pivnet-file-glob "kubectl-linux-amd64*" \
+ --pivnet-product-slug ${PRODUCT_SLUG} \
+ --product-version ${PKS_VERSION} \
+ --output-directory ${HOME_DIR}
+
+
+echo $(date) end downloading kubectl
+
+
+chmod +x ./kubectl-linux-amd64*
+chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./kubectl-linux-amd64*
+sudo cp ./kubectl-linux-amd64* /usr/local/bin/kubectl
+
+
+echo $(date) start downloading helm
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
+chmod 700 get_helm.sh
+./get_helm.sh
+echo $(date) end downloading helm
+
+
+
+echo $(date) end downloading PKS and componenets
+else 
+echo ignoring download by user 
+fi
+
+TARGET_FILENAME=$(cat ${DOWNLOAD_DIR_FULL}/download-file.json | jq -r '.product_path')
+STEMCELL_FILENAME=$(cat ${DOWNLOAD_DIR_FULL}/download-file.json | jq -r '.stemcell_path')
 
 # Import the tile to Ops Manager.
 echo $(date) start uploading PKS
@@ -192,8 +222,8 @@ END_PKS_DEPLOY_TIME="${END_PKS_DEPLOY_TIME}"
 EOF
 )
 ./create_user.sh
-./create_lb.sh --PKS_CLUSTER k8s1
-./create_cluster.sh --PKS_CLUSTER k8s1
+./create_lb.sh --K8S_CLUSTER_NAME k8s1
+./create_cluster.sh --K8S_CLUSTER_NAME k8s1
 
 echo Finished
 echo Started BASE deployment at ${START_BASE_DEPLOY_TIME}

@@ -10,7 +10,7 @@ do
 key="$1"
 
 case $key in
-    -c|--PKS_CLUSTER)
+    -c|--K8S_CLUSTER_NAME)
     CLUSTER="$2"
     shift # past argument
     shift # past value
@@ -36,7 +36,7 @@ az login --service-principal \
   --tenant ${AZURE_TENANT_ID}
 
 PKS_UUID=$(pks show-cluster ${CLUSTER}  --json | jq -r '.uuid')
-
+pks create-cluster ${CLUSTER}
 MASTER_VM_ID=$(az vm availability-set show  \
 --name p-bosh-service-instance-${PKS_UUID}-master \
 --resource-group ${ENV_NAME} \
