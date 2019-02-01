@@ -36,7 +36,7 @@ az login --service-principal \
   --tenant ${AZURE_TENANT_ID}
 
 PKS_UUID=$(pks show-cluster ${CLUSTER}  --json | jq -r '.uuid')
-pks create-cluster ${CLUSTER}
+pks get-credentials
 MASTER_VM_ID=$(az vm availability-set show  \
 --name p-bosh-service-instance-${PKS_UUID}-master \
 --resource-group ${ENV_NAME} \
@@ -56,7 +56,9 @@ MASTER_NIC_IP_CONFIG=$(az network nic show \
 --ids $MASTER_NIC_ID \
 --query "ipConfigurations[].id" --out tsv)
 
-
 az network nic ip-config update --ids ${MASTER_NIC_IP_CONFIG} \
 --lb-address-pools ${CLUSTER}-be --lb-name ${CLUSTER}-lb
+
+kubectl apply -f shared_storage.yaml
+kubectl apply -f standard_storage.yaml
 

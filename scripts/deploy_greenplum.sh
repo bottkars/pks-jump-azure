@@ -135,10 +135,6 @@ OPERATOR_IMAGE_NAME="${ACR_LOGIN_SERVER}/greenplum-operator:$(cat ./images/green
 docker tag $(cat ./images/greenplum-operator-id) ${OPERATOR_IMAGE_NAME}
 docker push ${OPERATOR_IMAGE_NAME}
 
-
-
-
-
 helm init --wait --service-account tiller --upgrade
 
 
@@ -147,14 +143,6 @@ helm install --name greenplum-operator operator/
 
 #### edit yaml
 
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: slow
-provisioner: kubernetes.io/azure-disk
-parameters:
-  storageaccounttype: Standard_LRS
-  kind: Shared
 
 END_GREENPLUM_DEPLOY_TIME=$(date)
 echo Finished

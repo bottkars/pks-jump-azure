@@ -224,6 +224,7 @@ EOF
 ./create_user.sh
 ./create_lb.sh --K8S_CLUSTER_NAME k8s1
 ./create_cluster.sh --K8S_CLUSTER_NAME k8s1
+./deploy_docker.sh
 
 echo Finished
 echo Started BASE deployment at ${START_BASE_DEPLOY_TIME}
