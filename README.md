@@ -66,7 +66,7 @@ once fixed, the deployment will continue.
 
 [getting started after deployment](./initial_tasks.md)
 
-### validatesing default parameters
+### validat using default parameters
 if not already done,  
 source your [.env file](.env.example)
 
@@ -100,12 +100,12 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     pksSubdomainName=${PKS_SUBDOMAIN_NAME} \
 ```
 
-### testivalöidatingng customized parameters
+### validate using customized parameters
 
 ```bash
 az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
 az group deployment validate --resource-group ${JUMPBOX_RG} \
-    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/${BRANCH}/azuredeploy.json \
+    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/$BRANCH/azuredeploy.json \
     --parameters \
     adminUsername=${ADMIN_USERNAME} \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
@@ -136,7 +136,7 @@ installation using customized parameter set´s all required parameters from vari
 ```bash
 az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
 az group deployment create --resource-group ${JUMPBOX_RG} \
-    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/${BRANCH}/azuredeploy.json \
+    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/$BRANCH/azuredeploy.json \
     --parameters \
     adminUsername=${ADMIN_USERNAME} \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
