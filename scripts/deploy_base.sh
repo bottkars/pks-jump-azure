@@ -307,7 +307,7 @@ az network vnet peering create --name JUMP-Peer \
 --allow-gateway-transit \
 --allow-vnet-access
 
-
+${HOME_DIR}/deploy_docker.sh
 
 END_BASE_DEPLOY_TIME=$(date)
 echo ${END_BASE_DEPLOY_TIME} end base deployment

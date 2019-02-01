@@ -21,7 +21,7 @@ case $key in
     shift # past value
     ;;
     -r|--ACR_REGISTRY)
-    CLUSTER="$2"
+    ACR="$2"
     shift # past argument
     shift # past value
     ;;    
