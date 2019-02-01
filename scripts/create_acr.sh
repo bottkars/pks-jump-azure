@@ -33,7 +33,7 @@ az login --service-principal \
 az acr create --resource-group ${ENV_NAME} \
 --name ${CONTAINER_REGISTRY_NAME} --sku Basic
 
-az acr login --name ${CONTAINER_REGISTRY_NAME}
+
 
 ACR_LOGIN_SERVER=$(az acr list --resource-group ${ENV_NAME} \
     --query "[].{acrLoginServer:loginServer}" --output tsv)
@@ -42,3 +42,4 @@ ACR_LOGIN_SERVER=$(az acr list --resource-group ${ENV_NAME} \
 az acr update --name ${CONTAINER_REGISTRY_NAME} --admin-enabled true
 az acr credential show --name ${CONTAINER_REGISTRY_NAME} --query "passwords[0].value"
 az acr login --name ${CONTAINER_REGISTRY_NAME}
+

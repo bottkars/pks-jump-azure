@@ -244,4 +244,6 @@ bosh alias-env pks -e 10.0.8.11 --ca-cert /var/tempest/workspaces/default/root_c
 az group delete --name ${JUMPBOX_RG} --yes
 az group delete --name ${ENV_NAME} --yes
 ssh-keygen -R "${JUMPBOX_NAME}.${AZURE_REGION}.cloudapp.azure.com"
+az role definition delete --name ${ENV_NAME}-pks-worker-role
+az role definition delete --name ${ENV_NAME}-pks-master-role
 ```

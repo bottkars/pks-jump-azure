@@ -112,7 +112,7 @@ kubectl config use-context $CLUSTER
 kubectl create -f ./initialize_helm_rbac.yaml
 sudo cp ${HOME_DIR}/.docker/config.json ./operator/key.json
 sudo chown $ADMIN_USERNAME:$ADMIN_USERNAME ./operator/key.json
-
+az acr login --name $ACR
 ACR_LOGIN_SERVER=$(az acr list --resource-group ${ENV_NAME} \
     --query "[].{acrLoginServer:loginServer}" --output tsv)
 
