@@ -34,7 +34,7 @@ For that, the Tile and required Stemcell is downloaded automatically.
 
 ## usage  
 
-create an .env file using the .env.example  
+create an .env file using the [example](.env.example)  
 see [parameters and variables](#parameters-and-variables) for details.  
 
 source the env file  
@@ -66,7 +66,20 @@ once fixed, the deployment will continue.
 
 [getting started after deployment](./initial_tasks.md)
 
-### using default parameters
+### validatesing default parameters
+if not already done,  
+source your [.env file](.env.example)
+
+```bash
+source .env
+```
+
+if not already done,  
+create an ssh keypair for the environment  
+
+```bash
+ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
+```
 
 deployment using the default parameters only passes a minimum required parameters to the az command. all other values are set to their default.
 
@@ -87,7 +100,36 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     pksSubdomainName=${PKS_SUBDOMAIN_NAME} \
 ```
 
-### using customized parameters
+### testivalöidatingng customized parameters
+
+```bash
+az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
+az group deployment validate --resource-group ${JUMPBOX_RG} \
+    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/${BRANCH}/azuredeploy.json \
+    --parameters \
+    adminUsername=${ADMIN_USERNAME} \
+    sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
+    dnsLabelPrefix=${JUMPBOX_NAME} \
+    clientSecret=${AZURE_CLIENT_SECRET} \
+    clientID=${AZURE_CLIENT_ID} \
+    tenantID=${AZURE_TENANT_ID} \
+    subscriptionID=${AZURE_SUBSCRIPTION_ID} \
+    pivnetToken=${PIVNET_UAA_TOKEN} \
+    envName=${ENV_NAME} \
+    envShortName=${ENV_SHORT_NAME} \
+    opsmanImage=${OPS_MANAGER_IMAGE} \
+    pksDomainName=${PKS_DOMAIN_NAME} \
+    pksSubdomainName=${PKS_SUBDOMAIN_NAME} \
+    opsmanUsername=${PKS_OPSMAN_USERNAME} \
+    notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
+    pksAutopilot=${PKS_AUTOPILOT} \
+    pksVersion=${PKS_VERSION} \
+    net16bitmask=${NET_16_BIT_MASK} \
+    useSelfCerts=${USE_SELF_CERTS} \
+    _artifactsLocation=${ARTIFACTS_LOCATION} \
+    vmSize=${VMSIZE} \
+    opsmanImageRegion=${OPS_MANAGER_IMAGE_REGION}
+```
 
 installation using customized parameter set´s all required parameters from variables in your .env file
 

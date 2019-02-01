@@ -10,7 +10,7 @@ do
 key="$1"
 
 case $key in
-    -c|--PKS_CLUSTER)
+    -c|--K8S_CLUSTER_NAME)
     CLUSTER="$2"
     shift # past argument
     shift # past value

@@ -11,10 +11,20 @@ key="$1"
 
 case $key in
     -n|--NO_DOWNLOAD)
-    NO_DOWNLOAD="$2"
+    NO_DOWNLOAD="TRUE"
+    shift # past argument
+    #shift # past value
+    ;;
+    -c|--K8S_CLUSTER_NAME)
+    CLUSTER="$2"
     shift # past argument
     shift # past value
     ;;
+    -r|--ACR_REGISTRY)
+    ACR="$2"
+    shift # past argument
+    shift # past value
+    ;;    
     *)    # unknown option
     POSITIONAL+=("$1") # save it in an array for later
     shift # past argument
@@ -40,7 +50,8 @@ PKS_OPSMAN_ADMIN_PASSWD=${PIVNET_UAA_TOKEN}
 PKS_API_HOSTNAME="api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
 cd ${HOME_DIR}
 #Authenticate pivnet 
-mkdir ${DOWNLOAD_DIR}
+DOWNLOAD_DIR_FULL=${DOWNLOAD_DIR}/${PRODUCT_SLUG}/${GREENPLUM_VERSION}
+mkdir  -p ${DOWNLOAD_DIR_FULL}
 
 PIVNET_ACCESS_TOKEN=$(curl \
   --fail \
@@ -79,22 +90,61 @@ om --skip-ssl-validation \
  --pivnet-file-glob "greenplum*.tar.gz" \
  --pivnet-product-slug ${PRODUCT_SLUG} \
  --product-version ${GREENPLUM_VERSION} \
- --output-directory ${DOWNLOAD_DIR}
+ --output-directory ${DOWNLOAD_DIR_FULL}
 
 echo $(date) end downloading GREENPLUM 
-else 
-echo ignoring download by user 
-fi
 
+
+tar xzfv $DOWNLOAD_DIR_FULL/green*.tar.gz
 
 VERSION=$(echo ${PRODUCTS} |\
   jq --arg product_name ${PRODUCT_SLUG} -r 'map(select(.name==$product_name)) | first | .version')
 
-
+else 
+echo ignoring download by user 
+fi
 cat << EOF > greenplum_vars.yaml
 EOF
+cd ./greenplum-for-kubernetes*/
+
+kubectl config use-context $CLUSTER
+
+kubectl create -f ./initialize_helm_rbac.yaml
+sudo cp ${HOME_DIR}/.docker/config.json ./operator/key.json
+sudo chown $ADMIN_USERNAME:$ADMIN_USERNAME ./operator/key.json
+
+ACR_LOGIN_SERVER=$(az acr list --resource-group ${ENV_NAME} \
+    --query "[].{acrLoginServer:loginServer}" --output tsv)
+
+$(cat <<-EOF > ./workspace/operator-values-overrides.yaml
+dockerRegistryKeyJson: key.json
+operatorImageRepository: ${ACR_LOGIN_SERVER}/greenplum-operator
+greenplumImageRepository: ${ACR_LOGIN_SERVER}/greenplum-for-kubernetes
+EOF
+)
 
 
+docker load -i ./images/greenplum-for-kubernetes
+docker load -i ./images/greenplum-operator
+
+GREENPLUM_IMAGE_NAME="${ACR_LOGIN_SERVER}/greenplum-for-kubernetes:$(cat ./images/greenplum-for-kubernetes-tag)"
+docker tag $(cat ./images/greenplum-for-kubernetes-id) ${GREENPLUM_IMAGE_NAME}
+docker push ${GREENPLUM_IMAGE_NAME}
+
+OPERATOR_IMAGE_NAME="${ACR_LOGIN_SERVER}/greenplum-operator:$(cat ./images/greenplum-operator-tag)"
+docker tag $(cat ./images/greenplum-operator-id) ${OPERATOR_IMAGE_NAME}
+docker push ${OPERATOR_IMAGE_NAME}
+
+helm init --wait --service-account tiller --upgrade
+
+
+helm install --name greenplum-operator operator/
+
+
+#### edit yaml
+
+
+END_GREENPLUM_DEPLOY_TIME=$(date)
 echo Finished
 echo Started GREENPLUM deployment at ${START_GREENPLUM_DEPLOY_TIME}
 echo Finished GREENPLUM Deployment at ${END_GREENPLUM_DEPLOY_TIME}
