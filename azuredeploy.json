@@ -237,6 +237,7 @@
             "[concat(variables('baseUri'),  '/scripts/pks.yaml')]",
             "[concat(variables('baseUri'),  '/scripts/create_lb.sh')]",            
             "[concat(variables('baseUri'),  '/scripts/deploy_docker.sh')]",
+            "[concat(variables('baseUri'),  '/scripts/create_acr.sh')]",            
             "[concat(variables('baseUri'),  '/scripts/deploy_greenplum.sh')]",                        
             "[concat(variables('baseUri'),  '/env/pks/',parameters('pksVersion'),'/pks.env')]",
             "[concat(variables('baseUri'),  '/yaml/director_config.yaml')]",
