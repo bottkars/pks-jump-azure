@@ -106,7 +106,6 @@ resource "azurerm_role_definition" "pks_worker_role" {
 resource "azurerm_user_assigned_identity" "pks_master_identity" {
   resource_group_name = "${module.infra.resource_group_name}"
   location            = "${var.location}"
-
   name = "pks-master"
 }
 
@@ -119,7 +118,6 @@ resource "azurerm_role_assignment" "master_role_assignemnt" {
 resource "azurerm_user_assigned_identity" "pks_worker_identity" {
   resource_group_name = "${module.infra.resource_group_name}"
   location            = "${var.location}"
-
   name = "pks-worker"
 }
 
