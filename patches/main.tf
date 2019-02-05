@@ -66,7 +66,7 @@ provider "azurerm" {
 data "azurerm_subscription" "primary" {}
 
 resource "azurerm_role_definition" "pks_master_role" {
-  name        = "${data.azurerm_subscription.primary.id}-pks-master-role"
+  name        = "${var.env_name}-pks-master-role"
   scope       = "${data.azurerm_subscription.primary.id}"
   description = "This is a custom role created via Terraform"
 
@@ -87,7 +87,7 @@ resource "azurerm_role_definition" "pks_master_role" {
 }
 
 resource "azurerm_role_definition" "pks_worker_role" {
-  name        = "${data.azurerm_subscription.primary.id}-pks-worker-role"
+  name        = "${var.env_name}-pks-worker-role"
   scope       = "${data.azurerm_subscription.primary.id}"
   description = "This is a custom role created via Terraform"
 
