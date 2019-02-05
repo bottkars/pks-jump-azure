@@ -71,13 +71,14 @@ resource "azurerm_role_definition" "pks_master_role" {
   description = "This is a custom role created via Terraform"
 
   permissions {
-    actions     = [
+    actions = [
       "Microsoft.Network/*",
       "Microsoft.Compute/disks/*",
       "Microsoft.Compute/virtualMachines/write",
       "Microsoft.Compute/virtualMachines/read",
-      "Microsoft.Storage/storageAccounts/*"
+      "Microsoft.Storage/storageAccounts/*",
     ]
+
     not_actions = []
   }
 
@@ -92,9 +93,10 @@ resource "azurerm_role_definition" "pks_worker_role" {
   description = "This is a custom role created via Terraform"
 
   permissions {
-    actions     = [
-      "Microsoft.Storage/storageAccounts/*"
+    actions = [
+      "Microsoft.Storage/storageAccounts/*",
     ]
+
     not_actions = []
   }
 
@@ -106,7 +108,7 @@ resource "azurerm_role_definition" "pks_worker_role" {
 resource "azurerm_user_assigned_identity" "pks_master_identity" {
   resource_group_name = "${module.infra.resource_group_name}"
   location            = "${var.location}"
-  name = "pks-master"
+  name                = "pks-master"
 }
 
 resource "azurerm_role_assignment" "master_role_assignemnt" {
@@ -118,7 +120,7 @@ resource "azurerm_role_assignment" "master_role_assignemnt" {
 resource "azurerm_user_assigned_identity" "pks_worker_identity" {
   resource_group_name = "${module.infra.resource_group_name}"
   location            = "${var.location}"
-  name = "pks-worker"
+  name                = "pks-worker"
 }
 
 resource "azurerm_role_assignment" "worker_role_assignemnt" {
