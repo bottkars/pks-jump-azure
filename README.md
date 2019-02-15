@@ -247,3 +247,20 @@ ssh-keygen -R "${JUMPBOX_NAME}.${AZURE_REGION}.cloudapp.azure.com"
 az role definition delete --name ${ENV_NAME}-pks-worker-role
 az role definition delete --name ${ENV_NAME}-pks-master-role
 ```
+
+get the bosh credentials
+### BOSH
+```bash
+source .env.sh
+export OM_TARGET=pcf.pksazure.labbuildr.com
+export OM_USERNAME=opsman
+export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
+export $( \
+  om \
+    --skip-ssl-validation \
+    curl \
+      --silent \
+      --path /api/v0/deployed/director/credentials/bosh_commandline_credentials | \
+        jq --raw-output '.credential' \
+)
+```
