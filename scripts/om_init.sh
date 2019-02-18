@@ -126,7 +126,7 @@ END_OPSMAN_DEPLOY_TIME="${END_OPSMAN_DEPLOY_TIME}"
 EOF
 )
 echo Started BASE deployment at ${START_BASE_DEPLOY_TIME}
-echo Fimnished BASE deployment at ${END_BASE_DEPLOY_TIME}
+echo Finished BASE deployment at ${END_BASE_DEPLOY_TIME}
 echo Started OPSMAN deployment at ${START_OPSMAN_DEPLOY_TIME}
 echo Finished OPSMAN Deployment at ${END_OPSMAN_DEPLOY_TIME}
 
