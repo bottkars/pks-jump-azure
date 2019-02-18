@@ -2,5 +2,6 @@
 om_init.1.sh
 .env
 .env.dev
+.env.testing
 additional.md
 sendgrid.md
