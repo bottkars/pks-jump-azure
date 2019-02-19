@@ -213,8 +213,8 @@ pcf_virtual_network_address_space = ["${NET_16_BIT_MASK}.0.0/16"]
 EOF
 # patch terraform for managed identity if tf is 0.29
 
-# wget -q https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/main.tf -O ./main.tf
-# wget -q https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/variables.tf -O ./variables.tf
+wget -q https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/main.tf -O ./main.tf
+wget -q https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/variables.tf -O ./variables.tf
 # end patch 
 
 
@@ -227,7 +227,7 @@ retryop "sudo -S -u ${ADMIN_USERNAME} terraform apply -auto-approve" 3 10
 sudo -S -u ${ADMIN_USERNAME} terraform output ops_manager_ssh_private_key > ${HOME_DIR}/opsman
 sudo -S -u ${ADMIN_USERNAME} chmod 600 ${HOME_DIR}/opsman
 
-exit
+
 
 ## creating dns record for api
 az login --service-principal \

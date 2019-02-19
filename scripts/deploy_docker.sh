@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source .env.sh
 sudo groupadd docker
 sudo usermod -aG docker $ADMIN_USERNAME
 
