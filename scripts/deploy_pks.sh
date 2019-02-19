@@ -109,9 +109,9 @@ om --skip-ssl-validation \
 
 
 echo $(date) end downloading PKS CLI
-chmod +x ./pks-linux-amd*
-chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./pks-linux-amd*
-sudo cp ./pks-linux-amd* /usr/local/bin/pks
+chmod +x ./pivotal-container-service-*pks-linux-amd*
+chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./pivotal-container-service-*pks-linux-amd*
+sudo cp ./pivotal-container-service-*pks-linux-amd* /usr/local/bin/pks
 
 
 echo $(date) start downloading kubectl
@@ -127,9 +127,9 @@ om --skip-ssl-validation \
 echo $(date) end downloading kubectl
 
 
-chmod +x ./kubectl-linux-amd64*
-chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./kubectl-linux-amd64*
-sudo cp ./kubectl-linux-amd64* /usr/local/bin/kubectl
+chmod +x ./pivotal-container-service-*kubectl-linux-amd64*
+chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./pivotal-container-service-*kubectl-linux-amd64*
+sudo cp ./pivotal-container-service-*kubectl-linux-amd64* /usr/local/bin/kubectl
 
 
 echo $(date) start downloading helm
