@@ -121,11 +121,11 @@ retryop "sudo apt -y install azure-cli unzip" 10 30
 retryop "sudo apt -y install ruby ruby-dev gcc build-essential g++" 10 30
 sudo gem install cf-uaac
 
-wget -O terraform.zip https://releases.hashicorp.com/terraform/0.11.8/terraform_0.11.8_linux_amd64.zip && \
+wget -O terraform.zip https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip && \
   unzip terraform.zip && \
   sudo mv terraform /usr/local/bin
 
-wget -O om https://github.com/pivotal-cf/om/releases/download/0.48.0/om-linux && \
+wget -O om https://github.com/pivotal-cf/om/releases/download/0.53.0/om-linux && \
   chmod +x om && \
   sudo mv om /usr/local/bin/
 
