@@ -42,6 +42,13 @@ PKS_API_HOSTNAME="api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
 PKS_LB="${ENV_NAME}-pks-lb"
 cd ${HOME_DIR}
 
+PIVNET_ACCESS_TOKEN=$(curl \
+  --fail \
+  --header "Content-Type: application/json" \
+  --data "{\"refresh_token\": \"${PIVNET_UAA_TOKEN}\"}" \
+  https://network.pivotal.io/api/v2/authentication/access_tokens |\
+    jq -r '.access_token')
+
 ### accept 170er stemcells
 RELEASE_JSON=$(curl \
   --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
@@ -68,7 +75,7 @@ echo $(date) end downloading helm
 
 
 
-cat << EOF > ${ENV_DIR}/pks_vars.yaml
+cat << EOF > ${TEMPLATE_DIR}/pks_vars.yaml
 network: ${ENV_NAME}-pks-subnet
 services_network: ${ENV_NAME}-pks-services-subnet
 subscription_id: ${AZURE_SUBSCRIPTION_ID}

@@ -8,14 +8,14 @@ exec 2>&1
 
 export OM_TARGET=${PCF_OPSMAN_FQDN}
 export OM_USERNAME=${PCF_OPSMAN_USERNAME}
-export OM_PASSWORD="${PCF_PIVNET_UAA_TOKEN}"
+export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
 
 function getstemcell()
 {
 SLUG_ID=$1
 FAMILY=$2 
 DOWNLOAD_DIR=$3
-PCF_PIVNET_UAA_TOKEN=$4  
+PIVNET_UAA_TOKEN=$4  
 echo "SLUG_ID $SLUG_ID"
 echo "FAMILY $FAMILY"
 
@@ -39,7 +39,7 @@ mkdir -p $STEMCELL_DIR
 echo $STEMCELL_DIR
 om --skip-ssl-validation \
 download-product \
---pivnet-api-token $PCF_PIVNET_UAA_TOKEN \
+--pivnet-api-token $PIVNET_UAA_TOKEN \
 --pivnet-file-glob "bosh-stemcell-${PRODUCT_VERSION}-azure-hyperv-*-go_agent.tgz" \
 --pivnet-product-slug $SLUG_ID \
 --product-version ${PRODUCT_VERSION} \
@@ -57,6 +57,6 @@ upload-stemcell \
 
 }
 
-getstemcell 233 170 $DOWNLOAD_DIR $PCF_PIVNET_UAA_TOKEN
-getstemcell 233 97 $DOWNLOAD_DIR $PCF_PIVNET_UAA_TOKEN
-# getstemcell 82 3586 $DOWNLOAD_DIR $PCF_PIVNET_UAA_TOKEN
+getstemcell 233 170 $DOWNLOAD_DIR $PIVNET_UAA_TOKEN
+getstemcell 233 97 $DOWNLOAD_DIR $PIVNET_UAA_TOKEN
+# getstemcell 82 3586 $DOWNLOAD_DIR $PIVNET_UAA_TOKEN
