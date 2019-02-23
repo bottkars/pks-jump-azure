@@ -58,6 +58,6 @@ MASTER_NIC_IP_CONFIG=$(az network nic show \
 az network nic ip-config update --ids ${MASTER_NIC_IP_CONFIG} \
 --lb-address-pools ${CLUSTER}-be --lb-name ${CLUSTER}-lb
 
-kubectl apply -f ${ENV_DIR}/shared_storage.yaml
-kubectl apply -f ${ENV_DIR}/standard_storage.yaml
+kubectl apply -f ${TEMPLATE_DIR}/shared_storage.yaml
+kubectl apply -f ${TEMPLATE_DIR}/standard_storage.yaml
 
