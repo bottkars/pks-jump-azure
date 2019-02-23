@@ -30,12 +30,7 @@ done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
 
-
-
-
-
-
-cat << EOF > ${ENV_DIR}/harbor_vars.yaml
+cat << EOF > ${TEMPLATE_DIR}/harbor_vars.yaml
 product_name: ${PRODUCT_SLUG}
 pcf_pas_network: pcf-pas-subnet
 pcf_service_network: pcf-services-subnet
