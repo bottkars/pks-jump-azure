@@ -30,106 +30,12 @@ done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
 
-export OM_TARGET=${PCF_OPSMAN_FQDN}
-export OM_USERNAME=${PCF_OPSMAN_USERNAME}
-export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
-START_HARBOR_DEPLOY_TIME=$(date)
-$(cat <<-EOF >> ${HOME_DIR}/.env.sh
-START_HARBOR_DEPLOY_TIME="${START_HARBOR_DEPLOY_TIME}"
-EOF
-)
-
-source  ~/harbor.env
-
-PIVNET_ACCESS_TOKEN=$(curl \
-  --fail \
-  --header "Content-Type: application/json" \
-  --data "{\"refresh_token\": \"${PIVNET_UAA_TOKEN}\"}" \
-  https://network.pivotal.io/api/v2/authentication/access_tokens |\
-    jq -r '.access_token')
-
-RELEASE_JSON=$(curl \
-  --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
-  --fail \
-  "https://network.pivotal.io/api/v2/products/${PRODUCT_SLUG}/releases/${RELEASE_ID}")
-# eula acceptance link
-EULA_ACCEPTANCE_URL=$(echo ${RELEASE_JSON} |\
-  jq -r '._links.eula_acceptance.href')
-
-DOWNLOAD_DIR_FULL=${DOWNLOAD_DIR}/${PRODUCT_SLUG}/${PKS_HARBOR_VERSION}
-mkdir  -p ${DOWNLOAD_DIR_FULL}
-
-curl \
-  --fail \
-  --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
-  --request POST \
-  ${EULA_ACCEPTANCE_URL}
-
-
-# download product using om cli
-if  [ -z ${NO_DOWNLOAD} ] ; then
-echo $(date) start downloading ${PRODUCT_SLUG}
-
-om --skip-ssl-validation \
-  download-product \
- --pivnet-api-token ${PIVNET_UAA_TOKEN} \
- --pivnet-file-glob "*.pivotal" \
- --pivnet-product-slug ${PRODUCT_SLUG} \
- --product-version ${PKS_HARBOR_VERSION} \
- --stemcell-iaas azure \
- --download-stemcell \
- --output-directory ${DOWNLOAD_DIR_FULL}
-echo $(date) end downloading ${PRODUCT_SLUG}
-else 
-echo ignoring download by user 
-fi
-
-TARGET_FILENAME=$(cat ${DOWNLOAD_DIR_FULL}/download-file.json | jq -r '.product_path')
-STEMCELL_FILENAME=$(cat ${DOWNLOAD_DIR_FULL}/download-file.json | jq -r '.stemcell_path')
-STEMCELL_VERSION=$(cat ${DOWNLOAD_DIR_FULL}/download-file.json | jq -r '.stemcell_version')
-# Import the tile to Ops Manager.
-echo $(date) start uploading ${PRODUCT_SLUG}
-om --skip-ssl-validation \
-  --request-timeout 3600 \
-  upload-product \
-  --product ${TARGET_FILENAME}
-
-echo $(date) end uploading ${PRODUCT_SLUG}
-
-    # 1. Find the version of the product that was imported.
-PRODUCTS=$(om --skip-ssl-validation \
-  available-products \
-    --format json)
-
-VERSION=$(echo ${PRODUCTS} |\
-  jq --arg product_name ${PRODUCT_SLUG} -r 'map(select(.name==$product_name)) | first | .version')
-
-
-# 2.  Stage using om cli
-echo $(date) start staging ${PRODUCT_SLUG} 
-om --skip-ssl-validation \
-  stage-product \
-  --product-name ${PRODUCT_SLUG} \
-  --product-version ${VERSION}
-echo $(date) end staging ${PRODUCT_SLUG} 
-
-echo $(date) start uploading ${STEMCELL_FILENAME}
-om --skip-ssl-validation \
-upload-stemcell \
---floating=false \
---stemcell ${STEMCELL_FILENAME}
-echo $(date) end uploading ${STEMCELL_FILENAME}
-
-echo $(date) start assign stemcell ${STEMCELL_FILENAME} to ${PRODUCT_SLUG}
-om --skip-ssl-validation \
-assign-stemcell \
---product ${PRODUCT_SLUG} \
---stemcell latest
-echo $(date) end assign stemcell ${STEMCELL_FILENAME} to ${PRODUCT_SLUG}
 
 
 
-cat << EOF > ~/harbor_vars.yaml
+
+
+cat << EOF > ${ENV_DIR}/harbor_vars.yaml
 product_name: ${PRODUCT_SLUG}
 pcf_pas_network: pcf-pas-subnet
 pcf_service_network: pcf-services-subnet
@@ -139,18 +45,11 @@ global_recipient_email: ${PKS_NOTIFICATIONS_EMAIL}
 blob_store_base_url: blob.core.windows.net
 EOF
 
-om --skip-ssl-validation \
-  configure-product \
-  -c ${HOME_DIR}/harbor.yaml -l ${HOME_DIR}/harbor_vars.yaml
-
-
-echo $(date) start apply ${PRODUCT_SLUG}
 
 if  [ -z ${NO_APPLY} ] ; then
-om --skip-ssl-validation \
-  apply-changes \
-  --product-name ${PRODUCT_SLUG}
+${SCRIPT_DIR}/deploy_tile -t harbor
 else
 echo "No Product Apply"
+${SCRIPT_DIR}/deploy_tile -t harbor -d
 fi
-echo $(date) end apply ${PRODUCT_SLUG}
+echo $(date) end apply Harbor

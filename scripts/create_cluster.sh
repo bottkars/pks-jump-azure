@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 source .env.sh
 MYSELF=$(basename $0)
-mkdir -p ${HOME_DIR}/logs
-exec &> >(tee -a "${HOME_DIR}/logs/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
+exec &> >(tee -a "${LOG_DIR}/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
 exec 2>&1
 POSITIONAL=()
 while [[ $# -gt 0 ]]
@@ -59,6 +58,6 @@ MASTER_NIC_IP_CONFIG=$(az network nic show \
 az network nic ip-config update --ids ${MASTER_NIC_IP_CONFIG} \
 --lb-address-pools ${CLUSTER}-be --lb-name ${CLUSTER}-lb
 
-kubectl apply -f shared_storage.yaml
-kubectl apply -f standard_storage.yaml
+kubectl apply -f ${ENV_DIR}/shared_storage.yaml
+kubectl apply -f ${ENV_DIR}/standard_storage.yaml
 

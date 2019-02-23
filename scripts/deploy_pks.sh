@@ -42,6 +42,21 @@ PKS_API_HOSTNAME="api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
 PKS_LB="${ENV_NAME}-pks-lb"
 cd ${HOME_DIR}
 
+### accept 170er stemcells
+RELEASE_JSON=$(curl \
+  --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
+  --fail \
+  "https://network.pivotal.io/api/v2/products/233/releases/286469")
+# eula acceptance link
+EULA_ACCEPTANCE_URL=$(echo ${RELEASE_JSON} |\
+  jq -r '._links.eula_acceptance.href')
+
+# eula acceptance
+curl \
+  --fail \
+  --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
+  --request POST \
+  ${EULA_ACCEPTANCE_URL}
 
 
 echo $(date) start downloading helm
@@ -70,10 +85,18 @@ pks_lb: "${PKS_LB}"
 primary_availability_set: "${ENV_NAME}-availability-set"
 EOF
 
-echo "Now creating pks admin user"
-${SCRIPT_DIR}/create_user.sh
-echo "now creating k8s loadbalancer k8s1"
-${SCRIPT_DIR}/create_lb.sh --K8S_CLUSTER_NAME k8s1
-echo "now creating k8s cluster k8s1"
-${SCRIPT_DIR}/create_cluster.sh --K8S_CLUSTER_NAME k8s1
+if  [ -z ${NO_APPLY} ] ; then
+  ${SCRIPT_DIR}/deploy_tile -t pks -s
+  echo "Now creating pks admin user"
+  ${SCRIPT_DIR}/create_user.sh
+  echo "now creating k8s loadbalancer k8s1"
+  ${SCRIPT_DIR}/create_lb.sh --K8S_CLUSTER_NAME k8s1
+  echo "now creating k8s cluster k8s1"
+  ${SCRIPT_DIR}/create_cluster.sh --K8S_CLUSTER_NAME k8s1
+else
+  echo "No Product Apply"
+  ${SCRIPT_DIR}/deploy_tile -t harbor -d
+fi
+echo $(date) end apply Harbor
+
 echo "Finished deployment !!!""

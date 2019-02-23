@@ -29,6 +29,11 @@ case $key in
     echo "TILE IS ${TILE}"
     shift # past value ia arg value
     ;;
+    -s|--LOAD_STEMCELL)
+    LOAD_STEMCELL=TRUE
+    echo "LOAD_STEMCELL IS ${LOAD_STEMCELL}"
+    #shift # past value ia arg value
+    ;;    
     *)    # unknown option
     POSITIONAL+=("$1") # save it in an array for later
     shift # past argument
@@ -150,6 +155,11 @@ om --skip-ssl-validation \
   --product-name ${PRODUCT_SLUG} \
   --product-version ${VERSION}
 echo $(date) end staging ${PRODUCT_SLUG}
+
+if  [ ! -z ${LOAD_STEMCELL} ] ; then
+echo "LOADING Stemcells"
+$SCRIPT_DIR/stemcell_loader.sh
+fi
 
 
 om --skip-ssl-validation \
