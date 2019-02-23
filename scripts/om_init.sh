@@ -71,7 +71,7 @@ deployed-products
 
 
 cd ${HOME_DIR}
-cat << EOF > ${ENV_DIR}/director_vars.yaml
+cat << EOF > ${TEMPLATE_DIR}/director_vars.yaml
 subscription_id: ${AZURE_SUBSCRIPTION_ID}
 tenant_id: ${AZURE_TENANT_ID}
 client_id: ${AZURE_CLIENT_ID}
@@ -102,7 +102,7 @@ EOF
 #services_cidr: "${SERVICES_CIDR}"
 
 om --skip-ssl-validation \
- configure-director --config ${ENV_DIR}/director_config.yaml --vars-file ${ENV_DIR}/director_vars.yaml
+ configure-director --config ${TEMPLATE_DIR}/director_config.yaml --vars-file ${TEMPLATE_DIR}/director_vars.yaml
 
 retryop "om --skip-ssl-validation apply-changes" 2 10
 
