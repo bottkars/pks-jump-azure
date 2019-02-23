@@ -103,7 +103,7 @@ echo $(date) end downloading ${PRODUCT_SLUG}
         --pivnet-api-token ${PIVNET_UAA_TOKEN} \
         --pivnet-file-glob "pks-linux-amd64*" \
         --pivnet-product-slug ${PRODUCT_SLUG} \
-        --product-version ${PFC_VERSION} \
+        --product-version ${PCF_VERSION} \
         --output-directory ${HOME_DIR}
 
         echo $(date) end downloading PKS CLI
