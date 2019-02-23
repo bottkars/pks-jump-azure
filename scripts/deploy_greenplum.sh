@@ -33,8 +33,8 @@ esac
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 source ~/.env.sh
-export OM_TARGET=${PKS_OPSMAN_FQDN}
-export OM_USERNAME=${PKS_OPSMAN_USERNAME}
+export OM_TARGET=${PCF_OPSMAN_FQDN}
+export OM_USERNAME=${PCF_OPSMAN_USERNAME}
 export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
 
 
@@ -46,7 +46,7 @@ EOF
 )
 source ${HOME_DIR}/greenplum.env
 
-PKS_OPSMAN_ADMIN_PASSWD=${PIVNET_UAA_TOKEN}
+PCF_OPSMAN_ADMIN_PASSWD=${PIVNET_UAA_TOKEN}
 PKS_API_HOSTNAME="api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
 cd ${HOME_DIR}
 #Authenticate pivnet 

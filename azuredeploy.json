@@ -149,10 +149,10 @@
         },        
         "pksVersion": {
             "type": "string",
-            "allowedValues": ["1.3.2","1.3.1"],
+            "allowedValues": ["1.3.2","1.3.1","1.3.3"],
             "minLength": 5,
             "maxLength": 13,
-            "defaultValue": "1.3.2"
+            "defaultValue": "1.3.3"
         },
         "dnsLabelPrefix": {
             "minLength": "3",
@@ -424,7 +424,7 @@
                             "PKS_DOMAIN_NAME": "[parameters('pksDomainName')]",
                             "PKS_SUBDOMAIN_NAME": "[parameters('pksSubdomainName')]",
                             "SSH_PUBLIC_KEY": "[parameters('sshkeyData')]",
-                            "PKS_OPSMAN_USERNAME": "[parameters('opsmanUsername')]",
+                            "PCF_OPSMAN_USERNAME": "[parameters('opsmanUsername')]",
                             "PKS_NOTIFICATIONS_EMAIL": "[parameters('notificationsEmail')]",
                             "NET_16_BIT_MASK": "[parameters('net16bitmask')]",
                             "PKS_AUTOPILOT": "[parameters('pksAutopilot')]",

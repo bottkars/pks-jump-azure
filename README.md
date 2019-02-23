@@ -120,7 +120,7 @@ az group deployment validate --resource-group ${JUMPBOX_RG} \
     opsmanImage=${OPS_MANAGER_IMAGE} \
     pksDomainName=${PKS_DOMAIN_NAME} \
     pksSubdomainName=${PKS_SUBDOMAIN_NAME} \
-    opsmanUsername=${PKS_OPSMAN_USERNAME} \
+    opsmanUsername=${PCF_OPSMAN_USERNAME} \
     notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
     pksAutopilot=${PKS_AUTOPILOT} \
     pksVersion=${PKS_VERSION} \
@@ -151,7 +151,7 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     opsmanImage=${OPS_MANAGER_IMAGE} \
     pksDomainName=${PKS_DOMAIN_NAME} \
     pksSubdomainName=${PKS_SUBDOMAIN_NAME} \
-    opsmanUsername=${PKS_OPSMAN_USERNAME} \
+    opsmanUsername=${PCF_OPSMAN_USERNAME} \
     notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
     pksAutopilot=${PKS_AUTOPILOT} \
     pksVersion=${PKS_VERSION} \
@@ -186,7 +186,7 @@ tbd
  PKS_DOMAIN_NAME  |   |   | yes  |
  PKS_SUBDOMAIN_NAME  |   |   | yes  |
  PKS_VERSION  |   |1.3.2 |no|
- PKS_OPSMAN_USERNAME  |   | opsman  | no  |
+ PCF_OPSMAN_USERNAME  |   | opsman  | no  |
  PKS_NOTIFICATIONS_EMAIL  |   | user@example.com  | no  | will also be used as k8sadmin email field
  PKS_AUTOPILOT  |   |TRUE   |no   |
  NET_16_BIT_MASK  |   |   | no  |
@@ -232,7 +232,7 @@ from the jumpbox, you can
 
 ```bash
 source .env.sh
-ssh -i opsman ${ADMIN_USERNAME}@${PKS_OPSMAN_FQDN}
+ssh -i opsman ${ADMIN_USERNAME}@${PCF_OPSMAN_FQDN}
 
 bosh alias-env pks -e 10.0.8.11 --ca-cert /var/tempest/workspaces/default/root_ca_certificate
 

@@ -30,10 +30,6 @@ function retryop()
 source ~/.env.sh
 START_OPSMAN_DEPLOY_TIME=$(date)
 echo ${START_OPSMAN_DEPLOY_TIME} start opsman deployment
-$(cat <<-EOF >> ${HOME_DIR}/.env.sh
-START_OPSMAN_DEPLOY_TIME="${START_OPSMAN_DEPLOY_TIME}"
-EOF
-)
 
 pushd ${HOME_DIR}
 
@@ -44,25 +40,25 @@ AZURE_NAMESERVERS=$(terraform output env_dns_zone_name_servers)
 SSH_PRIVATE_KEY="$(terraform output -json ops_manager_ssh_private_key | jq .value)"
 SSH_PUBLIC_KEY="$(terraform output ops_manager_ssh_public_key)"
 BOSH_DEPLOYED_VMS_SECURITY_GROUP_NAME="$(terraform output bosh_deployed_vms_security_group_name)"
-PKS_OPSMAN_FQDN="$(terraform output ops_manager_dns)"
+PCF_OPSMAN_FQDN="$(terraform output ops_manager_dns)"
 INFRASTRUCTURE_SUBNET_CIDRS="$(terraform output infrastructure_subnet_cidrs)"
 SERVICES_SUBNET_CIDRS="$(terraform output services_subnet_cidrs)"
 PKS_SUBNET_CIDRS="$(terraform output pks_subnet_cidrs)"
 SERVICES_SUBNET_GATEWAY="$(terraform output services_subnet_gateway)"
 PKS_SUBNET_GATEWAY="$(terraform output pks_subnet_gateway)"
 INFRASTRUCTURE_SUBNET_GATEWAY="$(terraform output infrastructure_subnet_gateway)"
-echo "checking opsman api ready using the new fqdn ${PKS_OPSMAN_FQDN},
+echo "checking opsman api ready using the new fqdn ${PCF_OPSMAN_FQDN},
 if the . keeps showing, check if ns record for ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} has
 ${AZURE_NAMESERVERS}
 as server entries"
-until $(curl --output /dev/null --silent --head --fail -k -X GET "https://${PKS_OPSMAN_FQDN}/api/v0/info"); do
+until $(curl --output /dev/null --silent --head --fail -k -X GET "https://${PCF_OPSMAN_FQDN}/api/v0/info"); do
     printf '.'
     sleep 5
 done
 echo "done"
 
-export OM_TARGET=${PKS_OPSMAN_FQDN}
-export OM_USERNAME=${PKS_OPSMAN_USERNAME}
+export OM_TARGET=${PCF_OPSMAN_FQDN}
+export OM_USERNAME=${PCF_OPSMAN_USERNAME}
 export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
 
 om --skip-ssl-validation \
@@ -75,7 +71,7 @@ deployed-products
 
 
 cd ${HOME_DIR}
-cat << EOF > director_vars.yaml
+cat << EOF > ${ENV_DIR}/director_vars.yaml
 subscription_id: ${AZURE_SUBSCRIPTION_ID}
 tenant_id: ${AZURE_TENANT_ID}
 client_id: ${AZURE_CLIENT_ID}
@@ -98,8 +94,6 @@ services_subnet_gateway: "$SERVICES_SUBNET_GATEWAY"
 pks_subnet_cidrs: "${PKS_SUBNET_CIDRS}"
 pks_subnet_gateway: "${PKS_SUBNET_GATEWAY}"
 pks_subnet_range: "${NET_16_BIT_MASK}.12.1-${NET_16_BIT_MASK}.12.4"
-
-
 EOF
 
 #infrastructure_cidr: "${INFRASTRUCTURE_CIDR}"
@@ -108,7 +102,7 @@ EOF
 #services_cidr: "${SERVICES_CIDR}"
 
 om --skip-ssl-validation \
- configure-director --config ${HOME_DIR}/director_config.yaml --vars-file ${HOME_DIR}/director_vars.yaml
+ configure-director --config ${ENV_DIR}/director_config.yaml --vars-file ${ENV_DIR}/director_vars.yaml
 
 retryop "om --skip-ssl-validation apply-changes" 2 10
 
@@ -121,8 +115,7 @@ popd
 END_OPSMAN_DEPLOY_TIME=$(date)
 echo ${END_OPSMAN_DEPLOY_TIME} finished opsman deployment
 $(cat <<-EOF >> ${HOME_DIR}/.env.sh
-PKS_OPSMAN_FQDN="${PKS_OPSMAN_FQDN}"
-END_OPSMAN_DEPLOY_TIME="${END_OPSMAN_DEPLOY_TIME}"
+PCF_OPSMAN_FQDN="${PCF_OPSMAN_FQDN}"
 EOF
 )
 echo Started BASE deployment at ${START_BASE_DEPLOY_TIME}
@@ -132,9 +125,9 @@ echo Finished OPSMAN Deployment at ${END_OPSMAN_DEPLOY_TIME}
 
 if [ "${PKS_AUTOPILOT}" = "TRUE" ]; then
     if [ "${USE_SELF_CERTS}" = "TRUE" ]; then
-      sudo -S -u ${ADMIN_USERNAME} ${HOME_DIR}/create_self_certs.sh
+      sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/create_self_certs.sh
     else  
-      sudo -S -u ${ADMIN_USERNAME} ${HOME_DIR}/create_certs.sh
+      sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/create_certs.sh
     fi
-    sudo -S -u ${ADMIN_USERNAME} ${HOME_DIR}/deploy_pks.sh
+    sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/deploy_pks.sh
 fi

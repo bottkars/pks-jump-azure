@@ -4,8 +4,8 @@ MYSELF=$(basename $0)
 mkdir -p ${HOME_DIR}/logs
 exec &> >(tee -a "${HOME_DIR}/logs/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
 exec 2>&1
-export OM_TARGET=${PKS_OPSMAN_FQDN}
-export OM_USERNAME=${PKS_OPSMAN_USERNAME}
+export OM_TARGET=${PCF_OPSMAN_FQDN}
+export OM_USERNAME=${PCF_OPSMAN_USERNAME}
 export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
 export $( \
   om \
@@ -21,8 +21,8 @@ sudo mkdir -p /var/tempest/workspaces/default
 sudo sh -c \
   "om \
     --skip-ssl-validation \
-    --target ${PKS_OPSMAN_FQDN} \
-    --username ${PKS_OPSMAN_USERNAME} \
+    --target ${PCF_OPSMAN_FQDN} \
+    --username ${PCF_OPSMAN_USERNAME} \
     --password ${PIVNET_UAA_TOKEN} \
     curl \
       --silent \

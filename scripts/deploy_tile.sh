@@ -2,13 +2,12 @@
 source ~/.env.sh
 cd ${HOME_DIR}
 MYSELF=$(basename $0)
-mkdir -p ${HOME_DIR}/logs
-exec &> >(tee -a "${HOME_DIR}/logs/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
-exec 2>&1
+LOGDIR=
 POSITIONAL=()
 while [[ $# -gt 0 ]]
 do
 key="$1"
+
 case $key in
     -n|--NO_DOWNLOAD)
     NO_DOWNLOAD=TRUE
@@ -19,7 +18,17 @@ case $key in
     NO_APPLY=TRUE
     echo "No APPLY is ${NO_APPLY}"
     # shift # past value ia arg value
-    ;;    
+    ;;
+    -a|--APPLY_ALL)
+    APPLY_ALL=TRUE
+    echo "APPLY ALL is ${NO_APPLY}"
+    # shift # past value ia arg value
+    ;;
+    -t|--TILE)
+    TILE="$2"
+    echo "TILE IS ${TILE}"
+    shift # past value ia arg value
+    ;;
     *)    # unknown option
     POSITIONAL+=("$1") # save it in an array for later
     shift # past argument
@@ -28,18 +37,17 @@ esac
 shift
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
-
+mkdir -p ${LOG_DIR}
+exec &> >(tee -a "${LOG_DIR}/${TILE}.$(date '+%Y-%m-%d-%H').log")
+exec 2>&1
 
 export OM_TARGET=${PCF_OPSMAN_FQDN}
 export OM_USERNAME=${PCF_OPSMAN_USERNAME}
 export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
-START_HARBOR_DEPLOY_TIME=$(date)
-$(cat <<-EOF >> ${HOME_DIR}/.env.sh
-START_HARBOR_DEPLOY_TIME="${START_HARBOR_DEPLOY_TIME}"
-EOF
-)
 
-source  ~/harbor.env
+echo $(date) start deploy ${TILE}
+
+source ${ENV_DIR}/${TILE}.env
 
 PIVNET_ACCESS_TOKEN=$(curl \
   --fail \
@@ -56,7 +64,7 @@ RELEASE_JSON=$(curl \
 EULA_ACCEPTANCE_URL=$(echo ${RELEASE_JSON} |\
   jq -r '._links.eula_acceptance.href')
 
-DOWNLOAD_DIR_FULL=${DOWNLOAD_DIR}/${PRODUCT_SLUG}/${PKS_HARBOR_VERSION}
+DOWNLOAD_DIR_FULL=${DOWNLOAD_DIR}/${PRODUCT_SLUG}/${PCF_VERSION}
 mkdir  -p ${DOWNLOAD_DIR_FULL}
 
 curl \
@@ -65,7 +73,7 @@ curl \
   --request POST \
   ${EULA_ACCEPTANCE_URL}
 
-
+###
 # download product using om cli
 if  [ -z ${NO_DOWNLOAD} ] ; then
 echo $(date) start downloading ${PRODUCT_SLUG}
@@ -75,18 +83,48 @@ om --skip-ssl-validation \
  --pivnet-api-token ${PIVNET_UAA_TOKEN} \
  --pivnet-file-glob "*.pivotal" \
  --pivnet-product-slug ${PRODUCT_SLUG} \
- --product-version ${PKS_HARBOR_VERSION} \
- --stemcell-iaas azure \
- --download-stemcell \
+ --product-version ${PCF_VERSION} \
  --output-directory ${DOWNLOAD_DIR_FULL}
+
 echo $(date) end downloading ${PRODUCT_SLUG}
-else 
-echo ignoring download by user 
+
+## Mignt get to 
+###  do we need special, eg pks
+    case ${TILE} in
+    pks)
+        echo $(date) start downloading PKS CLI
+        om --skip-ssl-validation \
+        download-product \
+        --pivnet-api-token ${PIVNET_UAA_TOKEN} \
+        --pivnet-file-glob "pks-linux-amd64*" \
+        --pivnet-product-slug ${PRODUCT_SLUG} \
+        --product-version ${PFC_VERSION} \
+        --output-directory ${HOME_DIR}
+
+        echo $(date) end downloading PKS CLI
+        chmod +x ./pivotal-container-service-*pks-linux-amd*
+        chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./pivotal-container-service-*pks-linux-amd*
+        sudo cp ./pivotal-container-service-*pks-linux-amd* /usr/local/bin/pks
+
+        echo $(date) start downloading kubectl
+        om --skip-ssl-validation \
+        download-product \
+        --pivnet-api-token ${PIVNET_UAA_TOKEN} \
+        --pivnet-file-glob "kubectl-linux-amd64*" \
+        --pivnet-product-slug ${PRODUCT_SLUG} \
+        --product-version ${PCF_VERSION} \
+        --output-directory ${HOME_DIR}
+
+        chmod +x ./pivotal-container-service-*kubectl-linux-amd64*
+        chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./pivotal-container-service-*kubectl-linux-amd64*
+        sudo cp ./pivotal-container-service-*kubectl-linux-amd64* /usr/local/bin/kubectl
+        ;;
+        esac
+else
+echo ignoring download by user
 fi
 
 TARGET_FILENAME=$(cat ${DOWNLOAD_DIR_FULL}/download-file.json | jq -r '.product_path')
-STEMCELL_FILENAME=$(cat ${DOWNLOAD_DIR_FULL}/download-file.json | jq -r '.stemcell_path')
-STEMCELL_VERSION=$(cat ${DOWNLOAD_DIR_FULL}/download-file.json | jq -r '.stemcell_version')
 # Import the tile to Ops Manager.
 echo $(date) start uploading ${PRODUCT_SLUG}
 om --skip-ssl-validation \
@@ -106,51 +144,37 @@ VERSION=$(echo ${PRODUCTS} |\
 
 
 # 2.  Stage using om cli
-echo $(date) start staging ${PRODUCT_SLUG} 
+echo $(date) start staging ${PRODUCT_SLUG}
 om --skip-ssl-validation \
   stage-product \
   --product-name ${PRODUCT_SLUG} \
   --product-version ${VERSION}
-echo $(date) end staging ${PRODUCT_SLUG} 
+echo $(date) end staging ${PRODUCT_SLUG}
 
-echo $(date) start uploading ${STEMCELL_FILENAME}
-om --skip-ssl-validation \
-upload-stemcell \
---floating=false \
---stemcell ${STEMCELL_FILENAME}
-echo $(date) end uploading ${STEMCELL_FILENAME}
 
-echo $(date) start assign stemcell ${STEMCELL_FILENAME} to ${PRODUCT_SLUG}
 om --skip-ssl-validation \
 assign-stemcell \
 --product ${PRODUCT_SLUG} \
 --stemcell latest
-echo $(date) end assign stemcell ${STEMCELL_FILENAME} to ${PRODUCT_SLUG}
 
-
-
-cat << EOF > ~/harbor_vars.yaml
-product_name: ${PRODUCT_SLUG}
-pcf_pas_network: pcf-pas-subnet
-pcf_service_network: pcf-services-subnet
-azure_storage_access_key: ${HARBOR_STORAGE_KEY}
-azure_account: ${ENV_SHORT_NAME}harborbackup
-global_recipient_email: ${PKS_NOTIFICATIONS_EMAIL}
-blob_store_base_url: blob.core.windows.net
-EOF
 
 om --skip-ssl-validation \
   configure-product \
-  -c ${HOME_DIR}/harbor.yaml -l ${HOME_DIR}/harbor_vars.yaml
-
+  -c ${TEMPLATE_DIR}/${TILE}.yaml -l ${TEMPLATE_DIR}/${TILE}_vars.yaml
 
 echo $(date) start apply ${PRODUCT_SLUG}
 
-if  [ -z ${NO_APPLY} ] ; then
+if  [ ! -z ${NO_APPLY} ] ; then
+echo "No Product Apply"
+elif [ ! -z ${APPLY_ALL} ] ; then
+echo "APPLY_ALL"
+om --skip-ssl-validation \
+  apply-changes
+else
+echo "APPLY Product"
 om --skip-ssl-validation \
   apply-changes \
   --product-name ${PRODUCT_SLUG}
-else
-echo "No Product Apply"
 fi
+
 echo $(date) end apply ${PRODUCT_SLUG}
