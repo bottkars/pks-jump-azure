@@ -70,10 +70,10 @@ pks_lb: "${PKS_LB}"
 primary_availability_set: "${ENV_NAME}-availability-set"
 EOF
 
-
+echo "Now creating pks admin user"
 ${SCRIPT_DIR}/create_user.sh
+echo "now creating k8s loadbalancer k8s1"
 ${SCRIPT_DIR}/create_lb.sh --K8S_CLUSTER_NAME k8s1
+echo "now creating k8s cluster k8s1"
 ${SCRIPT_DIR}/create_cluster.sh --K8S_CLUSTER_NAME k8s1
-
-
-echo Finished !!!
+echo "Finished deployment !!!""
