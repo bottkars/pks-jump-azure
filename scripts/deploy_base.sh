@@ -336,4 +336,4 @@ echo ${END_BASE_DEPLOY_TIME} end base deployment
 
 
 echo "Base install finished, now initializing opsman, see logfiles in ${LOG_DIR}"
-su ${ADMIN_USERNAME}  -c "nohup ${SCRIPT_DIR}/om_init.sh ${SCRIPT_DIR} >/dev/null 2>&1 &"
+su ${ADMIN_USERNAME}  -c "nohup ${SCRIPT_DIR}/om_init.sh ${HOME_DIR} >/dev/null 2>&1 &"
