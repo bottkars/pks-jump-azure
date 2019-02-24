@@ -71,14 +71,14 @@
                 "description": "will be prefix for pks opsman and director storage accounts"
             }
         },
-       "pksDomainName": {
+       "PKSDomainName": {
             "type": "string",
             "minLength": "7",
             "metadata": {
                 "description": "dns suffix for pks"
             }
         },
-        "pksSubdomainName": {
+        "PKSSubdomainName": {
             "type": "string",
             "minLength": "3",
             "metadata": {
@@ -92,7 +92,7 @@
                 "description": "Unique DNS Name for the Public IP used to access the Jumpbox."
             }
         },        
-        "pksVersion": {
+        "PKSVersion": {
             "type": "string",
             "allowedValues": [
                 "1.3.2",
@@ -170,7 +170,7 @@
                 "description": "subdomain for pks"
             }
         },
-        "pksAutopilot": {
+        "PKSAutopilot": {
             "type": "string",
             "defaultValue": "TRUE",
             "allowedValues": [
@@ -178,7 +178,7 @@
                 "TRUE"
             ],
             "metadata": {
-                "description": "autodeploy pks pks"
+                "description": "autodeploy PKS"
             }
         },
         "useSelfCerts": {
@@ -275,7 +275,7 @@
             "[concat(variables('baseUri'),  '/scripts/deploy_tile.sh')]",
             "[concat(variables('baseUri'),  '/scripts/deploy_greenplum.sh')]",
             "[concat(variables('baseUri'),  '/env/greenplum/',parameters('GreenplumVersion'),'/greenplum.env')]",
-            "[concat(variables('baseUri'),  '/env/pks/',parameters('pksVersion'),'/pks.env')]",
+            "[concat(variables('baseUri'),  '/env/pks/',parameters('PKSVersion'),'/pks.env')]",
             "[concat(variables('baseUri'),  '/env/harbor/',parameters('HarborVersion'),'/harbor.env')]",
             "[concat(variables('baseUri'),  '/templates/director_config.yaml')]",
             "[concat(variables('baseUri'),  '/templates/shared_storage.yaml')]",
@@ -457,14 +457,14 @@
                             "ENV_SHORT_NAME": "[parameters('envShortName')]",
                             "OPS_MANAGER_IMAGE_URI": "[concat('https://opsmanager',parameters('opsmanImageregion'),'.blob.core.windows.net/images/',parameters('opsmanImage'))]",
                             "LOCATION": "[parameters('location')]",
-                            "PKS_DOMAIN_NAME": "[parameters('pksDomainName')]",
-                            "PKS_SUBDOMAIN_NAME": "[parameters('pksSubdomainName')]",
+                            "PKS_DOMAIN_NAME": "[parameters('PKSDomainName')]",
+                            "PKS_SUBDOMAIN_NAME": "[parameters('PKSSubdomainName')]",
                             "SSH_PUBLIC_KEY": "[parameters('sshkeyData')]",
                             "PCF_OPSMAN_USERNAME": "[parameters('opsmanUsername')]",
                             "PKS_NOTIFICATIONS_EMAIL": "[parameters('notificationsEmail')]",
                             "NET_16_BIT_MASK": "[parameters('net16bitmask')]",
-                            "PKS_AUTOPILOT": "[parameters('pksAutopilot')]",
-                            "PKS_VERSION": "[parameters('pksVersion')]",
+                            "PKS_AUTOPILOT": "[parameters('PKSAutopilot')]",
+                            "PKS_VERSION": "[parameters('PKSVersion')]",
                             "USE_SELF_CERTS": "[parameters('useSelfCerts')]",
                             "JUMP_VNET": "[variables('virtualNetworkName')]",
                             "JUMP_RG": "[resourceGroup().name]"
