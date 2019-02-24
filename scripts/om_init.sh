@@ -113,16 +113,11 @@ om --skip-ssl-validation \
 
 popd
 END_OPSMAN_DEPLOY_TIME=$(date)
-echo ${END_OPSMAN_DEPLOY_TIME} finished opsman deployment
 $(cat <<-EOF >> ${HOME_DIR}/.env.sh
 PCF_OPSMAN_FQDN="${PCF_OPSMAN_FQDN}"
 EOF
 )
-echo Started BASE deployment at ${START_BASE_DEPLOY_TIME}
-echo Finished BASE deployment at ${END_BASE_DEPLOY_TIME}
-echo Started OPSMAN deployment at ${START_OPSMAN_DEPLOY_TIME}
-echo Finished OPSMAN Deployment at ${END_OPSMAN_DEPLOY_TIME}
-
+echo "opsman deployment finished at $(date)"
 if [ "${PKS_AUTOPILOT}" = "TRUE" ]; then
     if [ "${USE_SELF_CERTS}" = "TRUE" ]; then
       sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/create_self_certs.sh
@@ -131,3 +126,6 @@ if [ "${PKS_AUTOPILOT}" = "TRUE" ]; then
     fi
     sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/deploy_pks.sh
 fi
+
+echo "Finished deployment !!!
+if you tailed the installation log, it is time to 'ctrl-c' "

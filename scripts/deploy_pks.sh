@@ -103,4 +103,3 @@ else
   ${SCRIPT_DIR}/deploy_tile.sh -t harbor -d
 fi
 echo "$(date) end deploy PKS"
-echo "Finished deployment !!!"

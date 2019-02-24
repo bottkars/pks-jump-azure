@@ -2,7 +2,7 @@
 product-name: ((product_name))
 network-properties:
   network:
-    name: pks-subnet
+    name: pks-infrastructure-subnet
   other_availability_zones:
   - name: 'null'
   singleton_availability_zone:

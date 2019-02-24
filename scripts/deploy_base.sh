@@ -335,5 +335,7 @@ END_BASE_DEPLOY_TIME=$(date)
 echo ${END_BASE_DEPLOY_TIME} end base deployment
 
 
-echo "Base install finished, now initializing opsman, see logfiles in ${LOG_DIR}"
+echo "Base install finished, now initializing opsman
+for install status information, run 'tail -f ${LOG_DIR}/om_init.sh.*.log'"
+
 su ${ADMIN_USERNAME}  -c "nohup ${SCRIPT_DIR}/om_init.sh ${HOME_DIR} >/dev/null 2>&1 &"

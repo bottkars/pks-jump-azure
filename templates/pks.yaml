@@ -5,7 +5,7 @@ network-properties:
   other_availability_zones:
   - name: 'null'
   network:
-    name: pks-subnet
+    name: pks-infrastructure-subnet
   service_network:
     name: pks-services-subnet   
 product-properties:
