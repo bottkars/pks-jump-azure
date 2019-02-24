@@ -2,7 +2,7 @@
 source .env.sh
 MYSELF=$(basename $0)
 mkdir -p ${LOG_DIR}/
-exec &> >(tee -a "${LOG_DIR}//${MYSELF}.$(date '+%Y-%m-%d-%H').log")
+exec &> >(tee -a "${LOG_DIR}/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
 exec 2>&1
 POSITIONAL=()
 while [[ $# -gt 0 ]]

@@ -2,8 +2,8 @@
 source ~/.env.sh
 cd ${HOME_DIR}
 MYSELF=$(basename $0)
-mkdir -p ${HOME_DIR}/logs
-exec &> >(tee -a "${HOME_DIR}/logs/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
+mkdir -p ${LOG_DIR}/
+exec &> >(tee -a "${LOG_DIR}/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
 exec 2>&1
 POSITIONAL=()
 while [[ $# -gt 0 ]]
@@ -50,6 +50,12 @@ pks_cert_pem: "$(cat ${HOME_DIR}/fullchain.cer | awk '{printf "%s\\r\\n", $0}')"
 pks_cert_ca: "$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.ca.crt | awk '{printf "%s\\r\\n", $0}')"
 harbor_ip: 10.0.12.10
 EOF
+## copy ca cert for registry login
+sudo mkdir -p /etc/docker/certs.d/harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}
+sudo cp ${HOME_DIR}/fullchain.cer /etc/docker/certs.d/harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/fullchain.crt
+##
+
+
 
 if  [ ! -z ${CREATE_LB} ] ; then
 
@@ -111,9 +117,10 @@ az network dns record-set a add-record \
     --ipv4-address ${AZURE_LB_PUBLIC_IP}
 fi
 
-if  [ -z ${NO_APPLY} ] ; then
+if  [ ! -z ${NO_APPLY} ] ; then
     ${SCRIPT_DIR}/deploy_tile.sh -t harbor
-    elif [ -z ${APPLY_ALL} ] ; then
+    elif [ ! -z ${APPLY_ALL} ] ; then
+        echo "calling tile Installer with apply All"
         ${SCRIPT_DIR}/deploy_tile.sh -t harbor -a
     fi
 else

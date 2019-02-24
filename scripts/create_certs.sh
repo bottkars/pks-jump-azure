@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 source .env.sh
 MYSELF=$(basename $0)
-mkdir -p ${HOME_DIR}/logs
-exec &> >(tee -a "${HOME_DIR}/logs/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
+mkdir -p ${LOG_DIR}/
+exec &> >(tee -a "${LOG_DIR}/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
 exec 2>&1
 cd ${HOME_DIR}
 git clone https://github.com/Neilpang/acme.sh.git ./acme.sh

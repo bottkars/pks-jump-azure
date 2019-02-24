@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 source .env.sh
 MYSELF=$(basename $0)
-mkdir -p ${HOME_DIR}/logs
-exec &> >(tee -a "${HOME_DIR}/logs/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
+mkdir -p ${LOG_DIR}/
+exec &> >(tee -a "${LOG_DIR}/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
 exec 2>&1
 POSITIONAL=()
 while [[ $# -gt 0 ]]
@@ -30,6 +30,7 @@ case $key in
     shift # past argument
     ;;
 esac
+shift
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 source ~/.env.sh
@@ -39,15 +40,10 @@ export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
 
 
 
-START_GREENPLUM_DEPLOY_TIME=$(date)
-$(cat <<-EOF >> ${HOME_DIR}/.env.sh
-START_GREENPLUM_DEPLOY_TIME="${START_GREENPLUM_DEPLOY_TIME}"
-EOF
-)
-source ${HOME_DIR}/greenplum.env
+
+source ${ENV_DIR}/greenplum.env
 
 PCF_OPSMAN_ADMIN_PASSWD=${PIVNET_UAA_TOKEN}
-PKS_API_HOSTNAME="api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
 cd ${HOME_DIR}
 #Authenticate pivnet 
 DOWNLOAD_DIR_FULL=${DOWNLOAD_DIR}/${PRODUCT_SLUG}/${GREENPLUM_VERSION}
@@ -103,23 +99,22 @@ VERSION=$(echo ${PRODUCTS} |\
 else 
 echo ignoring download by user 
 fi
-cat << EOF > greenplum_vars.yaml
-EOF
+
 cd ./greenplum-for-kubernetes*/
 
 kubectl config use-context $CLUSTER
 
 kubectl create -f ./initialize_helm_rbac.yaml
+
+docker login harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} -u admin -p ${PIVNET_UAA_TOKEN}
 sudo cp ${HOME_DIR}/.docker/config.json ./operator/key.json
 sudo chown $ADMIN_USERNAME:$ADMIN_USERNAME ./operator/key.json
-az acr login --name $ACR
-ACR_LOGIN_SERVER=$(az acr list --resource-group ${ENV_NAME} \
-    --query "[].{acrLoginServer:loginServer}" --output tsv)
+
 
 $(cat <<-EOF > ./workspace/operator-values-overrides.yaml
 dockerRegistryKeyJson: key.json
-operatorImageRepository: ${ACR_LOGIN_SERVER}/greenplum-operator
-greenplumImageRepository: ${ACR_LOGIN_SERVER}/greenplum-for-kubernetes
+operatorImageRepository: harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/greenplum-operator
+greenplumImageRepository: harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/greenplum-for-kubernetes
 EOF
 )
 
@@ -127,24 +122,18 @@ EOF
 docker load -i ./images/greenplum-for-kubernetes
 docker load -i ./images/greenplum-operator
 
-GREENPLUM_IMAGE_NAME="${ACR_LOGIN_SERVER}/greenplum-for-kubernetes:$(cat ./images/greenplum-for-kubernetes-tag)"
+GREENPLUM_IMAGE_NAME="harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/greenplum-for-kubernetes:$(cat ./images/greenplum-for-kubernetes-tag)"
 docker tag $(cat ./images/greenplum-for-kubernetes-id) ${GREENPLUM_IMAGE_NAME}
 docker push ${GREENPLUM_IMAGE_NAME}
 
-OPERATOR_IMAGE_NAME="${ACR_LOGIN_SERVER}/greenplum-operator:$(cat ./images/greenplum-operator-tag)"
+OPERATOR_IMAGE_NAME="harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}greenplum-operator:$(cat ./images/greenplum-operator-tag)"
 docker tag $(cat ./images/greenplum-operator-id) ${OPERATOR_IMAGE_NAME}
 docker push ${OPERATOR_IMAGE_NAME}
 
-helm init --wait --service-account tiller --upgrade
+# helm init --wait --service-account tiller --upgrade
 
 
-helm install --name greenplum-operator operator/
+# helm install --name greenplum-operator operator/
 
 
 #### edit yaml
-
-
-END_GREENPLUM_DEPLOY_TIME=$(date)
-echo Finished
-echo Started GREENPLUM deployment at ${START_GREENPLUM_DEPLOY_TIME}
-echo Finished GREENPLUM Deployment at ${END_GREENPLUM_DEPLOY_TIME}
