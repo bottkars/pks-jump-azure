@@ -21,8 +21,6 @@ product-properties:
     value:
       private_key_pem: ((pks_key_pem))
       cert_pem: ((pks_cert_pem))
-  .harbor-app.static_ips:
-    value: ((harbor_ip))
 resource-config:
   harbor-app:
     elb_names:
