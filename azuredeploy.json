@@ -22,23 +22,7 @@
             "maxLength": "36",
             "type": "string",
             "metadata": {
-                "description": "AzureService Principal"
-            }
-        },
-        "tenantID": {
-            "type": "string",
-            "minLength": "36",
-            "maxLength": "36",
-            "metadata": {
-                "description": "AzureService Tenant ID"
-            }
-        },
-        "subscriptionID": {
-            "type": "string",
-            "minLength": "36",
-            "maxLength": "36",
-            "metadata": {
-                "description": "AzureService Tenant ID"
+                "description": "Azure Service Principal"
             }
         },
         "clientSecret": {
@@ -47,7 +31,24 @@
             "metadata": {
                 "description": "Azure Service Principal Secret"
             }
+        },        
+        "tenantID": {
+            "type": "string",
+            "minLength": "36",
+            "maxLength": "36",
+            "metadata": {
+                "description": "Azure Tenant ID for Deployment"
+            }
         },
+        "subscriptionID": {
+            "type": "string",
+            "minLength": "36",
+            "maxLength": "36",
+            "metadata": {
+                "description": "Azure Subscription ID for Deployment"
+            }
+        },
+
         "pivnetToken": {
             "type": "string",
             "minLength": "34",
@@ -67,14 +68,14 @@
             "type": "string",
             "minLength": "7",
             "metadata": {
-                "description": "dns suffix for pks"
+                "description": "DNS domain (domain-suffix) for pks ( where subdomain will be created in)"
             }
         },
         "PKSSubdomainName": {
             "type": "string",
             "minLength": "3",
             "metadata": {
-                "description": "subdomain for pks"
+                "description": "subdomain (domain-prefix) for pks"
             }
         },
         "JumpboxDNSLabelPrefix": {
