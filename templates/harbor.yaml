@@ -2,7 +2,7 @@
 product-name: ((product_name))
 network-properties:
   network:
-    name: pks-infrastructure-subnet
+    name: pks-subnet
   other_availability_zones:
   - name: 'null'
   singleton_availability_zone:
@@ -21,6 +21,8 @@ product-properties:
     value:
       private_key_pem: ((pks_key_pem))
       cert_pem: ((pks_cert_pem))
+  .properties.server_cert_ca:
+      value: ((pks_cert_ca))  
 resource-config:
   harbor-app:
     elb_names:

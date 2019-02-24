@@ -124,8 +124,10 @@ if [ "${PKS_AUTOPILOT}" = "TRUE" ]; then
     else  
       sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/create_certs.sh
     fi
+    echo "Now calling PKS deployment"
     sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/deploy_pks.sh
-fi
+    echo "Now calling Harbor deployment"
+    sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/deploy_harbor.sh -lb
 
 echo "Finished deployment !!!
 if you tailed the installation log, it is time to 'ctrl-c' "

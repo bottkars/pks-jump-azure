@@ -91,6 +91,7 @@ primary_availability_set: "${ENV_NAME}-availability-set"
 EOF
 
 if  [ -z ${NO_APPLY} ] ; then
+  echo "Now deploying PKS Tile"
   ${SCRIPT_DIR}/deploy_tile.sh -t pks -s
   echo "Now creating pks admin user"
   ${SCRIPT_DIR}/create_user.sh
