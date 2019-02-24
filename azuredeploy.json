@@ -78,11 +78,11 @@
                 "description": "subdomain (domain-prefix) for pks"
             }
         },
-        "JumpboxDNSLabelPrefix": {
+        "JumphostDNSLabelPrefix": {
             "minLength": "3",
             "type": "string",
             "metadata": {
-                "description": "Unique DNS Name for the Public IP used to access the Jumpbox."
+                "description": "Unique DNS Name for the Public IP used to access the Jumphost."
             }
         },
         "envName": {
@@ -307,7 +307,7 @@
             "properties": {
                 "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
                 "dnsSettings": {
-                    "domainNameLabel": "[parameters('JumpboxDNSLabelPrefix')]"
+                    "domainNameLabel": "[parameters('JumphostDNSLabelPrefix')]"
                 }
             }
         },
@@ -368,7 +368,7 @@
                 "[resourceId('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
             ],
             "tags": {
-                "Application": "PKS PKS Jumpbox",
+                "Application": "PKS Jumphost",
                 "AutoDeployed RG": "[parameters('envName')]"
             },
             "properties": {
