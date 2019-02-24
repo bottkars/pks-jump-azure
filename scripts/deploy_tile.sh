@@ -21,7 +21,7 @@ case $key in
     ;;
     -a|--APPLY_ALL)
     APPLY_ALL=TRUE
-    echo "APPLY ALL is ${NO_APPLY}"
+    echo "APPLY ALL is ${APPLY_ALL}"
     # shift # past value ia arg value
     ;;
     -t|--TILE)

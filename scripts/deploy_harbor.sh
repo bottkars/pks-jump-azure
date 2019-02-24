@@ -24,7 +24,12 @@ case $key in
     CREATE_LB=TRUE
     echo "CREATE_LB is ${CREATE_LB}"
     # shift # past value ia arg value
-    ;;          
+    ;;
+    -a|--APPLY_ALL)
+    APPLY_ALL=TRUE
+    echo "APPLY ALL is ${APPLY_ALL}"
+    # shift # past value ia arg value
+    ;;              
     *)    # unknown option
     POSITIONAL+=("$1") # save it in an array for later
     shift # past argument
@@ -107,9 +112,12 @@ az network dns record-set a add-record \
 fi
 
 if  [ -z ${NO_APPLY} ] ; then
-${SCRIPT_DIR}/deploy_tile.sh -t harbor
+    ${SCRIPT_DIR}/deploy_tile.sh -t harbor
+    elif [ -z ${APPLY_ALL} ] ; then
+        ${SCRIPT_DIR}/deploy_tile.sh -t harbor -a
+    fi
 else
-echo "No Product Apply"
-${SCRIPT_DIR}/deploy_tile.sh -t harbor -d
+    echo "No Product Apply"
+    ${SCRIPT_DIR}/deploy_tile.sh -t harbor -d
 fi
 echo "$(date) end deploy Harbor"

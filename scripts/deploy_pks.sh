@@ -92,7 +92,9 @@ EOF
 
 if  [ -z ${NO_APPLY} ] ; then
   echo "Now deploying PKS Tile"
-  ${SCRIPT_DIR}/deploy_tile.sh -t pks -s
+  ${SCRIPT_DIR}/deploy_tile.sh -t pks -s -d
+  echo "Now calling Harbor deployment"
+  ${SCRIPT_DIR}/deploy_harbor.sh -lb -a
   echo "Now creating pks admin user"
   ${SCRIPT_DIR}/create_user.sh
   echo "now creating k8s loadbalancer k8s1"
@@ -101,6 +103,5 @@ if  [ -z ${NO_APPLY} ] ; then
   ${SCRIPT_DIR}/create_cluster.sh --K8S_CLUSTER_NAME k8s1
 else
   echo "No Product Apply"
-  ${SCRIPT_DIR}/deploy_tile.sh -t harbor -d
 fi
 echo "$(date) end deploy PKS"
