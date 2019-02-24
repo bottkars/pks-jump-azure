@@ -56,14 +56,6 @@
                 "description": "Your UAA API Token from Pivotal Network"
             }
         },
-        "envName": {
-            "type": "string",
-            "minLength": 3,
-            "defaultValue": "pks",
-            "metadata": {
-                "description": "environment name for azure resource group and resources"
-            }
-        },
         "envShortName": {
             "type": "string",
             "minLength": "3",
@@ -85,13 +77,22 @@
                 "description": "subdomain for pks"
             }
         },
-        "dnsLabelPrefix": {
+        "JumpboxDNSLabelPrefix": {
             "minLength": "3",
             "type": "string",
             "metadata": {
                 "description": "Unique DNS Name for the Public IP used to access the Jumpbox."
             }
-        },        
+        },
+        "envName": {
+            "type": "string",
+            "minLength": 3,
+            "defaultValue": "pks",
+            "metadata": {
+                "description": "environment name for azure resource group and resources"
+            }
+        },
+      
         "PKSVersion": {
             "type": "string",
             "allowedValues": [
@@ -305,7 +306,7 @@
             "properties": {
                 "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
                 "dnsSettings": {
-                    "domainNameLabel": "[parameters('dnsLabelPrefix')]"
+                    "domainNameLabel": "[parameters('JumpboxDNSLabelPrefix')]"
                 }
             }
         },

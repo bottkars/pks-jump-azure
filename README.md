@@ -116,15 +116,15 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/${BRANCH}/azuredeploy.json \
     --parameters \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
-    dnsLabelPrefix=${JUMPBOX_NAME} \
+    JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
     clientSecret=${AZURE_CLIENT_SECRET} \
     clientID=${AZURE_CLIENT_ID} \
     tenantID=${AZURE_TENANT_ID} \
     subscriptionID=${AZURE_SUBSCRIPTION_ID} \
     pivnetToken=${PIVNET_UAA_TOKEN} \
     envShortName=${ENV_SHORT_NAME} \
-    pksDomainName=${PKS_DOMAIN_NAME} \
-    pksSubdomainName=${PKS_SUBDOMAIN_NAME} \
+    PKSDomainName=${PKS_DOMAIN_NAME} \
+    PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \
 ```
 
 ### validate using customized parameters
@@ -136,7 +136,7 @@ az group deployment validate --resource-group ${JUMPBOX_RG} \
     --parameters \
     adminUsername=${ADMIN_USERNAME} \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
-    dnsLabelPrefix=${JUMPBOX_NAME} \
+    JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
     clientSecret=${AZURE_CLIENT_SECRET} \
     clientID=${AZURE_CLIENT_ID} \
     tenantID=${AZURE_TENANT_ID} \
@@ -145,12 +145,12 @@ az group deployment validate --resource-group ${JUMPBOX_RG} \
     envName=${ENV_NAME} \
     envShortName=${ENV_SHORT_NAME} \
     opsmanImage=${OPS_MANAGER_IMAGE} \
-    pksDomainName=${PKS_DOMAIN_NAME} \
-    pksSubdomainName=${PKS_SUBDOMAIN_NAME} \
+    PKSDomainName=${PKS_DOMAIN_NAME} \
+    PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \
     opsmanUsername=${PCF_OPSMAN_USERNAME} \
     notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
-    pksAutopilot=${PKS_AUTOPILOT} \
-    pksVersion=${PKS_VERSION} \
+    PKSAutopilot=${PKS_AUTOPILOT} \
+    PKSVersion=${PKS_VERSION} \
     net16bitmask=${NET_16_BIT_MASK} \
     useSelfCerts=${USE_SELF_CERTS} \
     _artifactsLocation=${ARTIFACTS_LOCATION} \
@@ -167,7 +167,7 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     --parameters \
     adminUsername=${ADMIN_USERNAME} \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
-    dnsLabelPrefix=${JUMPBOX_NAME} \
+    JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
     clientSecret=${AZURE_CLIENT_SECRET} \
     clientID=${AZURE_CLIENT_ID} \
     tenantID=${AZURE_TENANT_ID} \
@@ -176,12 +176,12 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     envName=${ENV_NAME} \
     envShortName=${ENV_SHORT_NAME} \
     opsmanImage=${OPS_MANAGER_IMAGE} \
-    pksDomainName=${PKS_DOMAIN_NAME} \
-    pksSubdomainName=${PKS_SUBDOMAIN_NAME} \
+    PKSDomainName=${PKS_DOMAIN_NAME} \
+    PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \
     opsmanUsername=${PCF_OPSMAN_USERNAME} \
     notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
-    pksAutopilot=${PKS_AUTOPILOT} \
-    pksVersion=${PKS_VERSION} \
+    PKSAutopilot=${PKS_AUTOPILOT} \
+    PKSVersion=${PKS_VERSION} \
     net16bitmask=${NET_16_BIT_MASK} \
     useSelfCerts=${USE_SELF_CERTS} \
     _artifactsLocation=${ARTIFACTS_LOCATION} \
