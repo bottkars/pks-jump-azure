@@ -1,0 +1,7 @@
+{
+    "itemDisplayName": "PKS Conductor for Azure",
+    "description": "Automated PKS on Azure Deployment",
+    "summary": "automatic deployment of Pivotal PKS to Azure",
+    "githubUsername": "bottkars",
+    "dateUpdated": "2018-02-22"
+  }
