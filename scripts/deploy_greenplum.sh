@@ -113,8 +113,8 @@ sudo chown $ADMIN_USERNAME:$ADMIN_USERNAME ./operator/key.json
 
 $(cat <<-EOF > ./workspace/operator-values-overrides.yaml
 dockerRegistryKeyJson: key.json
-operatorImageRepository: harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/greenplum-operator
-greenplumImageRepository: harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/greenplum-for-kubernetes
+operatorImageRepository: harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/library/greenplum-operator
+greenplumImageRepository: harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/library/greenplum-for-kubernetes
 EOF
 )
 
@@ -122,18 +122,18 @@ EOF
 docker load -i ./images/greenplum-for-kubernetes
 docker load -i ./images/greenplum-operator
 
-GREENPLUM_IMAGE_NAME="harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/greenplum-for-kubernetes:$(cat ./images/greenplum-for-kubernetes-tag)"
+GREENPLUM_IMAGE_NAME="harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/library/greenplum-for-kubernetes:$(cat ./images/greenplum-for-kubernetes-tag)"
 docker tag $(cat ./images/greenplum-for-kubernetes-id) ${GREENPLUM_IMAGE_NAME}
 docker push ${GREENPLUM_IMAGE_NAME}
 
-OPERATOR_IMAGE_NAME="harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}greenplum-operator:$(cat ./images/greenplum-operator-tag)"
+OPERATOR_IMAGE_NAME="harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/library/greenplum-operator:$(cat ./images/greenplum-operator-tag)"
 docker tag $(cat ./images/greenplum-operator-id) ${OPERATOR_IMAGE_NAME}
 docker push ${OPERATOR_IMAGE_NAME}
 
-# helm init --wait --service-account tiller --upgrade
+helm init --wait --service-account tiller --upgrade
 
 
-# helm install --name greenplum-operator operator/
+helm install --name greenplum-operator operator/
 
 
 #### edit yaml

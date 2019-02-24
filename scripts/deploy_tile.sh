@@ -187,4 +187,8 @@ om --skip-ssl-validation \
   --product-name ${PRODUCT_SLUG}
 fi
 
+echo "checking deployed products"
+om --skip-ssl-validation \
+ deployed-products
+
 echo $(date) end apply ${PRODUCT_SLUG}
