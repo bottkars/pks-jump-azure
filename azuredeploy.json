@@ -14,7 +14,7 @@
             "minLength": "20",
             "type": "string",
             "metadata": {
-                "description": "ssh Public Key"
+                "description": "ssh Public Key to log on to the jumpbox"
             }
         },
         "clientID": {
@@ -53,7 +53,7 @@
             "minLength": "34",
             "maxLength": "34",
             "metadata": {
-                "description": "pivnet uaa token"
+                "description": "Your UAA API Token from Pivotal Network"
             }
         },
         "envName": {
