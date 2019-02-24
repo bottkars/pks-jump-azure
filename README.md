@@ -1,5 +1,7 @@
 # pks-jump-azure
 
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+
 <img src="https://docs.pivotal.io/images/pks.png" width="100"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/800px-Heart_coraz%C3%B3n.svg.png" width="100">
 <img src="https://docs.pivotal.io/images/icon_microsoft_azure@2x.png" width="100">
 
@@ -32,7 +34,33 @@ For that, the Tile and required Stemcell is downloaded automatically.
 - service principal needs to have owner rights on subscription in order to create custom roles and Managed Identities
 - a [pivotal network account ( pivnet )](network.pivotal.io) and a UAA access token
 
-## usage  
+## usage
+
+there are are multiple ways to deploy the ARM template. we will describe Azure Portal Template based and az cli based Method  
+
+### create a ssh keypair for the admin user ( if not already done )
+
+both methods require an SSH Keypair
+
+```bash
+ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
+```
+
+### installation using New Template Deployment
+
+1. In the Azure Portal, click on Create Resource  and enter Template Deployment
+![image](https://user-images.githubusercontent.com/8255007/53224228-4bf58a80-3674-11e9-8bf1-090677009b7c.png)
+2. Select the template Deployment and click on *create*.
+3. Select *Build your own Template in the Editor*
+![image](https://user-images.githubusercontent.com/8255007/53224314-9aa32480-3674-11e9-9997-7c430c0b31c8.png)
+4. Replace the Content in the Editor Window with the Content of azuredeploy.json file
+![image](https://user-images.githubusercontent.com/8255007/53224406-e2c24700-3674-11e9-9dee-5fc9b1d4aeda.png)
+5. click *save*.
+6. fill in all required Parameters ( marked with a red Star )
+![image](https://user-images.githubusercontent.com/8255007/53296940-f0fb9900-3815-11e9-9404-de801064187a.png)
+7. when done, click *Purchase*.
+
+### Installation using az cli
 
 create an .env file using the [example](.env.example)  
 see [parameters and variables](#parameters-and-variables) for details.  
@@ -42,13 +70,7 @@ source the env file
 source .env
 ```
 
-## create a ssh keypair for the admin user ( if not already done )
-
-```bash
-ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
-```
-
-## start the deployment
+### start the deployment
 
 there are multiple deployment options, using az cli, powershell, from variables/parameters or from parameter file
 use  

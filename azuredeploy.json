@@ -67,7 +67,6 @@
         "envShortName": {
             "type": "string",
             "minLength": "3",
-            "defaultValue": "pkskb",
             "metadata": {
                 "description": "will be prefix for pks opsman and director storage accounts"
             }
@@ -86,6 +85,13 @@
                 "description": "subdomain for pks"
             }
         },
+        "dnsLabelPrefix": {
+            "minLength": "3",
+            "type": "string",
+            "metadata": {
+                "description": "Unique DNS Name for the Public IP used to access the Jumpbox."
+            }
+        },        
         "pksVersion": {
             "type": "string",
             "allowedValues": [
@@ -184,13 +190,6 @@
             ],
             "metadata": {
                 "description": "for testing, use self signed certs, otherwise Let´s Encrypt"
-            }
-        },
-        "dnsLabelPrefix": {
-            "minLength": "3",
-            "type": "string",
-            "metadata": {
-                "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
             }
         },
         "ubuntuOSVersion": {
