@@ -124,7 +124,7 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     pivnetToken=${PIVNET_UAA_TOKEN} \
     envShortName=${ENV_SHORT_NAME} \
     PKSDomainName=${PKS_DOMAIN_NAME} \
-    PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \
+    PKSSubdomainName=${PKS_SUBDOMAIN_NAME}
 ```
 
 ### validate using customized parameters
