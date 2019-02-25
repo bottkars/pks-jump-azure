@@ -64,8 +64,6 @@ az login --service-principal \
   --password ${AZURE_CLIENT_SECRET} \
   --tenant ${AZURE_TENANT_ID}
 
-
-
 az network public-ip create \
     --resource-group ${ENV_NAME} \
     --name harbor-public-ip \

@@ -132,8 +132,6 @@ docker push ${OPERATOR_IMAGE_NAME}
 
 helm init --wait --service-account tiller --upgrade
 
-
-helm install --name greenplum-operator operator/
-
+helm install --name greenplum-operator -f workspace/operator-values-overrides.yaml  operator/
 
 #### edit yaml
