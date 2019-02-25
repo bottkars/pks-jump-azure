@@ -20,6 +20,7 @@ It will pave the infrastructure using Pivotal [terraforming-azure](https://githu
 Pivotal Operations Manager will be installed and configured using Pivotal [om cli](https://github.com/pivotal-cf/om).  
 Optionally, PKS will be deployed using [om cli](https://github.com/pivotal-cf/om).  
 For that, the Tile and required Stemcell is downloaded automatically.
+
 ## features
 
 - automated opsman deployment and configuration
@@ -31,7 +32,7 @@ For that, the Tile and required Stemcell is downloaded automatically.
 - installation of cf-uaac, bosh cli
 - dns configuration and check
 - creation of public lb and dns a records for k8s clusters
-- script for additional k8s clusters
+- [script for additional k8s clusters](/docs/create_cluster.md)
 - load balancer rules for uaa and api access
 
 ## requirements
@@ -93,7 +94,8 @@ once fixed, the deployment will continue.
 
 [getting started after deployment](./initial_tasks.md)
 
-### validat using default parameters
+### validate using default parameters
+
 if not already done,  
 source your [.env file](.env.example)
 
@@ -246,26 +248,13 @@ tail the installation log
 tail -f ~/install.log
 ```
 
-gernerate a parameter report for opsman deployment
+generate a parameter report for opsman deployment
 
 ```bash
 az group deployment show --name generate-customdata --resource-group ${JUMPBOX_RG} --query properties.parameters.customData.value
 ```
 
-
-## ssh into the opsmanager vm
-
-from the jumpbox, you can  
-
-```bash
-source .env.sh
-ssh -i opsman ${ADMIN_USERNAME}@${PCF_OPSMAN_FQDN}
-
-bosh alias-env pks -e 10.0.8.11 --ca-cert /var/tempest/workspaces/default/root_ca_certificate
-
-```
-
-## cleanup
+### cleanup
 
 ```bash
 az group delete --name ${JUMPBOX_RG} --yes
@@ -275,13 +264,13 @@ az role definition delete --name ${ENV_NAME}-pks-worker-role
 az role definition delete --name ${ENV_NAME}-pks-master-role
 ```
 
-get the bosh credentials
-### BOSH
+### connect to bosh
+
 ```bash
 source .env.sh
-export OM_TARGET=pcf.pksazure.labbuildr.com
-export OM_USERNAME=opsman
-export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
+export OM_TARGET=pcf.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}
+export OM_USERNAME=${PCF_OPSMAN_USERNAME}
+export OM_PASSWORD=${PIVNET_UAA_TOKEN}
 export $( \
   om \
     --skip-ssl-validation \
@@ -290,4 +279,13 @@ export $( \
       --path /api/v0/deployed/director/credentials/bosh_commandline_credentials | \
         jq --raw-output '.credential' \
 )
+```
+
+### ssh into the opsmanager 
+
+from the jumpbox, you can  
+
+```bash
+source .env.sh
+ssh -i opsman ${ADMIN_USERNAME}@${PCF_OPSMAN_FQDN}
 ```
