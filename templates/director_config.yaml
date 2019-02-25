@@ -41,3 +41,6 @@ networks-configuration:
 network-assignment:
  network:
   name: pks-infrastructure-subnet
+security_configuration:
+  trusted_certificates: ((fullcain))
+  opsmanager_root_ca_trusted_certs: true 

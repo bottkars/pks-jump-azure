@@ -24,15 +24,6 @@ done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 source ~/.env.sh
 
-declare -a FILES=("${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key" \
-"${HOME_DIR}/fullchain.cer")
-for FILE in "${FILES[@]}"; do
-    if [ ! -f $FILE ]; then
-    echo "$FILE not found. running Create Self Certs "
-    ${SCRIPT_DIR}/create_self_certs.sh
-    fi
-done
-
 
 PCF_OPSMAN_ADMIN_PASSWD=${PIVNET_UAA_TOKEN}
 PKS_KEY_PEM=$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key | awk '{printf "%s\\r\\n", $0}')

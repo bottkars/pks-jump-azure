@@ -69,6 +69,20 @@ echo checking deployed products
 om --skip-ssl-validation \
 deployed-products
 
+if [ "${USE_SELF_CERTS}" = "TRUE" ]; then
+  sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/create_self_certs.sh
+else  
+  sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/create_certs.sh
+fi
+
+declare -a FILES=("${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key" \
+"${HOME_DIR}/fullchain.cer")
+for FILE in "${FILES[@]}"; do
+    if [ ! -f $FILE ]; then
+    echo "$FILE not found. running Create Self Certs "
+    ${SCRIPT_DIR}/create_self_certs.sh
+    fi
+done
 
 cd ${HOME_DIR}
 cat << EOF > ${TEMPLATE_DIR}/director_vars.yaml
@@ -94,6 +108,7 @@ services_subnet_gateway: "$SERVICES_SUBNET_GATEWAY"
 pks_subnet_cidrs: "${PKS_SUBNET_CIDRS}"
 pks_subnet_gateway: "${PKS_SUBNET_GATEWAY}"
 pks_subnet_range: "${NET_16_BIT_MASK}.12.1-${NET_16_BIT_MASK}.12.4"
+fullchain: "$(cat ${HOME_DIR}/fullchain.cer | awk '{printf "%s\\r\\n", $0}')"
 EOF
 
 #infrastructure_cidr: "${INFRASTRUCTURE_CIDR}"
@@ -119,11 +134,6 @@ EOF
 )
 echo "opsman deployment finished at $(date)"
 if [ "${PKS_AUTOPILOT}" = "TRUE" ]; then
-    if [ "${USE_SELF_CERTS}" = "TRUE" ]; then
-      sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/create_self_certs.sh
-    else  
-      sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/create_certs.sh
-    fi
     echo "Now calling PKS deployment"
     sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/deploy_pks.sh
 fi
