@@ -97,6 +97,7 @@ tail -f ~/install.log
 ```
 
 ### cleanup
+
 Simply delete the Resource Groups
 if using the Advances method, you may use:
 
