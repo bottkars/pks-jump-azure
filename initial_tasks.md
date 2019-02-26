@@ -55,16 +55,24 @@ select the your `~/.kube/config` file created earlier
 
 <img width="800" alt="asets_uuid" src="https://user-images.githubusercontent.com/8255007/51424240-6d71db00-1bcb-11e9-9404-d90ffba6b29a.png">  
 
-## next steps
+## connect to harbor Admin UI
+
+to connect to the harbor ui, type https://harbor.yourpksdomin into the Browser
+the login screen will open
+![image](https://user-images.githubusercontent.com/8255007/53392464-bb7fb880-3999-11e9-8257-45f56056e9db.png)
+
+enter admin as the username and you pivnet token as password
+
+## deploying Greenplum for Kubenetes ( Operator )
 
 tbd
 
-### kubectl commands
+## kubectl commands
 
 tbd
 
-### pks commands
+## pks commands
 
 tbd
 
-### helm
+## helm
