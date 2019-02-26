@@ -135,6 +135,6 @@ helm init --wait --service-account tiller --upgrade
 helm install --name greenplum-operator -f workspace/operator-values-overrides.yaml  operator/
 
 kubectl create namespace gpinstance-1
-kubectl apply -f workspace/my-gp-instance.yaml
+kubectl --namespace gpinstance-1 apply -f workspace/my-gp-instance.yaml
 
 #### edit yaml
