@@ -52,37 +52,22 @@ both methods require an SSH Keypair
 ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
 ```
 
-### installation using New Template Deployment
+### installation using Template Deployment
 
-1. In the Azure Portal, click on Create Resource  and enter Template Deployment
-![image](https://user-images.githubusercontent.com/8255007/53224228-4bf58a80-3674-11e9-8bf1-090677009b7c.png)
-2. Select the template Deployment and click on *create*.
-3. Select *Build your own Template in the Editor*
-![image](https://user-images.githubusercontent.com/8255007/53224314-9aa32480-3674-11e9-9997-7c430c0b31c8.png)
-4. Replace the Content in the Editor Window with the Content of azuredeploy.json file
-![image](https://user-images.githubusercontent.com/8255007/53224406-e2c24700-3674-11e9-9dee-5fc9b1d4aeda.png)
-5. click *save*.
-6. fill in all required Parameters ( marked with a red Star )
+1. use the "deploy to Azure Button" to start a Template Deployment
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbottkars%2Fpks-jump-azure%2Fmaster%2Fazuredeploy.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
+
+2. fill in all required Parameters ( marked with a red Star )
 ![image](https://user-images.githubusercontent.com/8255007/53296940-f0fb9900-3815-11e9-9404-de801064187a.png)
-7. when done, click *Purchase*.
+3. when done, click *Purchase*.
 
 ### Installation using az cli
 
-create an .env file using the [example](.env.example)  
-see [parameters and variables](#parameters-and-variables) for details.  
+see this [Document](/docs/az_cli_method.md) for installation using AZ CLI
 
-source the env file  
-```bash
-source .env
-```
-
-### start the deployment
-
-there are multiple deployment options, using az cli, powershell, from variables/parameters or from parameter file
-use  
-[deployment using default parameters](#using-default-parameters)
-or  
-[deployment using customized parameters](#using-customized-parameters)  
+## What´s next 
 
 Monitor your Deployment using [debugging section](#debugging-monitoring)
 
@@ -94,147 +79,7 @@ once fixed, the deployment will continue.
 
 [getting started after deployment](./initial_tasks.md)
 
-### validate using default parameters
-
-if not already done,  
-source your [.env file](.env.example)
-
-```bash
-source .env
-```
-
-if not already done,  
-create an ssh keypair for the environment  
-
-```bash
-ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
-```
-
-deployment using the default parameters only passes a minimum required parameters to the az command. all other values are set to their default.
-
-```bash
-az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
-az group deployment create --resource-group ${JUMPBOX_RG} \
-    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/${BRANCH}/azuredeploy.json \
-    --parameters \
-    sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
-    JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
-    clientSecret=${AZURE_CLIENT_SECRET} \
-    clientID=${AZURE_CLIENT_ID} \
-    tenantID=${AZURE_TENANT_ID} \
-    subscriptionID=${AZURE_SUBSCRIPTION_ID} \
-    pivnetToken=${PIVNET_UAA_TOKEN} \
-    envShortName=${ENV_SHORT_NAME} \
-    PKSDomainName=${PKS_DOMAIN_NAME} \
-    PKSSubdomainName=${PKS_SUBDOMAIN_NAME}
-```
-
-### validate using customized parameters
-
-```bash
-az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
-az group deployment validate --resource-group ${JUMPBOX_RG} \
-    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/$BRANCH/azuredeploy.json \
-    --parameters \
-    adminUsername=${ADMIN_USERNAME} \
-    sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
-    JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
-    clientSecret=${AZURE_CLIENT_SECRET} \
-    clientID=${AZURE_CLIENT_ID} \
-    tenantID=${AZURE_TENANT_ID} \
-    subscriptionID=${AZURE_SUBSCRIPTION_ID} \
-    pivnetToken=${PIVNET_UAA_TOKEN} \
-    envName=${ENV_NAME} \
-    envShortName=${ENV_SHORT_NAME} \
-    opsmanImage=${OPS_MANAGER_IMAGE} \
-    PKSDomainName=${PKS_DOMAIN_NAME} \
-    PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \
-    opsmanUsername=${PCF_OPSMAN_USERNAME} \
-    notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
-    PKSAutopilot=${PKS_AUTOPILOT} \
-    PKSVersion=${PKS_VERSION} \
-    net16bitmask=${NET_16_BIT_MASK} \
-    useSelfCerts=${USE_SELF_CERTS} \
-    _artifactsLocation=${ARTIFACTS_LOCATION} \
-    vmSize=${VMSIZE} \
-    opsmanImageRegion=${OPS_MANAGER_IMAGE_REGION}
-```
-
-installation using customized parameter set´s all required parameters from variables in your .env file
-
-```bash
-az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
-az group deployment create --resource-group ${JUMPBOX_RG} \
-    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/$BRANCH/azuredeploy.json \
-    --parameters \
-    adminUsername=${ADMIN_USERNAME} \
-    sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
-    JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
-    clientSecret=${AZURE_CLIENT_SECRET} \
-    clientID=${AZURE_CLIENT_ID} \
-    tenantID=${AZURE_TENANT_ID} \
-    subscriptionID=${AZURE_SUBSCRIPTION_ID} \
-    pivnetToken=${PIVNET_UAA_TOKEN} \
-    envName=${ENV_NAME} \
-    envShortName=${ENV_SHORT_NAME} \
-    opsmanImage=${OPS_MANAGER_IMAGE} \
-    PKSDomainName=${PKS_DOMAIN_NAME} \
-    PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \
-    opsmanUsername=${PCF_OPSMAN_USERNAME} \
-    notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
-    PKSAutopilot=${PKS_AUTOPILOT} \
-    PKSVersion=${PKS_VERSION} \
-    net16bitmask=${NET_16_BIT_MASK} \
-    useSelfCerts=${USE_SELF_CERTS} \
-    _artifactsLocation=${ARTIFACTS_LOCATION} \
-    vmSize=${VMSIZE} \
-    opsmanImageRegion=${OPS_MANAGER_IMAGE_REGION}
-```
-
-## using a parameter file
-
-tbd
-
-## parameters and variables
-
- variable  | parameter  | default value  | mandatory | description  
---:|---|---|---|---
- IAAS  |   |   |   |
- JUMPBOX_RG  |   |   | no, only to create RG/ Deployment  |
- JUMPBOX_NAME  |   |   | yes  |
- ADMIN_USERNAME  |   | ubuntu  | no  |
- AZURE_CLIENT_ID  |   |   |  yes |
- AZURE_CLIENT_SECRET |   |   | yes  |
- AZURE_REGION  |   | westeurope  | no  |
- AZURE_SUBSCRIPTION_ID  |   |   | yes  |
- AZURE_TENANT_ID   |   |   | yes  |
- PIVNET_UAA_TOKEN  |   |   | yes  | will also be password for OpsManager and k8sadmin
- ENV_NAME  |   | pks  | no  |
- ENV_SHORT_NAME  |   |   |yes |
- OPS_MANAGER_IMAGE  |opsManImage   | ops-manager-2.4-build.152.vhd | no  |
- PKS_DOMAIN_NAME  |   |   | yes  |
- PKS_SUBDOMAIN_NAME  |   |   | yes  |
- PKS_VERSION  |   |1.3.2 |no|
- PCF_OPSMAN_USERNAME  |   | opsman  | no  |
- PKS_NOTIFICATIONS_EMAIL  |   | user@example.com  | no  | will also be used as k8sadmin email field
- PKS_AUTOPILOT  |   |TRUE   |no   |
- NET_16_BIT_MASK  |   |   | no  |
- USE_SELF_CERTS  |   | true  | no  |
- OPS_MANAGER_IMAGE_REGION  | opsmanImageRegion  | westeurope  | yes  |opsmanager image region, westus, easus, westeurope or southeasasia
-
-## debugging/ monitoring
-
-watching the JUMPHost resource group creation  
-
-```bash
-watch az resource list --output table --resource-group ${JUMPBOX_RG}
-```
-
-watching the pks resource group creation  
-
-```bash
-watch az resource list --output table --resource-group ${ENV_NAME}
-```
+## troubleshooting
 
 ssh into the Jumpbox  
 
