@@ -18,8 +18,15 @@ it is based on an  [azure rm deployment template](./azuredeploy.json).
 
 It will pave the infrastructure using Pivotal [terraforming-azure](https://github.com/pivotal-cf/terraforming-azure).  
 Pivotal Operations Manager will be installed and configured using Pivotal [om cli](https://github.com/pivotal-cf/om).  
-Optionally, PKS will be deployed using [om cli](https://github.com/pivotal-cf/om).  
-For that, the Tile and required Stemcell is downloaded automatically.
+PKS and Harbor Tiles  will be deployed using [om cli](https://github.com/pivotal-cf/om).  
+For that, the Tiles and required Stemcell(s) are downloaded automatically.
+
+## Supported Versions
+
+- <img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_pivotal_generic@2x.png" height="16"> OpsManager 2.4x
+- <img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_pivotalcontainerservice@2x.png" height="16"> Pivotal PKS 1.3.x
+- <img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_vmware_harbor@2x.png" height="16"> Harbor >=1.7.3
+- <img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_gpdb@2x.png" height="16"> Greenplum for Kubernetes 0.8.x
 
 ## features
 
