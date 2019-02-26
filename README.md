@@ -49,7 +49,7 @@ For that, the Tiles and required Stemcell(s) are downloaded automatically.
 
 ## usage
 
-there are are multiple ways to deploy the ARM template. we will describe Azure Portal Template based and az cli based Method  
+there are are multiple ways to deploy the ARM template. we will describe [Azure Portal Template based](#installation-using-template-deployment-preferred-for-first-time-users) and az cli based Method  
 
 ### create a ssh keypair for the admin user ( if not already done )
 
