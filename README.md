@@ -32,7 +32,7 @@ For that, the Tile and required Stemcell is downloaded automatically.
 - installation of cf-uaac, bosh cli
 - dns configuration and check
 - creation of public lb and dns a records for k8s clusters
-- [script for additional k8s clusters](/docs/create_cluster.md)
+- [script for additional k8s clusters](docs/create_cluster.md)
 - load balancer rules for uaa and api access
 
 ## requirements
@@ -65,9 +65,9 @@ ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
 
 ### Installation using az cli
 
-see this [Document](/docs/az_cli_method.md) for installation using AZ CLI
+see this [Document](docs/az_cli_method.md) for installation using AZ CLI
 
-## What´s next 
+## What´s next
 
 Monitor your Deployment using [debugging section](#debugging-monitoring)
 
