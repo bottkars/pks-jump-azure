@@ -52,7 +52,7 @@ both methods require an SSH Keypair
 ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
 ```
 
-### installation using Template Deployment
+### installation using Template Deployment (Preferred for First Time Users)
 
 1. use the "deploy to Azure Button" to start a Template Deployment
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbottkars%2Fpks-jump-azure%2Fmaster%2Fazuredeploy.json" target="_blank">
@@ -63,13 +63,18 @@ ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
 ![image](https://user-images.githubusercontent.com/8255007/53296940-f0fb9900-3815-11e9-9404-de801064187a.png)
 3. when done, click *Purchase*.
 
-### Installation using az cli
+### Installation using az cli ( for Advanced Users)
 
 see this [Document](docs/az_cli_method.md) for installation using AZ CLI
 
 ## What´s next
 
+When the ARM Deployment is finished, the Post Deployment jobs start
+
 Monitor your Deployment using [debugging section](#debugging-monitoring)
+
+When the Deployment has finished, continue to
+[getting started after deployment](./initial_tasks.md)
 
 the deployment might pause after opsmanager deployment, if your  opsmanager  fqdn is not resolvable  
 the log file will, at this stage, show the Azure Name Servers that need to be added to your DNS NS Record  
@@ -77,9 +82,7 @@ the log file will, at this stage, show the Azure Name Servers that need to be ad
 ![image](https://user-images.githubusercontent.com/8255007/51382000-ed3d6e00-1b15-11e9-8318-04c9f0993a1d.png)  
 once fixed, the deployment will continue.
 
-[getting started after deployment](./initial_tasks.md)
-
-## troubleshooting
+## debugging-monitoring
 
 ssh into the Jumpbox  
 
@@ -93,44 +96,18 @@ tail the installation log
 tail -f ~/install.log
 ```
 
-generate a parameter report for opsman deployment
-
-```bash
-az group deployment show --name generate-customdata --resource-group ${JUMPBOX_RG} --query properties.parameters.customData.value
-```
-
 ### cleanup
+Simply delete the Resource Groups
+if using the Advances method, you may use:
 
 ```bash
 az group delete --name ${JUMPBOX_RG} --yes
 az group delete --name ${ENV_NAME} --yes
 ssh-keygen -R "${JUMPBOX_NAME}.${AZURE_REGION}.cloudapp.azure.com"
-az role definition delete --name ${ENV_NAME}-pks-worker-role
-az role definition delete --name ${ENV_NAME}-pks-master-role
+az role definition delete --name ${SUBSCRIPTION_ID}-${ENV_NAME}-pks-worker-role
+az role definition delete --name ${SUBSCRIPTION_ID}-${ENV_NAME}-pks-master-role
 ```
 
-### connect to bosh
+## Advanced tasks
 
-```bash
-source .env.sh
-export OM_TARGET=pcf.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}
-export OM_USERNAME=${PCF_OPSMAN_USERNAME}
-export OM_PASSWORD=${PIVNET_UAA_TOKEN}
-export $( \
-  om \
-    --skip-ssl-validation \
-    curl \
-      --silent \
-      --path /api/v0/deployed/director/credentials/bosh_commandline_credentials | \
-        jq --raw-output '.credential' \
-)
-```
-
-### ssh into the opsmanager 
-
-from the jumpbox, you can  
-
-```bash
-source .env.sh
-ssh -i opsman ${ADMIN_USERNAME}@${PCF_OPSMAN_FQDN}
-```
+see [advanced tasks](docs/advanced.md) that can make your life easy
