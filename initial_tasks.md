@@ -43,7 +43,6 @@ this will create a local ~/.kube/config file.
 once done, start `kubectl proxy` on you local host.
 
 start you browser and navigate to [kube dashboard](http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy)  
-<img width="512" alt="asets_uuid" src="http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy">  
 
 at the sign in windows, select *Browse to a kube config file*  
 
