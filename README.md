@@ -24,7 +24,7 @@ For that, the Tiles and required Stemcell(s) are downloaded automatically.
 ## Supported Versions
 
 - <a href="https://network.pivotal.io/products/ops-manager" title="OpsManager 2.4x">
-<img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_pivotal_generic@2x.png" height="16"> /a>
+<img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_pivotal_generic@2x.png" height="16"> </a>
 - <img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_pivotalcontainerservice@2x.png" height="16"> Pivotal PKS 1.3.x
 - <img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_vmware_harbor@2x.png" height="16"> Harbor >=1.7.3
 - <img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_gpdb@2x.png" height="16"> Greenplum for Kubernetes 0.8.x
