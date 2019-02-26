@@ -79,8 +79,8 @@ pks_key_pem: "${PKS_KEY_PEM}"
 pks_api_hostname: "${PKS_API_HOSTNAME}"
 pks_lb: "${PKS_LB}"
 primary_availability_set: "${ENV_NAME}-availability-set"
-pks_master_identity: "${AZURE_SUBSCRIPTION_ID}.${ENV_NAME}-pks-master"
-pks_worker_identity: "${AZURE_SUBSCRIPTION_ID}.${ENV_NAME}-pks-worker"
+pks_master_identity: "${AZURE_SUBSCRIPTION_ID}-${ENV_NAME}-pks-master"
+pks_worker_identity: "${AZURE_SUBSCRIPTION_ID}-${ENV_NAME}-pks-worker"
 EOF
 
 if  [ -z ${NO_APPLY} ] ; then
