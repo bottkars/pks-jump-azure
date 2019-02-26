@@ -29,9 +29,9 @@ product-properties:
   .properties.cloud_provider.azure.primary_availability_set:
     value: ((primary_availability_set))
   .properties.cloud_provider.azure.azure_master_managed_identity:
-    value: ((pks-master-identity))
+    value: ((pks_master_identity))
   .properties.cloud_provider.azure.azure_worker_managed_identity:
-    value: ((pks-worker-identity))      
+    value: ((pks_worker_identity))      
   .properties.plan1_selector:
     value: Plan Active
     selected_option: active
