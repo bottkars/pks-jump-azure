@@ -237,7 +237,15 @@ EOF
 wget -q https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/main.tf -O ./main.tf
 wget -q https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/variables.tf -O ./variables.tf
 # end patch 
-
+az login --service-principal \
+  --username ${AZURE_CLIENT_ID} \
+  --password ${AZURE_CLIENT_SECRET} \
+  --tenant ${AZURE_TENANT_ID}
+ 
+az role definition delete \
+  --name ${SUBSCRIPTION_ID}-${ENV_NAME}-pks-worker-role
+az role definition delete \
+  --name ${SUBSCRIPTION_ID}-${ENV_NAME}-pks-master-role
 
 chmod 755 terraform.tfvars
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} terraform.tfvars
@@ -248,13 +256,6 @@ retryop "sudo -S -u ${ADMIN_USERNAME} terraform apply -auto-approve" 3 10
 sudo -S -u ${ADMIN_USERNAME} terraform output ops_manager_ssh_private_key > ${HOME_DIR}/opsman
 sudo -S -u ${ADMIN_USERNAME} chmod 600 ${HOME_DIR}/opsman
 
-
-
-## creating dns record for api
-az login --service-principal \
-  --username ${AZURE_CLIENT_ID} \
-  --password ${AZURE_CLIENT_SECRET} \
-  --tenant ${AZURE_TENANT_ID}
  
 AZURE_LB_PUBLIC_IP=$(az network public-ip show \
   --resource-group ${ENV_NAME} \

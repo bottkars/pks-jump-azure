@@ -112,8 +112,8 @@ if using the Advances method, you may use:
 az group delete --name ${JUMPBOX_RG} --yes
 az group delete --name ${ENV_NAME} --yes
 ssh-keygen -R "${JUMPBOX_NAME}.${AZURE_REGION}.cloudapp.azure.com"
-az role definition delete --name ${SUBSCRIPTION_ID}-${ENV_NAME}-pks-worker-role
-az role definition delete --name ${SUBSCRIPTION_ID}-${ENV_NAME}-pks-master-role
+az role definition delete --name ${AZURE_SUBSCRIPTION_ID}-${ENV_NAME}-pks-worker-role
+az role definition delete --name ${AZURE_SUBSCRIPTION_ID}-${ENV_NAME}-pks-master-role
 ```
 
 ## Advanced tasks
