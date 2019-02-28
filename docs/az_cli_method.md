@@ -56,7 +56,7 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     opsmanUsername=${PKS_OPSMAN_USERNAME} \
     _artifactsLocation=${ARTIFACTS_LOCATION} \
     vmSize=${VMSIZE} \
-    WavefrontAPIurl=${WAVEFRONT_API} \
+    WavefrontAPIUrl=${WAVEFRONT_API} \
     WavefrontToken=${WAVEFRONT_TOKEN} \
     opsmanImageRegion=${OPS_MANAGER_IMAGE_REGION}
 ```

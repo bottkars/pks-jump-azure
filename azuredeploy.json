@@ -133,14 +133,16 @@
                 "description": "The version for the Greenplum Database ( optional )"
             }
         },
-        "WavefrontAPIurl": {
+        "WavefrontAPIUrl": {
             "type": "string",
+            "defaultValue": "",
             "metadata": {
                 "description": "The Wavefront API url ( optional )"
             }
         }, 
         "WavefrontToken": {
             "type": "string",
+            "defaultValue": "",
             "metadata": {
                 "description": "The Wavefront API url ( optional )"
             }
@@ -483,7 +485,7 @@
                             "USE_SELF_CERTS": "[parameters('useSelfCerts')]",
                             "JUMP_VNET": "[variables('virtualNetworkName')]",
                             "JUMP_RG": "[resourceGroup().name]",
-                            "WAVEFRONT_API": "[parameters('WavefrontAPIurl')]",
+                            "WAVEFRONT_API": "[parameters('WavefrontAPIUrl')]",
                             "WAVEFRONT_TOKEN": "[parameters('WavefrontToken')]"
                         }
                     }
