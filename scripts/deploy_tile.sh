@@ -172,6 +172,16 @@ om --skip-ssl-validation \
   configure-product \
   -c ${TEMPLATE_DIR}/${TILE}.yaml -l ${TEMPLATE_DIR}/${TILE}_vars.yaml
 
+case ${TILE} in
+    pks)
+    if  [ ! -z ${WAVEFRONT}  ]; then
+    om --skip-ssl-validation \
+      configure-product \
+      -c ${TEMPLATE_DIR}/wavefront.yaml -l ${TEMPLATE_DIR}/${TILE}_vars.yaml
+    fi
+esac
+echo "No Product Apply"
+
 echo $(date) start apply ${PRODUCT_SLUG}
 
 if  [ ! -z ${NO_APPLY} ] ; then

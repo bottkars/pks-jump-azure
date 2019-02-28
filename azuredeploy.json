@@ -133,6 +133,18 @@
                 "description": "The version for the Greenplum Database ( optional )"
             }
         },
+        "WavefrontAPIurl": {
+            "type": "string",
+            "metadata": {
+                "description": "The Wavefront API url ( optional )"
+            }
+        }, 
+        "WavefrontToken": {
+            "type": "string",
+            "metadata": {
+                "description": "The Wavefront API url ( optional )"
+            }
+        },               
         "opsmanImage": {
             "type": "string",
             "minLength": 3,
@@ -284,6 +296,7 @@
             "[concat(variables('baseUri'),  '/templates/standard_storage.yaml')]",
             "[concat(variables('baseUri'),  '/templates/harbor.yaml')]",
             "[concat(variables('baseUri'),  '/templates/pks.yaml')]",
+            "[concat(variables('baseUri'),  '/templates/wavefront.yaml')]",            
             "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/shared_scripts/ubuntu/vm-disk-utils-0.1.sh"
         ]
     },
@@ -469,7 +482,9 @@
                             "PKS_VERSION": "[parameters('PKSVersion')]",
                             "USE_SELF_CERTS": "[parameters('useSelfCerts')]",
                             "JUMP_VNET": "[variables('virtualNetworkName')]",
-                            "JUMP_RG": "[resourceGroup().name]"
+                            "JUMP_RG": "[resourceGroup().name]",
+                            "WAVEFRONT_API": "[parameters('WavefrontAPIurl')]",
+                            "WAVEFRONT_TOKEN": "[parameters('WavefrontToken')]"
                         }
                     }
                 }

@@ -1,0 +1,9 @@
+product-name: pivotal-container-service
+product-properties:
+  .properties.wavefront:
+    value: ((wavefront))
+  .properties.wavefront.enabled.wavefront_api_url:
+    value: ((wavefront_api))
+  .properties.wavefront.enabled.wavefront_token:
+    value:
+      secret: ((wavefront_token))

@@ -81,6 +81,9 @@ pks_lb: "${PKS_LB}"
 primary_availability_set: "${ENV_NAME}-availability-set"
 pks_master_identity: "pks-master"
 pks_worker_identity: "pks-worker"
+wavefront: ${WAVEFRONT}
+wavefront_api: ${WAVEFRONT_API_URL}
+wavefront_token: ${WAVEFRONT_TOKEN}
 EOF
 
 if  [ -z ${NO_APPLY} ] ; then

@@ -56,7 +56,8 @@ DOWNLOAD_DIR="/datadisks/disk1"
 USE_SELF_CERTS=$(get_setting USE_SELF_CERTS)
 JUMP_RG=$(get_setting JUMP_RG)
 JUMP_VNET=$(get_setting JUMP_VNET)
-
+WAVEFRONT_API=$(get_setting WavefrontAPIurl)
+WAVEFRONT_TOKEN=$(get_setting WavefrontToken)
 HOME_DIR="/home/${ADMIN_USERNAME}"
 LOG_DIR="${HOME_DIR}/conductor/logs"
 SCRIPT_DIR="${HOME_DIR}/conductor/scripts"
@@ -64,13 +65,10 @@ LOG_DIR="${HOME_DIR}/conductor/logs"
 ENV_DIR="${HOME_DIR}/conductor/env"
 TEMPLATE_DIR="${HOME_DIR}/conductor/templates"
 
-
 sudo -S -u ${ADMIN_USERNAME} mkdir -p ${TEMPLATE_DIR}
 sudo -S -u ${ADMIN_USERNAME} mkdir -p ${SCRIPT_DIR}
 sudo -S -u ${ADMIN_USERNAME} mkdir -p ${ENV_DIR}
 sudo -S -u ${ADMIN_USERNAME} mkdir -p ${LOG_DIR}
-
-
 
 cp *.sh ${SCRIPT_DIR}
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${SCRIPT_DIR}/*.sh
@@ -89,6 +87,10 @@ ${SCRIPT_DIR}/vm-disk-utils-0.1.sh
 
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${DOWNLOAD_DIR}
 chmod -R 755 ${DOWNLOAD_DIR}
+
+if  [ ! -z ${WAVEFRONT-APi}  ] && [ ! -z ${WAVEFRONT_TOKEN}  ]; then
+  WAVEFRONT=enabled
+fi
 
 $(cat <<-EOF > ${HOME_DIR}/.env.sh
 #!/usr/bin/env bash
@@ -119,12 +121,14 @@ LOG_DIR=${LOG_DIR}
 ENV_DIR=${ENV_DIR}
 SCRIPT_DIR=${SCRIPT_DIR}
 TEMPLATE_DIR=${TEMPLATE_DIR}
+WAVEFRONT_API=${WAVEFRONT_API}
+WAVEFRONT_TOKEN=${WAVEFRONT_TOKEN}
+WAVEFRONT=${WAVEFRONT}
 EOF
 )
 
 chmod 600 ${HOME_DIR}/.env.sh
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${HOME_DIR}/.env.sh
-
 
 retryop "sudo apt -y install apt-transport-https lsb-release software-properties-common" 10 30
 AZ_REPO=$(lsb_release -cs)
