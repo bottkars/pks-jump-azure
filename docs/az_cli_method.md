@@ -39,8 +39,9 @@ deployment using the default parameters only passes a minimum required parameter
 ```bash
 az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
 az group deployment create --resource-group ${JUMPBOX_RG} \
-    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/${BRANCH}/azuredeploy.json \
+    --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/$BRANCH/azuredeploy.json \
     --parameters \
+    adminUsername=${ADMIN_USERNAME} \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
     JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
     clientSecret=${AZURE_CLIENT_SECRET} \
@@ -48,9 +49,16 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     tenantID=${AZURE_TENANT_ID} \
     subscriptionID=${AZURE_SUBSCRIPTION_ID} \
     pivnetToken=${PIVNET_UAA_TOKEN} \
+    envName=${ENV_NAME} \
     envShortName=${ENV_SHORT_NAME} \
     PKSDomainName=${PKS_DOMAIN_NAME} \
-    PKSSubdomainName=${PKS_SUBDOMAIN_NAME}
+    PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \
+    opsmanUsername=${PKS_OPSMAN_USERNAME} \
+    _artifactsLocation=${ARTIFACTS_LOCATION} \
+    vmSize=${VMSIZE} \
+    WavefrontAPIurl=${WAVEFRONT_API} \
+    WavefrontToken=${WAVEFRONT_TOKEN} \
+    opsmanImageRegion=${OPS_MANAGER_IMAGE_REGION}
 ```
 
 ### validate using customized parameters
