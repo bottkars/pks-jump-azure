@@ -88,7 +88,10 @@ ${SCRIPT_DIR}/vm-disk-utils-0.1.sh
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${DOWNLOAD_DIR}
 chmod -R 755 ${DOWNLOAD_DIR}
 
-if  [ ! -z ${WAVEFRONT-APi}  ] && [ ! -z ${WAVEFRONT_TOKEN}  ]; then
+if  [ ! -z ${WAVEFRONT_API} ] && \
+[ ! -z ${WAVEFRONT_TOKEN} ] && \
+[ ${WAVEFRONT_API} != "null" ] && \
+[ ${WAVEFRONT_TOKEN} != "null" ]; then
   WAVEFRONT=enabled
 fi
 

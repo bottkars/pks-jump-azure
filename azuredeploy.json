@@ -135,14 +135,14 @@
         },
         "WavefrontAPIUrl": {
             "type": "string",
-            "defaultValue": "",
+            "defaultValue": "null",
             "metadata": {
                 "description": "The Wavefront API url ( optional )"
             }
         }, 
         "WavefrontToken": {
             "type": "string",
-            "defaultValue": "",
+            "defaultValue": "null",
             "metadata": {
                 "description": "The Wavefront API url ( optional )"
             }
