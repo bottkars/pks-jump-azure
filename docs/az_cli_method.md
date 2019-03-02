@@ -55,10 +55,7 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \
     opsmanUsername=${PKS_OPSMAN_USERNAME} \
     _artifactsLocation=${ARTIFACTS_LOCATION} \
-    vmSize=${VMSIZE} \
-    WavefrontAPIUrl=${WAVEFRONT_API} \
-    WavefrontToken=${WAVEFRONT_TOKEN} \
-    opsmanImageRegion=${OPS_MANAGER_IMAGE_REGION}
+    vmSize=${VMSIZE} 
 ```
 
 ### validate using customized parameters
@@ -89,7 +86,11 @@ az group deployment validate --resource-group ${JUMPBOX_RG} \
     useSelfCerts=${USE_SELF_CERTS} \
     _artifactsLocation=${ARTIFACTS_LOCATION} \
     vmSize=${VMSIZE} \
+    opsmanImage=${OPS_MANAGER_IMAGE} \
+    WavefrontAPIUrl=${WAVEFRONT_API} \
+    WavefrontToken=${WAVEFRONT_TOKEN} \
     opsmanImageRegion=${OPS_MANAGER_IMAGE_REGION}
+
 ```
 
 installation using customized parameter set´s all required parameters from variables in your .env file
