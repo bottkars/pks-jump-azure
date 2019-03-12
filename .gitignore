@@ -5,3 +5,5 @@ om_init.1.sh
 .env.testing
 additional.md
 sendgrid.md
+.DS_Store
+
