@@ -124,11 +124,12 @@
             "type": "string",
             "allowedValues": [
                 "0.8.1",
-                "0.8.0"
+                "0.8.0",
+                "1.0.0"
             ],
             "minLength": 5,
             "maxLength": 13,
-            "defaultValue": "0.8.1",
+            "defaultValue": "1.0.0",
             "metadata": {
                 "description": "The version for the Greenplum Database ( optional )"
             }
