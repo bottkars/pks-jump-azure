@@ -27,3 +27,15 @@ from the jumpbox, you can
 source .env.sh
 ssh -i opsman ${ADMIN_USERNAME}@${PCF_OPSMAN_FQDN}
 ```
+
+## om from jump
+
+```bash
+source ~/.env.sh
+PIVNET_UAA_TOKEN=$PCF_PIVNET_UAA_TOKEN
+
+export OM_TARGET=${PCF_OPSMAN_FQDN}
+export OM_USERNAME=${PCF_OPSMAN_USERNAME}
+export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
+```
+
