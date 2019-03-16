@@ -155,7 +155,7 @@ echo $(date) start staging ${PRODUCT_SLUG}
 om --skip-ssl-validation \
   stage-product \
   --product-name ${PRODUCT_SLUG} \
-  --product-version ${PCF_VERSION}
+  --product-version ${VERSION}
 echo $(date) end staging ${PRODUCT_SLUG}
 
 if  [ ! -z ${LOAD_STEMCELL} ] ; then
