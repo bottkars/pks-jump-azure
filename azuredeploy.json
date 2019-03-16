@@ -26,7 +26,7 @@
             }
         },
         "clientSecret": {
-            "type": "string",
+            "type": "securestring",
             "minLength": "36",
             "metadata": {
                 "description": "Azure Service Principal Secret"
@@ -50,7 +50,7 @@
         },
 
         "pivnetToken": {
-            "type": "string",
+            "type": "securestring",
             "minLength": "34",
             "maxLength": "34",
             "metadata": {
@@ -99,7 +99,8 @@
             "allowedValues": [
                 "1.3.2",
                 "1.3.1",
-                "1.3.3"
+                "1.3.3",
+                "1.3.4-build.8"
             ],
             "minLength": 5,
             "maxLength": 13,
@@ -152,13 +153,14 @@
             "type": "string",
             "minLength": 3,
             "allowedValues": [
+                "ops-manager-2.4-build.186.vhd",
                 "ops-manager-2.4-build.152.vhd",
                 "ops-manager-2.4-build.145.vhd",
                 "ops-manager-2.4-build.142.vhd",
                 "ops-manager-2.4-build.131.vhd",
                 "ops-manager-2.4-build.117.vhd"
             ],
-            "defaultValue": "ops-manager-2.4-build.152.vhd",
+            "defaultValue": "ops-manager-2.4-build.168.vhd",
             "metadata": {
                 "description": "Image Name of Operation Manager Image"
             }
@@ -174,7 +176,7 @@
         "notificationsEmail": {
             "type": "string",
             "minLength": "5",
-            "defaultValue": "email@example.com",
+            "defaultValue": "user@example.com",
             "metadata": {
                 "description": "email to send notifications"
             }

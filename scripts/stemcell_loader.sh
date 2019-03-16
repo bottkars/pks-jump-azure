@@ -52,7 +52,7 @@ cp -n $STEMCELL_FILENAME $DOWNLOAD_DIR/$PRODUCT_FILENAME
 
 om --skip-ssl-validation \
 upload-stemcell \
---floating=false \
+--floating=true \
 --stemcell $DOWNLOAD_DIR/$PRODUCT_FILENAME
 
 }
