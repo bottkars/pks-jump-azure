@@ -144,7 +144,9 @@ PRODUCTS=$(om --skip-ssl-validation \
   available-products \
     --format json)
 
-# VERSION=$(echo ${PRODUCTS} |\
+VERSION=$(echo ${PRODUCTS} |\
+jq --arg product_name ${PRODUCT_SLUG} -r 'map(select(.name==$product_name)) | first | .version')
+
 #  jq --arg product_name ${PRODUCT_SLUG} --arg product_version ${PCF_VERSION} -r 'map(select(.name==$product_name and .version==$product_version))')
 
 
