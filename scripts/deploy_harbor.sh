@@ -120,7 +120,7 @@ if  [ ! -z ${NO_APPLY} ] ; then
     elif [ ! -z ${APPLY_ALL} ] ; then
         echo "calling tile Installer with apply All"
         ${SCRIPT_DIR}/deploy_tile.sh -t harbor -a
-    fi
+#    fi
 else
     echo "No Product Apply"
     ${SCRIPT_DIR}/deploy_tile.sh -t harbor -d
