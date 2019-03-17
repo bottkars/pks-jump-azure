@@ -6,14 +6,14 @@ mkdir -p ${LOG_DIR}
 UPDATE_DIR=${HOME}/conductor/updates
 mkdir -p ${UPDATE_DIR}
 BASE_URI="https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/"
-TEMPLATE_LIST=${BASE_URI}templates/templates.txt
+TEMPLATE_LIST=${BASE_URI}templates/updates.txt
 
 if ! which parallel > /dev/null; then
    sudo apt install parallel -y
 fi   
 
-wget -P ${UPDATE_DIR} ${TEMPLATE_LIST}
-cat ${UPDATE_DIR}/templates.txt | parallel --gnu --citation "wget -P ${HOME}/conductor/templates {}"
+wget -N -P ${UPDATE_DIR} ${TEMPLATE_LIST}
+cat ${UPDATE_DIR}/updates.txt | parallel --gnu --citation "wget -N -P ${HOME}/conductor/templates {}"
 
 
 rm -rf ${UPADTE_DIR}
