@@ -18,6 +18,8 @@ DOMAIN="${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}"
  --force \
  --debug \
  -d ${DOMAIN} \
+ -d pcf.${DOMAIN} \
+ -d harbor.${DOMAIN} \
  -d *.sys.${DOMAIN} \
  -d *.apps.${DOMAIN} \
  -d *.login.sys.${DOMAIN} \
