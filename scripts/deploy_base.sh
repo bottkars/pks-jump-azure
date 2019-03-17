@@ -240,9 +240,11 @@ ops_manager_private_ip = "${NET_16_BIT_MASK}.8.4"
 pcf_virtual_network_address_space = ["${NET_16_BIT_MASK}.0.0/16"]
 EOF
 # patch terraform for managed identity if tf is 0.29
-
-wget -q https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/main.tf -O ./main.tf
-wget -q https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/variables.tf -O ./variables.tf
+PATCH_SERVER="https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/"
+wget -q ${PATCH_SERVER}main.tf -O ./main.tf
+wget -q ${PATCH_SERVER}variables.tf -O ./variables.tf
+wget -q ${PATCH_SERVER}modules/networking.tf -O ../modules/pks/networking.tf
+wget -q ${PATCH_SERVER}modules/variables.tf -O ../modules/pks/variables.tf
 # end patch 
 az login --service-principal \
   --username ${AZURE_CLIENT_ID} \
