@@ -243,8 +243,8 @@ EOF
 PATCH_SERVER="https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/"
 wget -q ${PATCH_SERVER}main.tf -O ./main.tf
 wget -q ${PATCH_SERVER}variables.tf -O ./variables.tf
-wget -q ${PATCH_SERVER}modules/networking.tf -O ../modules/pks/networking.tf
-wget -q ${PATCH_SERVER}modules/variables.tf -O ../modules/pks/variables.tf
+wget -q ${PATCH_SERVER}modules/pks/networking.tf -O ../modules/pks/networking.tf
+wget -q ${PATCH_SERVER}modules/pks/variables.tf -O ../modules/pks/variables.tf
 # end patch 
 az login --service-principal \
   --username ${AZURE_CLIENT_ID} \
