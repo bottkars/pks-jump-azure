@@ -84,6 +84,13 @@ for FILE in "${FILES[@]}"; do
     fi
 done
 
+
+om --skip-ssl-validation \
+update-ssl-certificate \
+    --certificate-pem "$(cat ${HOME_DIR}/fullchain.cer)" \
+    --private-key-pem "$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key)"
+
+
 cd ${HOME_DIR}
 cat << EOF > ${TEMPLATE_DIR}/director_vars.yaml
 subscription_id: ${AZURE_SUBSCRIPTION_ID}
