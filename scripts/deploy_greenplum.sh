@@ -38,7 +38,10 @@ export OM_TARGET=${PCF_OPSMAN_FQDN}
 export OM_USERNAME=${PCF_OPSMAN_USERNAME}
 export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
 
-
+if  [ -z ${CLUSTER} ] ; then
+ echo "Please specify K8S Cluster Name with -c|--K8S_CLUSTER_NAME"
+ exit 1
+fi 
 
 
 source ${ENV_DIR}/greenplum.env
