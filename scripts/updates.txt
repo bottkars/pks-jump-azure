@@ -1,2 +1,2 @@
-https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/deploy_pks.sh
-https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/update.sh
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/deploy_pks.sh
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/update.sh
