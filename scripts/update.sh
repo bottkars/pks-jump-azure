@@ -6,7 +6,7 @@ mkdir -p ${LOG_DIR}
 UPDATE_DIR=${HOME}/conductor/updates/
 mkdir -p ${UPDATE_DIR}
 BASE_URI="https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/"
-wget -p ${UPDATE_DIR} ${BASE_URI}/templates/updatefiles.txt
+wget -P ${UPDATE_DIR} ${BASE_URI}/templates/updatefiles.txt
 # cat urlfile | parallel --gnu "wget {}"
 
 
