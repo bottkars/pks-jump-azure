@@ -19,7 +19,7 @@ declare -a DIRECTORIES=("templates","scripts" )
 for DIRECTORY in "${DIRECTORIES[@]}"; do
     UPDATE_LIST=${BASE_URI}${DIRECTORY}/updates.txt
     echo "updating ${DIRECTORY}"
-    wget -N -P ${UPDATE_DIR} ${UPDATE_LIST}
+    wget -N -P ${UPDATE_DIR} ${UPDATE_LIST} -q --show-progress
     parallel -a ${UPDATE_DIR}/updates.txt --no-notice "wget -N -P ${HOME}/conductor/${DIRECTORY} {} -q --show-progress"
 done
 
