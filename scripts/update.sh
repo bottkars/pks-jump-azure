@@ -21,6 +21,7 @@ for DIRECTORY in "${DIRECTORIES[@]}"; do
     echo "updating ${DIRECTORY}"
     wget -N -P ${UPDATE_DIR} ${UPDATE_LIST} -q --show-progress
     parallel -a ${UPDATE_DIR}/updates.txt --no-notice "wget -N -P ${HOME}/conductor/${DIRECTORY} {} -q --show-progress"
+    echo "/n"
 done
 
 rm -rf ${UPADTE_DIR}
