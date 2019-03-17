@@ -1,1 +1,7 @@
-${BASE_URI}/templates/nginx_test.yaml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/nginx_test.yaml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/pks.yaml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/shared_storage.yaml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/standard_storage.yaml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/wavefront.yaml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/harbor.yaml
+

@@ -13,7 +13,7 @@ if ! which parallel > /dev/null; then
 fi   
 
 wget -P ${UPDATE_DIR} ${TEMPLATE_LIST}
-cat ${UPDATE_DIR}/templates.txt | parallel --gnu "wget -P ${HOME}/conductor/templates {}"
+cat ${UPDATE_DIR}/templates.txt | parallel --gnu --citation "wget -P ${HOME}/conductor/templates {}"
 rm -rf ${UPADTE_DIR}/templates.txt
 
 
