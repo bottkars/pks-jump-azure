@@ -14,7 +14,9 @@ fi
 
 wget -P ${UPDATE_DIR} ${TEMPLATE_LIST}
 cat ${UPDATE_DIR}/templates.txt | parallel --gnu --citation "wget -P ${HOME}/conductor/templates {}"
-rm -rf ${UPADTE_DIR}/templates.txt
+
+
+rm -rf ${UPADTE_DIR}
 
 
 # wget -O - https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/update.sh | bash
