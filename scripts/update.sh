@@ -13,7 +13,7 @@ if ! which parallel > /dev/null; then
 fi   
 
 wget -N -P ${UPDATE_DIR} ${TEMPLATE_LIST}
-parallel -a ${UPDATE_DIR}/updates.txt --no-notice "wget -N -P ${HOME}/conductor/templates {}"
+parallel -a ${UPDATE_DIR}/updates.txt --no-notice "wget -N -P ${HOME}/conductor/templates {} -q --show-progress"
 
 
 rm -rf ${UPADTE_DIR}
