@@ -20,8 +20,17 @@ case $key in
     ;;
 esac
 done
+
 set -- "${POSITIONAL[@]}" # restore positional parameters
+
+if  [ -z ${CLUSTER} ] ; then
+ echo "Please specify K8S Cluster Name with -c|--K8S_CLUSTER_NAME"
+ exit 1
+fi 
+
 source ~/.env.sh
+
+
 pks login -a api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} -u k8sadmin -p ${PIVNET_UAA_TOKEN} --skip-ssl-validation
 echo "creating cluster ${CLUSTER}, this may take a while"
 pks create-cluster ${CLUSTER} \

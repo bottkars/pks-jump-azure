@@ -22,6 +22,12 @@ case $key in
 esac
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
+
+if  [ -z ${CLUSTER} ] ; then
+ echo "Please specify K8S Cluster Name with -c|--K8S_CLUSTER_NAME"
+ exit 1
+fi 
+
 source ~/.env.sh
 
 az login --service-principal \
