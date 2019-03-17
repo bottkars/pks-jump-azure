@@ -13,7 +13,7 @@ if ! which parallel > /dev/null; then
 fi   
 
 
-declare -a DIRECTORIES=("templates","scripts" )
+declare -a DIRECTORIES=("templates" "scripts" )
  
 # Read the array values with space
 for DIRECTORY in "${DIRECTORIES[@]}"; do
