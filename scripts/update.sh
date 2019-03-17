@@ -8,7 +8,7 @@ mkdir -p ${UPDATE_DIR}
 BASE_URI="https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/"
 TEMPLATE_LIST=${BASE_URI}templates/templates.txt
 wget -P ${UPDATE_DIR} ${TEMPLATE_LIST}
-cat ${UPADTE_DIR}/templates.txt | parallel --gnu "wget -P ${HOME}/conductor/templates {}"
+cat ${UPDATE_DIR}/templates.txt | parallel --gnu "wget -P ${HOME}/conductor/templates {}"
 rm -rf ${UPADTE_DIR}/templates.txt
 
 
