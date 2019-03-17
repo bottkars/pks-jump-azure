@@ -24,6 +24,8 @@ for DIRECTORY in "${DIRECTORIES[@]}"; do
 done
 
 rm -rf ${UPADTE_DIR}
+echo "done"
+
 
 
 # wget -O - https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/update.sh | bash
