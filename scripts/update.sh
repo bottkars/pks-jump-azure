@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source .env.sh
+source ~/.env.sh
 MYSELF=$(basename $0)
 echo "this is the updater"
 mkdir -p ${LOG_DIR}
@@ -20,7 +20,7 @@ for DIRECTORY in "${DIRECTORIES[@]}"; do
     UPDATE_LIST=${BASE_URI}${DIRECTORY}/updates.txt
     echo "updating ${DIRECTORY}"
     wget -N -P ${UPDATE_DIR} ${UPDATE_LIST} --show-progress
-    parallel -a ${UPDATE_DIR}/updates.txt --no-notice "wget -N -P ${HOME}/conductor/${DIRECTORY} {} -q --show-progress"
+    parallel -a ${UPDATE_DIR}/updates.txt --no-notice "wget -N -P ${HOME_DIR}/conductor/${DIRECTORY} {} -q --show-progress"
     echo "\n"
 done
 
