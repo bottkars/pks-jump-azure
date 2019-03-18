@@ -20,6 +20,11 @@ case $key in
     shift # past argument
     shift # past value
     ;;
+    -s|--NAMESPACE)
+    NAMESPACE="$2"
+    shift # past argument
+    shift # past value
+    ;;    
     -r|--ACR_REGISTRY)
     ACR="$2"
     shift # past argument
@@ -41,8 +46,13 @@ export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
 if  [ -z ${CLUSTER} ] ; then
  echo "Please specify K8S Cluster Name with -c|--K8S_CLUSTER_NAME"
  exit 1
-fi 
+fi
 
+if  [ -z ${NAMESPACE} ] ; then
+ NAMESPACE=gpinstance-1
+ echo "Defaulting Namespace to ${NAMESPACE}"
+ exit 1
+fi 
 
 source ${ENV_DIR}/greenplum.env
 
@@ -137,9 +147,10 @@ helm init --wait --service-account tiller --upgrade
 
 helm install --name greenplum-operator -f workspace/operator-values-overrides.yaml  operator/
 
-kubectl create namespace gpinstance-1
+kubectl create namespace ${NAMESPACE}
 cd ~/greenplum-for-kubernetes-*/workspace
-kubectl --namespace=gpinstance-1 apply -f ./my-gp-instance.yaml
+kubectl config set-context $(kubectl config current-context) --namespace=${NAMESPACE}
+kubectl --namespace=${NAMESPACE} apply -f ./my-gp-instance.yaml
 
 
 #### edit yaml
