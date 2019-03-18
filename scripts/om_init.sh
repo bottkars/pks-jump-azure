@@ -1,6 +1,30 @@
 #!/usr/bin/env bash
-cd $1
-source ${1}/.env.sh
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    -h|--HOME)
+    HOME_DIR="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    *)    # unknown option
+    POSITIONAL+=("$1") # save it in an array for later
+    shift # past argument
+    ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+if  [ -z ${HOME_DIR} ] ; then
+ echo "Please specify HOME DIR -h|--HOME"
+ exit 1
+fi 
+
+cd ${HOME_DIR}
+source ${HOME_DIR}/.env.sh
 MYSELF=$(basename $0)
 mkdir -p ${LOG_DIR}
 exec &> >(tee -a "${LOG_DIR}/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
@@ -27,14 +51,117 @@ function retryop()
     exit 1
   fi
 }
-source ~/.env.sh
+
+###
+pushd ${HOME_DIR}
+cd ./pivotal-cf-terraforming-azure-*/terraforming-pks
+
+PATCH_SERVER="https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/"
+wget -q ${PATCH_SERVER}main.tf -O ./main.tf
+wget -q ${PATCH_SERVER}variables.tf -O ./variables.tf
+wget -q ${PATCH_SERVER}modules/pks/networking.tf -O ../modules/pks/networking.tf
+wget -q ${PATCH_SERVER}modules/pks/variables.tf -O ../modules/pks/variables.tf
+# end patch 
+az login --service-principal \
+  --username ${AZURE_CLIENT_ID} \
+  --password ${AZURE_CLIENT_SECRET} \
+  --tenant ${AZURE_TENANT_ID}
+ 
+az role definition delete \
+  --name ${AZURE_SUBSCRIPTION_ID}-${ENV_NAME}-pks-worker-role
+az role definition delete \
+  --name ${AZURE_SUBSCRIPTION_ID}-${ENV_NAME}-pks-master-role
+
+
+retryop "terraform apply -auto-approve" 3 10
+
+terraform output ops_manager_ssh_private_key > ${HOME_DIR}/opsman
+chmod 600 ${HOME_DIR}/opsman
+
+ 
+AZURE_LB_PUBLIC_IP=$(az network public-ip show \
+  --resource-group ${ENV_NAME} \
+  --name ${ENV_NAME}-pks-lb-ip \
+  --query "{address: ipAddress}" \
+  --output tsv)
+
+az network dns record-set a create \
+--resource-group ${ENV_NAME} \
+--zone-name ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} \
+--name api --ttl 60 
+
+
+az network dns record-set a add-record \
+--resource-group ${ENV_NAME} \
+--zone-name ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} \
+--record-set-name api \
+--ipv4-address ${AZURE_LB_PUBLIC_IP}
+
+az network nsg rule create \
+--nsg-name ${ENV_NAME}-bosh-deployed-vms-security-group \
+--resource-group ${ENV_NAME} \
+--name Port_8443 \
+--priority 220 \
+--source-address-prefixes '*' \
+--source-port-ranges '*' \
+--destination-address-prefixes '*' \
+--destination-port-ranges 8443 \
+--access allow \
+--protocol Tcp \
+--description "Allow UAA and K8S Access"
+
+az network nsg rule create \
+--nsg-name ${ENV_NAME}-bosh-deployed-vms-security-group \
+--resource-group ${ENV_NAME} \
+--name Port_9021 \
+--priority 230 \
+--source-address-prefixes '*' \
+--source-port-ranges '*' \
+--destination-address-prefixes '*' \
+--destination-port-ranges 9021 \
+--access allow \
+--protocol Tcp \
+--description "Allow UAA and K8S Access"
+
+# network peerings for bosh
+echo creating network peerings
+
+VNet1Id=$(az network vnet show \
+  --resource-group ${JUMP_RG} \
+  --name ${JUMP_VNET} \
+  --query id --out tsv)
+
+VNet2Id=$(az network vnet show \
+  --resource-group ${ENV_NAME} \
+  --name ${ENV_NAME}-virtual-network \
+  --query id --out tsv)
+
+az network vnet peering create --name PKS-Peer \
+--remote-vnet-id ${VNet2Id} \
+--resource-group ${JUMP_RG} \
+--vnet-name ${JUMP_VNET} \
+--allow-forwarded-traffic \
+--allow-gateway-transit \
+--allow-vnet-access
+
+az network vnet peering create --name JUMP-Peer \
+--remote-vnet-id ${VNet1Id} \
+--resource-group ${ENV_NAME} \
+--vnet-name ${ENV_NAME}-virtual-network \
+--allow-forwarded-traffic \
+--allow-gateway-transit \
+--allow-vnet-access
+
+
+
+
+###
 START_OPSMAN_DEPLOY_TIME=$(date)
 echo ${START_OPSMAN_DEPLOY_TIME} start opsman deployment
 
-pushd ${HOME_DIR}
 
-cd ./pivotal-cf-terraforming-azure-*/
-cd terraforming-pks
+
+
 NET_16_BIT_MASK="10.0" #this is static in terraform 0.29
 AZURE_NAMESERVERS=$(terraform output env_dns_zone_name_servers)
 SSH_PRIVATE_KEY="$(terraform output -json ops_manager_ssh_private_key | jq .value)"

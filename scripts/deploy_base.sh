@@ -240,105 +240,10 @@ ops_manager_private_ip = "${NET_16_BIT_MASK}.8.4"
 pcf_virtual_network_address_space = ["${NET_16_BIT_MASK}.0.0/16"]
 EOF
 # patch terraform for managed identity if tf is 0.29
-PATCH_SERVER="https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/"
-wget -q ${PATCH_SERVER}main.tf -O ./main.tf
-wget -q ${PATCH_SERVER}variables.tf -O ./variables.tf
-wget -q ${PATCH_SERVER}modules/pks/networking.tf -O ../modules/pks/networking.tf
-wget -q ${PATCH_SERVER}modules/pks/variables.tf -O ../modules/pks/variables.tf
-# end patch 
-az login --service-principal \
-  --username ${AZURE_CLIENT_ID} \
-  --password ${AZURE_CLIENT_SECRET} \
-  --tenant ${AZURE_TENANT_ID}
- 
-az role definition delete \
-  --name ${SUBSCRIPTION_ID}-${ENV_NAME}-pks-worker-role
-az role definition delete \
-  --name ${SUBSCRIPTION_ID}-${ENV_NAME}-pks-master-role
+
 
 chmod 755 terraform.tfvars
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} terraform.tfvars
-sudo -S -u ${ADMIN_USERNAME} terraform init
-sudo -S -u ${ADMIN_USERNAME} terraform plan -out=plan
-retryop "sudo -S -u ${ADMIN_USERNAME} terraform apply -auto-approve" 3 10
-
-sudo -S -u ${ADMIN_USERNAME} terraform output ops_manager_ssh_private_key > ${HOME_DIR}/opsman
-sudo -S -u ${ADMIN_USERNAME} chmod 600 ${HOME_DIR}/opsman
-
- 
-AZURE_LB_PUBLIC_IP=$(az network public-ip show \
-  --resource-group ${ENV_NAME} \
-  --name ${ENV_NAME}-pks-lb-ip \
-  --query "{address: ipAddress}" \
-  --output tsv)
-
-az network dns record-set a create \
---resource-group ${ENV_NAME} \
---zone-name ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} \
---name api --ttl 60 
-
-
-az network dns record-set a add-record \
---resource-group ${ENV_NAME} \
---zone-name ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} \
---record-set-name api \
---ipv4-address ${AZURE_LB_PUBLIC_IP}
-
-az network nsg rule create \
---nsg-name ${ENV_NAME}-bosh-deployed-vms-security-group \
---resource-group ${ENV_NAME} \
---name Port_8443 \
---priority 220 \
---source-address-prefixes '*' \
---source-port-ranges '*' \
---destination-address-prefixes '*' \
---destination-port-ranges 8443 \
---access allow \
---protocol Tcp \
---description "Allow UAA and K8S Access"
-
-az network nsg rule create \
---nsg-name ${ENV_NAME}-bosh-deployed-vms-security-group \
---resource-group ${ENV_NAME} \
---name Port_9021 \
---priority 230 \
---source-address-prefixes '*' \
---source-port-ranges '*' \
---destination-address-prefixes '*' \
---destination-port-ranges 9021 \
---access allow \
---protocol Tcp \
---description "Allow UAA and K8S Access"
-
-# network peerings for bosh
-echo creating network peerings
-
-VNet1Id=$(az network vnet show \
-  --resource-group ${JUMP_RG} \
-  --name ${JUMP_VNET} \
-  --query id --out tsv)
-
-VNet2Id=$(az network vnet show \
-  --resource-group ${ENV_NAME} \
-  --name ${ENV_NAME}-virtual-network \
-  --query id --out tsv)
-
-az network vnet peering create --name PKS-Peer \
---remote-vnet-id ${VNet2Id} \
---resource-group ${JUMP_RG} \
---vnet-name ${JUMP_VNET} \
---allow-forwarded-traffic \
---allow-gateway-transit \
---allow-vnet-access
-
-az network vnet peering create --name JUMP-Peer \
---remote-vnet-id ${VNet1Id} \
---resource-group ${ENV_NAME} \
---vnet-name ${ENV_NAME}-virtual-network \
---allow-forwarded-traffic \
---allow-gateway-transit \
---allow-vnet-access
-
 ${SCRIPT_DIR}/deploy_docker.sh ${HOME_DIR} 
 
 END_BASE_DEPLOY_TIME=$(date)
@@ -348,4 +253,4 @@ echo ${END_BASE_DEPLOY_TIME} end base deployment
 echo "Base install finished, now initializing opsman
 for install status information, run 'tail -f ${LOG_DIR}/om_init.sh.*.log'"
 
-su ${ADMIN_USERNAME}  -c "nohup ${SCRIPT_DIR}/om_init.sh ${HOME_DIR} >/dev/null 2>&1 &"
+su ${ADMIN_USERNAME}  -c "nohup ${SCRIPT_DIR}/om_init.sh -h ${HOME_DIR} >/dev/null 2>&1 &"
