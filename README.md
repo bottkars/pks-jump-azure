@@ -76,6 +76,7 @@ see this [Document](docs/az_cli_method.md) for installation using AZ CLI
 
 ## What´s next
 
+### Monitoring the deployment
 When the ARM Deployment is finished, the Post Deployment jobs start
 
 Monitor your Deployment using [debugging section](#debugging-monitoring)
@@ -88,6 +89,19 @@ the log file will, at this stage, show the Azure Name Servers that need to be ad
 
 ![image](https://user-images.githubusercontent.com/8255007/51382000-ed3d6e00-1b15-11e9-8318-04c9f0993a1d.png)  
 once fixed, the deployment will continue.
+
+### Updating the deployment
+a helper script is available to update the deployment
+this can be
+
+- script updates
+- template updates for new versions
+
+Simply run
+
+```bash
+wget -O - https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/update.sh | bash
+```
 
 ## debugging-monitoring
 
