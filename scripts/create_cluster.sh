@@ -45,15 +45,24 @@ az login --service-principal \
 
 PKS_UUID=$(pks show-cluster ${CLUSTER}  --json | jq -r '.uuid')
 pks get-credentials ${CLUSTER} 
-MASTER_VM_ID=$(az vm availability-set show  \
+MASTER_VM_IDS=$(az vm availability-set show  \
 --name p-bosh-service-instance-${PKS_UUID}-master \
 --resource-group ${ENV_NAME} \
 --output tsv \
 --query "virtualMachines[].id" )
 
-MASTER_VM_NAME=$(az vm show -d --ids ${MASTER_VM_ID} \
+MASTER_VM_NAME=$(az vm show -d --ids ${MASTER_VM_IDS} \
 --query "name" \
 --output tsv)
+
+echo "Assigning pks-worker role to Workers"
+az vm identity assign \
+--identities pks-worker \
+--ids ${WORKER_VM_IDS}
+echo "Assigning pks-master role to Master(s)"
+az vm identity assign \
+--identities pks-master \
+--ids ${MASTER_VM_IDS}
 
 MASTER_NIC_ID=$(az vm nic list \
 --vm-name ${MASTER_VM_NAME} \
