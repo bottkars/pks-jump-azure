@@ -11,3 +11,4 @@ https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/deploy_
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/deploy_harbor.sh
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/deploy_tile.sh
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/stemcell_loader.sh
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/assign_managed_identities.sh
