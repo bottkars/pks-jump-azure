@@ -72,6 +72,7 @@ az role definition delete \
 az role definition delete \
   --name ${AZURE_SUBSCRIPTION_ID}-${ENV_NAME}-pks-master-role
 
+terraform 
 
 retryop "terraform apply -auto-approve" 3 10
 
