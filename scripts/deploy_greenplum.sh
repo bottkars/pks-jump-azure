@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source .env.sh
+source ~/.env.sh
 MYSELF=$(basename $0)
 mkdir -p ${LOG_DIR}/
 exec &> >(tee -a "${LOG_DIR}/${MYSELF}.$(date '+%Y-%m-%d-%H').log")
@@ -138,6 +138,8 @@ helm init --wait --service-account tiller --upgrade
 helm install --name greenplum-operator -f workspace/operator-values-overrides.yaml  operator/
 
 kubectl create namespace gpinstance-1
-kubectl --namespace=gpinstance-1 apply -f workspace/my-gp-instance.yaml
+cd ~/greenplum-for-kubernetes-*/workspace
+kubectl --namespace=gpinstance-1 apply -f ./my-gp-instance.yaml
+
 
 #### edit yaml

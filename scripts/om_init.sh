@@ -68,15 +68,20 @@ configure-authentication \
 echo checking deployed products
 om --skip-ssl-validation \
 deployed-products
-
-if [ "${USE_SELF_CERTS}" = "TRUE" ]; then
-  sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/create_self_certs.sh
-else  
-  sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/create_certs.sh
-fi
-
 declare -a FILES=("${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key" \
 "${HOME_DIR}/fullchain.cer")
+# are we first time ?!
+
+for FILE in "${FILES[@]}"; do
+    if [ ! -f $FILE ]; then
+      if [ "${USE_SELF_CERTS}" = "TRUE" ]; then
+        sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/create_self_certs.sh
+      else  
+        sudo -S -u ${ADMIN_USERNAME} ${SCRIPT_DIR}/create_certs.sh
+      fi
+    fi  
+done
+## did let´sencrypt just not work ?
 for FILE in "${FILES[@]}"; do
     if [ ! -f $FILE ]; then
     echo "$FILE not found. running Create Self Certs "

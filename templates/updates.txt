@@ -4,3 +4,4 @@ https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/share
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/standard_storage.yaml
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/wavefront.yaml
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/harbor.yaml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/director_config.yaml
