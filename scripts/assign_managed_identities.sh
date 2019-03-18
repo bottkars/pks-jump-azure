@@ -57,7 +57,7 @@ echo "Assigning pks-worker role to Workers"
 az vm identity assign \
 --identities pks-worker \
 --ids ${WORKER_VM_IDS}
-echo "Assigning pks-worker role to Workers"
+echo "Assigning pks-master role to Master(s)"
 az vm identity assign \
 --identities pks-master \
 --ids ${MASTER_VM_IDS}
