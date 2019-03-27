@@ -150,6 +150,7 @@ helm install --name greenplum-operator -f workspace/operator-values-overrides.ya
 kubectl create namespace ${NAMESPACE}
 cd ~/greenplum-for-kubernetes-*/workspace
 kubectl config set-context $(kubectl config current-context) --namespace=${NAMESPACE}
+kubectl get all
 kubectl --namespace=${NAMESPACE} apply -f ./my-gp-instance.yaml
 
 
