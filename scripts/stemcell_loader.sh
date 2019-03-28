@@ -23,7 +23,7 @@ shift
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 if  [ -z ${STEMCELL_VER} ] ; then
- STEMCELL_VER=170.39
+ STEMCELL_VER=170.45
  echo "Defaulting to Stemcell to ${STEMCELL_VER}"
 fi
 export OM_TARGET=${PCF_OPSMAN_FQDN}

@@ -38,6 +38,24 @@ esac
 shift
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
+### accept 250er stemcells
+RELEASE_JSON=$(curl \
+  --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
+  --fail \
+  "https://network.pivotal.io/api/v2/products/233/releases/332155")
+# eula acceptance link
+EULA_ACCEPTANCE_URL=$(echo ${RELEASE_JSON} |\
+  jq -r '._links.eula_acceptance.href')
+
+# eula acceptance
+curl \
+  --fail \
+  --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
+  --request POST \
+  ${EULA_ACCEPTANCE_URL}
+
+
+${SRIPT_DIR}/stemcell_loader.sh -s 250
 
 PRODUCT_SLUG="harbor-container-registry"
 

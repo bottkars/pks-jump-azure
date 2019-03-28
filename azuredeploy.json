@@ -113,11 +113,13 @@
         "HarborVersion": {
             "type": "string",
             "allowedValues": [
-                "1.7.3"
+                "1.7.3",
+                "1.7.4"
+
             ],
             "minLength": 5,
             "maxLength": 13,
-            "defaultValue": "1.7.3",
+            "defaultValue": "1.7.4",
             "metadata": {
                 "description": "The version for the private Harbor Container Registry ( optional )"
             }
