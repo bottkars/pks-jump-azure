@@ -51,7 +51,6 @@ fi
 if  [ -z ${NAMESPACE} ] ; then
  NAMESPACE=gpinstance-1
  echo "Defaulting Namespace to ${NAMESPACE}"
- exit 1
 fi 
 
 source ${ENV_DIR}/greenplum.env
