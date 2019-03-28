@@ -42,7 +42,7 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 RELEASE_JSON=$(curl \
   --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
   --fail \
-  "https://network.pivotal.io/api/v2/products/233/releases/332155")
+  "https://network.pivotal.io/api/v2/products/233/releases/331971")
 # eula acceptance link
 EULA_ACCEPTANCE_URL=$(echo ${RELEASE_JSON} |\
   jq -r '._links.eula_acceptance.href')
