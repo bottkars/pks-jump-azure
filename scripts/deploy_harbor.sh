@@ -55,7 +55,7 @@ curl \
   ${EULA_ACCEPTANCE_URL}
 
 
-${SRIPT_DIR}/stemcell_loader.sh -s 250
+${SCRIPT_DIR}/stemcell_loader.sh -s 250
 
 PRODUCT_SLUG="harbor-container-registry"
 
