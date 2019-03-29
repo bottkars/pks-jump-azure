@@ -33,7 +33,12 @@ case $key in
     LOAD_STEMCELL=TRUE
     echo "LOAD_STEMCELL IS ${LOAD_STEMCELL}"
     #shift # past value ia arg value
-    ;;    
+    ;;
+    -u|--UPDATE_PRODUCT)
+    UPDATE_PRODUCT=TRUE
+    echo "UPDATE_PRODUCT IS ${UPDATE_PRODUCT}"
+    #shift # past value ia arg value
+    ;;          
     *)    # unknown option
     POSITIONAL+=("$1") # save it in an array for later
     shift # past argument
@@ -155,7 +160,7 @@ echo $(date) start staging ${PRODUCT_SLUG}
 om --skip-ssl-validation \
   stage-product \
   --product-name ${PRODUCT_SLUG} \
-  --product-version ${VERSION}
+  --product-version ${PCF_VERSION}
 echo $(date) end staging ${PRODUCT_SLUG}
 
 if  [ ! -z ${LOAD_STEMCELL} ] ; then
@@ -169,10 +174,15 @@ assign-stemcell \
 --product ${PRODUCT_SLUG} \
 --stemcell latest
 
-
+[ -z ${UPDATE_PRODUCT} ] ; then
+echo "Configuring Product"
 om --skip-ssl-validation \
   configure-product \
   -c ${TEMPLATE_DIR}/${TILE}.yaml -l ${TEMPLATE_DIR}/${TILE}_vars.yaml
+else
+echo "Update Selected, no Product Configuration"
+fi
+
 
 case ${TILE} in
     pks)
