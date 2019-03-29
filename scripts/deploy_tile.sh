@@ -113,8 +113,8 @@ echo $(date) end downloading ${PRODUCT_SLUG}
 
         echo $(date) end downloading PKS CLI
         chmod +x ./pivotal-container-service-*pks-linux-amd*
-        chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./pivotal-container-service-*pks-linux-amd*
-        sudo cp ./pivotal-container-service-*pks-linux-amd* /usr/local/bin/pks
+        chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./${PRODUCT_SLUG}-${PCF_VERSION}*pks-linux-amd*
+        sudo cp ./${PRODUCT_SLUG}-${PCF_VERSION}*pks-linux-amd* /usr/local/bin/pks
 
         echo $(date) start downloading kubectl
         om --skip-ssl-validation \
@@ -126,8 +126,8 @@ echo $(date) end downloading ${PRODUCT_SLUG}
         --output-directory ${HOME_DIR}
 
         chmod +x ./pivotal-container-service-*kubectl-linux-amd64*
-        chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./pivotal-container-service-*kubectl-linux-amd64*
-        sudo cp ./pivotal-container-service-*kubectl-linux-amd64* /usr/local/bin/kubectl
+        chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./${PRODUCT_SLUG}-${PCF_VERSION}*kubectl-linux-amd64*
+        sudo cp ./${PRODUCT_SLUG}-${PCF_VERSION}*kubectl-linux-amd64* /usr/local/bin/kubectl
         ;;
         esac
 else
