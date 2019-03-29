@@ -150,9 +150,9 @@ PRODUCTS=$(om --skip-ssl-validation \
     --format json)
 
 VERSION=$(echo ${PRODUCTS} |\
-jq --arg product_name ${PRODUCT_SLUG} -r 'map(select(.name==$product_name)) | first | .version')
-
-#  jq --arg product_name ${PRODUCT_SLUG} --arg product_version ${PCF_VERSION} -r 'map(select(.name==$product_name and .version==$product_version))')
+#jq --arg product_name ${PRODUCT_SLUG} -r 'map(select(.name==$product_name)) | first | .version')
+# jq --arg product_name ${PRODUCT_SLUG} --arg product_version ${PCF_VERSION} -r 'map(select(.name==$product_name and .version==$product_version))')
+ jq --arg product_name ${PRODUCT_SLUG}  --arg product_version ${PCF_VERSION} -r '.[] | select(.name == $product_name) | select(.version | contains ($product_version)) | .version')
 
 
 # 2.  Stage using om cli
@@ -160,7 +160,7 @@ echo $(date) start staging ${PRODUCT_SLUG}
 om --skip-ssl-validation \
   stage-product \
   --product-name ${PRODUCT_SLUG} \
-  --product-version ${PCF_VERSION}
+  --product-version ${VERSION}
 echo $(date) end staging ${PRODUCT_SLUG}
 
 if  [ ! -z ${LOAD_STEMCELL} ] ; then
@@ -174,7 +174,7 @@ assign-stemcell \
 --product ${PRODUCT_SLUG} \
 --stemcell latest
 
-[ -z ${UPDATE_PRODUCT} ] ; then
+if [ -z ${UPDATE_PRODUCT} ] ; then
 echo "Configuring Product"
 om --skip-ssl-validation \
   configure-product \
