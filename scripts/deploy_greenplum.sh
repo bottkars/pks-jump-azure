@@ -58,7 +58,7 @@ source ${ENV_DIR}/greenplum.env
 PCF_OPSMAN_ADMIN_PASSWD=${PIVNET_UAA_TOKEN}
 cd ${HOME_DIR}
 #Authenticate pivnet 
-DOWNLOAD_DIR_FULL=${DOWNLOAD_DIR}/${PRODUCT_SLUG}/${GREENPLUM_VERSION}
+DOWNLOAD_DIR_FULL=${DOWNLOAD_DIR}/${PRODUCT_SLUG}/${PCF_VERSION}
 mkdir  -p ${DOWNLOAD_DIR_FULL}
 
 PIVNET_ACCESS_TOKEN=$(curl \
@@ -97,7 +97,7 @@ om --skip-ssl-validation \
  --pivnet-api-token ${PIVNET_UAA_TOKEN} \
  --pivnet-file-glob "greenplum*.tar.gz" \
  --pivnet-product-slug ${PRODUCT_SLUG} \
- --product-version ${GREENPLUM_VERSION} \
+ --product-version ${PCF_VERSION} \
  --output-directory ${DOWNLOAD_DIR_FULL}
 
 echo $(date) end downloading GREENPLUM 
@@ -112,7 +112,7 @@ else
 echo ignoring download by user 
 fi
 
-cd ./greenplum-for-kubernetes*/
+cd ./greenplum-for-kubernetes*${PCF_VERSION}/
 
 kubectl config use-context $CLUSTER
 
