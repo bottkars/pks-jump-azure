@@ -88,4 +88,10 @@ az vm create --name ${ENV_NAME}-ops-manager-vm  --resource-group ${ENV_NAME} \
     import-installation --installation $EXPORT_FILE
 
 om --skip-ssl-validation \
+update-ssl-certificate \
+    --certificate-pem "$(cat ${HOME_DIR}/fullchain.cer)" \
+    --private-key-pem "$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key)"
+
+
+om --skip-ssl-validation \
 apply-changes --skip-unchanged-products    
