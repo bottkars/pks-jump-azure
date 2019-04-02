@@ -149,7 +149,7 @@ retryop "sudo apt -y install azure-cli unzip" 10 30
 retryop "sudo apt -y install ruby ruby-dev gcc build-essential g++" 10 30
 sudo gem install cf-uaac
 
-wget -O terraform.zip https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip && \
+wget -O terraform.zip https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip && \
   unzip terraform.zip && \
   sudo mv terraform /usr/local/bin
 

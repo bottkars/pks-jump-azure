@@ -13,3 +13,4 @@ https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/deploy_
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/stemcell_loader.sh
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/assign_managed_identities.sh
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/om_init.sh
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/scripts/update_bosh_director.sh
