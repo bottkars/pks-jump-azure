@@ -1,5 +1,5 @@
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/nginx_test.yaml
-https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/pks/1.4.0/pks.yaml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/pks/1.3.6/pks.yaml
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/shared_storage.yaml
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/standard_storage.yaml
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/wavefront.yaml

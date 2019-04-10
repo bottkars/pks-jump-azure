@@ -1,3 +1,3 @@
-https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/pks/1.4.0/pks.env
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/pks/1.3.6/pks.env
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/harbor/1.7.4/harbor.env
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/greenplum/1.0.1/greenplum.env
