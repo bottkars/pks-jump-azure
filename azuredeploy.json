@@ -100,13 +100,13 @@
                 "1.3.2",
                 "1.3.1",
                 "1.3.3",
-                "1.3.4-build.8",
                 "1.3.4",
-                "1.3.5"
+                "1.3.5",
+                "1.3.6"
             ],
             "minLength": 5,
             "maxLength": 14,
-            "defaultValue": "1.3.5",
+            "defaultValue": "1.3.6",
             "metadata": {
                 "description": "The version for the Pivotal Container Service"
             }
@@ -158,13 +158,8 @@
             "type": "string",
             "minLength": 3,
             "allowedValues": [
-                "ops-manager-2.4-build.171.vhd",
-                "ops-manager-2.4-build.168.vhd",
-                "ops-manager-2.4-build.152.vhd",
                 "ops-manager-2.4-build.145.vhd",
                 "ops-manager-2.4-build.142.vhd",
-                "ops-manager-2.4-build.131.vhd",
-                "ops-manager-2.4-build.117.vhd"
             ],
             "defaultValue": "ops-manager-2.4-build.168.vhd",
             "metadata": {

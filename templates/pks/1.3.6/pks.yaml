@@ -1,0 +1,89 @@
+product-name: pivotal-container-service
+network-properties:
+  singleton_availability_zone:
+    name: 'null'
+  other_availability_zones:
+  - name: 'null'
+  network:
+    name: pks-subnet
+  service_network:
+    name: pks-services-subnet   
+product-properties:
+  .properties.cloud_provider:
+    value: Azure
+    selected_option: azure  
+  .properties.cloud_provider.azure.subscription_id:
+    value: ((subscription_id))
+  .properties.cloud_provider.azure.tenant_id:
+    value: ((tenant_id))
+  .properties.cloud_provider.azure.location:
+    value: ((azure_location))
+  .properties.cloud_provider.azure.resource_group_name:
+    value: ((resource_group_name))
+  .properties.cloud_provider.azure.vnet_resource_group_name:
+    value: ((resource_group_name))
+  .properties.cloud_provider.azure.vnet_name:
+    value: ((vnet_name))
+  .properties.cloud_provider.azure.default_security_group:
+    value: ((default_security_group))
+  .properties.cloud_provider.azure.primary_availability_set:
+    value: ((primary_availability_set))
+  .properties.cloud_provider.azure.azure_master_managed_identity:
+    value: ((pks_master_identity))
+  .properties.cloud_provider.azure.azure_worker_managed_identity:
+    value: ((pks_worker_identity))      
+  .properties.plan1_selector:
+    value: Plan Active
+    selected_option: active
+  .properties.plan1_selector.active.name:
+    value: small
+  .properties.plan1_selector.active.master_az_placement:
+    value:
+    - 'null'
+  .properties.plan1_selector.active.worker_az_placement:
+    value:
+    - 'null'
+  .properties.plan1_selector.active.master_instances:
+    value: 1
+  .properties.plan1_selector.active.max_worker_instances:
+    value: 10
+  .properties.plan1_selector.active.worker_instances:
+    value: 1
+  .properties.plan2_selector:
+    value: Plan Active
+    selected_option: active
+  .properties.plan2_selector.active.name:
+    value: medium
+  .properties.plan2_selector.active.master_az_placement:
+    value:
+    - 'null'
+  .properties.plan2_selector.active.worker_az_placement:
+    value:
+    - 'null'
+  .properties.plan3_selector:
+    value: Plan Active
+    selected_option: active
+  .properties.plan3_selector.active.name:
+    value: large
+  .properties.plan3_selector.active.worker_instances:
+    value: 10
+  .properties.plan3_selector.active.master_az_placement:
+    value:
+    - 'null'
+  .properties.plan3_selector.active.worker_az_placement:
+    value:
+    - 'null'
+  .properties.telemetry_selector:
+    value: disabled
+  .pivotal-container-service.pks_tls:
+    value:
+      private_key_pem: |
+        ((pks_key_pem))
+      cert_pem: |
+        ((pks_cert_pem))
+  .properties.pks_api_hostname: 
+    value: ((pks_api_hostname))
+resource-config:
+  pivotal-container-service:
+    elb_names:
+    - ((pks_lb))
