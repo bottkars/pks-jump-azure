@@ -112,10 +112,12 @@ echo $(date) end downloading ${PRODUCT_SLUG}
         --output-directory ${HOME_DIR}
 
         echo $(date) end downloading PKS CLI
-        chmod +x ./*pks-linux-amd*
-        chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./*pks-linux-amd*
-        sudo cp ./*pks-linux-amd* /usr/local/bin/pks
+        chmod +x ./pks-linux-amd64-${PCF_VERSION}*
+        chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./pks-linux-amd64-${PCF_VERSION}*
+        sudo cp ./pks-linux-amd64-${PCF_VERSION}* /usr/local/bin/pks
 
+
+        rm -rf ./kubectl-linux-amd64*
         echo $(date) start downloading kubectl
         om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
         download-product \
@@ -125,9 +127,9 @@ echo $(date) end downloading ${PRODUCT_SLUG}
         --product-version ${PCF_VERSION} \
         --output-directory ${HOME_DIR}
 
-        chmod +x ./*kubectl-linux-amd64*
-        chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./*kubectl-linux-amd64*
-        sudo cp ./*kubectl-linux-amd64* /usr/local/bin/kubectl
+        chmod +x ./kubectl-linux-amd64*
+        chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ./kubectl-linux-amd64*
+        sudo cp ./kubectl-linux-amd64* /usr/local/bin/kubectl
         ;;
         esac
 else
