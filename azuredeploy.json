@@ -102,11 +102,13 @@
                 "1.3.3",
                 "1.3.4",
                 "1.3.5",
-                "1.3.6"
+                "1.3.6",
+                "1.4.0"
+
             ],
             "minLength": 5,
             "maxLength": 14,
-            "defaultValue": "1.3.6",
+            "defaultValue": "1.4.0",
             "metadata": {
                 "description": "The version for the Pivotal Container Service"
             }
@@ -115,12 +117,12 @@
             "type": "string",
             "allowedValues": [
                 "1.7.3",
-                "1.7.4"
-
+                "1.7.4",
+                "1.7.5"
             ],
             "minLength": 5,
             "maxLength": 13,
-            "defaultValue": "1.7.4",
+            "defaultValue": "1.7.5",
             "metadata": {
                 "description": "The version for the private Harbor Container Registry ( optional )"
             }
@@ -131,11 +133,13 @@
                 "0.8.1",
                 "0.8.0",
                 "1.0.0",
-                "1.0.1"
+                "1.0.1",
+                "1.1.0"
+
             ],
             "minLength": 5,
             "maxLength": 13,
-            "defaultValue": "1.0.0",
+            "defaultValue": "1.1.0",
             "metadata": {
                 "description": "The version for the Greenplum Database ( optional )"
             }
@@ -158,12 +162,12 @@
             "type": "string",
             "minLength": 3,
             "allowedValues": [
-                "ops-manager-2.4-build.145.vhd",
-                "ops-manager-2.4-build.142.vhd",
+                "2.4-build.145",
+                "2.4-build.142"
             ],
-            "defaultValue": "ops-manager-2.4-build.168.vhd",
+            "defaultValue": "2.4-build.145",
             "metadata": {
-                "description": "Image Name of Operation Manager Image"
+                "description": "Image Name of Operation Manager Image, currently only 2.4.2 and 2.4.3"
             }
         },
          "net16bitmask": {
@@ -476,7 +480,7 @@
                             "PIVNET_UAA_TOKEN": "[parameters('pivnetToken')]",
                             "ENV_NAME": "[parameters('envName')]",
                             "ENV_SHORT_NAME": "[parameters('envShortName')]",
-                            "OPS_MANAGER_IMAGE_URI": "[concat('https://opsmanager',parameters('opsmanImageregion'),'.blob.core.windows.net/images/',parameters('opsmanImage'))]",
+                            "OPS_MANAGER_IMAGE_URI": "[concat('https://opsmanager',parameters('opsmanImageregion'),'.blob.core.windows.net/images/ops-manager-',parameters('opsmanImage'),'.vhd')]",
                             "LOCATION": "[parameters('location')]",
                             "PKS_DOMAIN_NAME": "[parameters('PKSDomainName')]",
                             "PKS_SUBDOMAIN_NAME": "[parameters('PKSSubdomainName')]",
