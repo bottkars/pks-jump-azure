@@ -153,10 +153,6 @@ wget -O terraform.zip https://releases.hashicorp.com/terraform/0.11.13/terraform
   unzip terraform.zip && \
   sudo mv terraform /usr/local/bin
 
-wget -O om https://github.com/pivotal-cf/om/releases/download/0.56.0/om-linux && \
-  chmod +x om && \
-  sudo mv om /usr/local/bin/
-
 wget -O bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-5.4.0-linux-amd64 && \
   chmod +x bosh && \
   sudo mv bosh /usr/local/bin/
