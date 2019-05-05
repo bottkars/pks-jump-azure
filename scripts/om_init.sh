@@ -241,7 +241,7 @@ done
 om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
 update-ssl-certificate \
     --certificate-pem "$(cat ${HOME_DIR}/fullchain.cer)" \
-    --private-key-pem "$(cat ${HOME_DIR}/${PCF_SUBDOMAIN_NAME}.${PCF_DOMAIN_NAME}.key)"
+    --private-key-pem "$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key)"
 
 
 cd ${HOME_DIR}
