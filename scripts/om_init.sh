@@ -51,9 +51,13 @@ function retryop()
     exit 1
   fi
 }
-
 ###
 pushd ${HOME_DIR}
+### updating om
+wget -O om https://github.com/pivotal-cf/om/releases/download/0.56.0/om-linux && \
+  chmod +x om && \
+  sudo mv om /usr/local/bin/
+###  
 cd ./pivotal-cf-terraforming-azure-*/terraforming-pks
 
 PATCH_SERVER="https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/"
