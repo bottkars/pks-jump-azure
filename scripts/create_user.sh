@@ -31,7 +31,7 @@ sudo sh -c \
           > /var/tempest/workspaces/default/root_ca_certificate"
 
 PCF_PKS_GUID=$( \
-  om --skip-ssl-validation \
+  om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
     curl \
       --silent \
       --path /api/v0/deployed/products | \
@@ -39,7 +39,7 @@ PCF_PKS_GUID=$( \
 )
 
 PCF_PKS_UAA_MANAGEMENT_PASSWORD=$( \
-  om --skip-ssl-validation \
+  om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
     curl \
       --silent \
       --path /api/v0/deployed/products/${PCF_PKS_GUID}/credentials/.properties.pks_uaa_management_admin_client | \

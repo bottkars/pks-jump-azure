@@ -92,7 +92,7 @@ if  [ -z ${NO_DOWNLOAD} ] ; then
 
 
 echo $(date) start downloading GREENPLUM
-om --skip-ssl-validation \
+om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
   download-product \
  --pivnet-api-token ${PIVNET_UAA_TOKEN} \
  --pivnet-file-glob "greenplum*.tar.gz" \

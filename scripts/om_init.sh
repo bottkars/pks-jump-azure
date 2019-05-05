@@ -279,7 +279,7 @@ EOF
 om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
  configure-director --config ${TEMPLATE_DIR}/director_config.yaml --vars-file ${TEMPLATE_DIR}/director_vars.yaml
 
-retryop "om --skip-ssl-validation apply-changes" 2 10
+retryop "om --env "${HOME_DIR}/om_${ENV_NAME}.env"  apply-changes" 2 10
 
 
 echo checking deployed products
