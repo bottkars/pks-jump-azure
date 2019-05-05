@@ -88,7 +88,7 @@ curl \
 if  [ -z ${NO_DOWNLOAD} ] ; then
 echo $(date) start downloading ${PRODUCT_SLUG}
 
-om --skip-ssl-validation \
+om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
   download-product \
  --pivnet-api-token ${PIVNET_UAA_TOKEN} \
  --pivnet-file-glob "*.pivotal" \
@@ -103,7 +103,7 @@ echo $(date) end downloading ${PRODUCT_SLUG}
     case ${TILE} in
     pks)
         echo $(date) start downloading PKS CLI
-        om --skip-ssl-validation \
+        om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
         download-product \
         --pivnet-api-token ${PIVNET_UAA_TOKEN} \
         --pivnet-file-glob "pks-linux-amd64*" \
@@ -117,7 +117,7 @@ echo $(date) end downloading ${PRODUCT_SLUG}
         sudo cp ./${PRODUCT_SLUG}-${PCF_VERSION}*pks-linux-amd* /usr/local/bin/pks
 
         echo $(date) start downloading kubectl
-        om --skip-ssl-validation \
+        om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
         download-product \
         --pivnet-api-token ${PIVNET_UAA_TOKEN} \
         --pivnet-file-glob "kubectl-linux-amd64*" \
@@ -137,7 +137,7 @@ fi
 TARGET_FILENAME=$(cat ${DOWNLOAD_DIR_FULL}/download-file.json | jq -r '.product_path')
 # Import the tile to Ops Manager.
 echo $(date) start uploading ${PRODUCT_SLUG}
-om --skip-ssl-validation \
+om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
   --request-timeout 3600 \
   upload-product \
   --product ${TARGET_FILENAME}
@@ -145,7 +145,7 @@ om --skip-ssl-validation \
 echo $(date) end uploading ${PRODUCT_SLUG}
 
     # 1. Find the version of the product that was imported.
-PRODUCTS=$(om --skip-ssl-validation \
+PRODUCTS=$(om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
   available-products \
     --format json)
 
@@ -157,7 +157,7 @@ VERSION=$(echo ${PRODUCTS} |\
 
 # 2.  Stage using om cli
 echo $(date) start staging ${PRODUCT_SLUG}
-om --skip-ssl-validation \
+om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
   stage-product \
   --product-name ${PRODUCT_SLUG} \
   --product-version ${VERSION}
@@ -169,14 +169,14 @@ $SCRIPT_DIR/stemcell_loader.sh
 fi
 
 
-om --skip-ssl-validation \
+om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
 assign-stemcell \
 --product ${PRODUCT_SLUG} \
 --stemcell latest
 
 if [ -z ${UPDATE_PRODUCT} ] ; then
 echo "Configuring Product"
-om --skip-ssl-validation \
+om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
   configure-product \
   -c ${TEMPLATE_DIR}/${TILE}.yaml -l ${TEMPLATE_DIR}/${TILE}_vars.yaml
 else
@@ -187,7 +187,7 @@ fi
 case ${TILE} in
     pks)
     if  [ ! -z ${WAVEFRONT}  ]; then
-    om --skip-ssl-validation \
+    om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
       configure-product \
       -c ${TEMPLATE_DIR}/wavefront.yaml -l ${TEMPLATE_DIR}/${TILE}_vars.yaml
     fi
@@ -200,17 +200,17 @@ if  [ ! -z ${NO_APPLY} ] ; then
 echo "No Product Apply"
 elif [ ! -z ${APPLY_ALL} ] ; then
 echo "APPLY_ALL"
-om --skip-ssl-validation \
+om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
   apply-changes
 else
 echo "APPLY Product"
-om --skip-ssl-validation \
+om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
   apply-changes \
   --product-name ${PRODUCT_SLUG}
 fi
 
 echo "checking deployed products"
-om --skip-ssl-validation \
+om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
  deployed-products
 
 echo $(date) end apply ${PRODUCT_SLUG}
