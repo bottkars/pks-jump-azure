@@ -121,7 +121,11 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     useSelfCerts=${USE_SELF_CERTS} \
     _artifactsLocation=${ARTIFACTS_LOCATION} \
     vmSize=${VMSIZE} \
+    opsmanImage=${OPS_MANAGER_IMAGE} \
+    WavefrontAPIUrl=${WAVEFRONT_API} \
+    WavefrontToken=${WAVEFRONT_TOKEN} \
     opsmanImageRegion=${OPS_MANAGER_IMAGE_REGION}
+
 ```
 
 ## using a parameter file
