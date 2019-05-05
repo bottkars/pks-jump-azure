@@ -90,7 +90,6 @@ az group deployment validate --resource-group ${JUMPBOX_RG} \
     WavefrontAPIUrl=${WAVEFRONT_API} \
     WavefrontToken=${WAVEFRONT_TOKEN} \
     opsmanImageRegion=${OPS_MANAGER_IMAGE_REGION}
-
 ```
 
 installation using customized parameter set´s all required parameters from variables in your .env file
