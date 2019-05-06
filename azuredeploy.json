@@ -27,7 +27,7 @@
         },
         "clientSecret": {
             "type": "securestring",
-            "minLength": "36",
+            "minLength": "20",
             "metadata": {
                 "description": "Azure Service Principal Secret"
             }
