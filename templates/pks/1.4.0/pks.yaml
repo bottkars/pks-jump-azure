@@ -43,6 +43,12 @@ product-properties:
   .properties.plan1_selector.active.worker_az_placement:
     value:
     - 'null'
+  .properties.plan1_selector.active.allow_privileged_containers:
+    value: true
+  .properties.plan1_selector.active.admission_plugins:
+    value:
+    - pod_security_policy
+    - deny_escalating_exec  
   .properties.plan1_selector.active.master_instances:
     value: 1
   .properties.plan1_selector.active.max_worker_instances:
@@ -60,6 +66,12 @@ product-properties:
   .properties.plan2_selector.active.worker_az_placement:
     value:
     - 'null'
+  .properties.plan2_selector.active.allow_privileged_containers:
+    value: true
+  .properties.plan2_selector.active.admission_plugins:
+    value:
+    - pod_security_policy
+    - deny_escalating_exec      
   .properties.plan3_selector:
     value: Plan Active
     selected_option: active
@@ -73,6 +85,12 @@ product-properties:
   .properties.plan3_selector.active.worker_az_placement:
     value:
     - 'null'
+  .properties.plan3_selector.active.allow_privileged_containers:
+    value: true
+  .properties.plan3_selector.active.admission_plugins:
+    value:
+    - pod_security_policy
+    - deny_escalating_exec      
   .properties.telemetry_selector:
     value: disabled
   .pivotal-container-service.pks_tls:
