@@ -21,7 +21,7 @@ or
 ### validate using default parameters
 
 if not already done,  
-source your [.env file](../.env.example)
+source your [.env file](/.env.example)
 
 ```bash
 source .env
