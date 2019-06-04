@@ -54,7 +54,7 @@ function retryop()
 ###
 pushd ${HOME_DIR}
 ### updating om
-wget -O om https://github.com/pivotal-cf/om/releases/download/0.56.0/om-linux && \
+wget -O om https://github.com/pivotal-cf/om/releases/download/1.1.0/om-linux && \
   chmod +x om && \
   sudo mv om /usr/local/bin/
 ###  
