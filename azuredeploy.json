@@ -19,7 +19,6 @@
         },
         "clientID": {
             "minLength": "20",
-            "maxLength": "40",
             "type": "string",
             "metadata": {
                 "description": "Azure Service Principal"
