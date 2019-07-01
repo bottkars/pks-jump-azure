@@ -101,6 +101,32 @@ echo $(date) end downloading ${PRODUCT_SLUG}
 ## Mignt get to 
 ###  do we need special, eg pks
     case ${TILE} in
+    pfs)
+      om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
+        download-product \
+        --pivnet-api-token ${PIVNET_UAA_TOKEN} \
+        --pivnet-file-glob "pfs-distro-thick*" \
+        --pivnet-product-slug ${PRODUCT_SLUG} \
+        --product-version ${PCF_VERSION} \
+        --output-directory ${DOWNLOAD_DIR_FULL}
+
+      
+
+      tar xzfv pfs-distro-thick-20190521164510-08b9fce9d204f44218c10fb2614ae09ea09eeafa.tgz -C ./pfs-download
+
+      om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
+        download-product \
+        --pivnet-api-token ${PIVNET_UAA_TOKEN} \
+        --pivnet-file-glob "pfs-cli-linux-amd64*" \
+        --pivnet-product-slug ${PRODUCT_SLUG} \
+        --product-version ${PCF_VERSION} \
+        --output-directory ${HOME_DIR}
+
+
+      ;;
+
+      ;;
+
     pks)
         echo $(date) start downloading PKS CLI
         om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
@@ -216,3 +242,6 @@ om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
  deployed-products
 
 echo $(date) end apply ${PRODUCT_SLUG}
+
+
+
