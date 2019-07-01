@@ -121,11 +121,8 @@ echo $(date) end downloading ${PRODUCT_SLUG}
         --pivnet-product-slug ${PRODUCT_SLUG} \
         --product-version ${PCF_VERSION} \
         --output-directory ${HOME_DIR}
-
-
       ;;
 
-      ;;
 
     pks)
         echo $(date) start downloading PKS CLI
