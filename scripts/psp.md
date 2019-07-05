@@ -40,6 +40,5 @@ metadata:
     storageclass.kubernetes.io/is-default-class: 'true'
 provisioner: kubernetes.io/azure-disk
 parameters:
-    diskformat: thin
-    fstype:     ext3
+    kind: managed
 EOF
