@@ -1,3 +1,8 @@
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/pks/1.4.1/pks.env
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/harbor/1.7.5/harbor.env
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/greenplum/1.2.0/greenplum.env
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/nginx/01-service-account.yml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/nginx/02-pks-privileged.yml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/nginx/03-role.yml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/nginx/04-role-binding.yml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/nginx/05-nginx.yml
