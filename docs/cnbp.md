@@ -95,14 +95,13 @@ first, the 'Detector' will be executed to identify the runtime(s) to be used
 
 ![image](https://user-images.githubusercontent.com/8255007/60766443-180e8500-a0aa-11e9-944d-03499a4725fd.png)
 
-
-
-
 verify the image has been created locally on docker
 
 ```bash
-docker images
+docker images --no-trunc
 ```
+
+![image](https://user-images.githubusercontent.com/8255007/60766477-99661780-a0aa-11e9-9973-f886d14f6d69.png)
 
 run the image
 nodejs demo runs on 4000, so we expose that port to 4000
@@ -111,7 +110,11 @@ nodejs demo runs on 4000, so we expose that port to 4000
 docker run --rm -p 4000:4000 node-demo:v1
 ```
 
-browse to http://localhost:4000 to view the nodejs demo app
+![image](https://user-images.githubusercontent.com/8255007/60766487-c4506b80-a0aa-11e9-9ca1-31d68e094a1c.png)
+
+browse to [localhost:4000](http://localhost:4000) to view the nodejs demo app
+
+![image](https://user-images.githubusercontent.com/8255007/60766500-ffeb3580-a0aa-11e9-9324-ccff6e85201f.png)
 
 ## demo 2: create image and push version to harbor
 
