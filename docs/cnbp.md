@@ -71,6 +71,34 @@ build first OCI Image
 pack build node-demo:v1
 ```
 
+this will do several things:
+
+- it will download all new layers for the default builder stack
+
+![image](https://user-images.githubusercontent.com/8255007/60766293-f7453000-a0a7-11e9-9856-775e0cf5c0bd.png)
+
+- will download the run layer for the runtime
+
+then, the build process starts.
+first, the 'Detector' will be executed to identify the runtime(s) to be used
+
+![image](https://user-images.githubusercontent.com/8255007/60766378-32942e80-a0a9-11e9-993a-438905386827.png)
+
+- Restoring and analyzing will restore cached packages from the downloaded image, and check for any versions of the v1 app in our local docker filesystem
+
+![image](https://user-images.githubusercontent.com/8255007/60766415-b817de80-a0a9-11e9-8d0b-6c805c6238c8.png)
+
+- the application will be build using NPM and Node:
+
+![image](https://user-images.githubusercontent.com/8255007/60766430-f57c6c00-a0a9-11e9-932f-8fb71f2232a4.png)
+
+- finally, the image will be exported locally and 
+
+![image](https://user-images.githubusercontent.com/8255007/60766443-180e8500-a0aa-11e9-944d-03499a4725fd.png)
+
+
+
+
 verify the image has been created locally on docker
 
 ```bash
