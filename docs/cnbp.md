@@ -2,28 +2,42 @@
 
 ## Prerequirements
 
-on your computer, install pack
-
-install docker desktop if not already done 
+install docker desktop if not already done:
 
 ```bash
 brew cask install docker
 open /Applications/Docker.app
 ```
 
+on your computer, install pack:
+
 ```bash
 brew tap buildpack/tap
 brew install pack
 ```
 
-wde will use as cf nodejs demo application,
+## get started
+
+login to pks and get your kube credentials:
+
+```bash
+PKS_CLUSTER=k8s1 # shortcut you cluster here
+pks login -a api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} -u k8sadmin -p ${PIVNET_UAA_TOKEN} -k
+pks get-credentials ${PKS_CLUSTER}
+```
+
+![image](https://user-images.githubusercontent.com/8255007/60766110-18585180-a0a5-11e9-8d3a-ac9f57bd7466.png)
+
+we will use as cf nodejs demo application,
 but you can use you own, for sure
 
-clone into cf-sample-app-nodejs
+clone into cf-sample-app-nodejs:
 
 ```bash
 git clone https://github.com/cloudfoundry-samples/cf-sample-app-nodejs
 ```
+
+![image](https://user-images.githubusercontent.com/8255007/60766139-771dcb00-a0a5-11e9-9aed-0bf72947bd53.png)
 
 ## create your first version of the app locally
 
@@ -31,11 +45,25 @@ git clone https://github.com/cloudfoundry-samples/cf-sample-app-nodejs
 cd cf-sample-app-nodejs
 ```
 
-set default 'builder' ( the base image to be usded, compare it with the 'stemcell' os kind' )
+see all you current docker images:
+
+```bash
+docker images -a
+```
+
+![image](https://user-images.githubusercontent.com/8255007/60766161-c19f4780-a0a5-11e9-9079-dfaee31adeda.png)
+
+in my example, only the microsoft/azure-cli is available locally
+
+now we set the 'default builder' ( the base image to be used, including buildpack, run and buildimage. compare the run -image with the 'stemcell' os kind' )
 
 ```bash
 pack set-default-builder cloudfoundry/cnb:cflinuxfs3
 ```
+
+this creates n entry in `~/.pack/config.toml` for the default builder to use
+
+![image](https://user-images.githubusercontent.com/8255007/60766256-90c01200-a0a7-11e9-8f57-f9eba7b2d256.png)
 
 build first OCI Image
 
