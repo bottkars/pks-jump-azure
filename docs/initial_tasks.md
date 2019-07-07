@@ -63,12 +63,14 @@ the login screen will open
 
 enter admin as the username and you pivnet token as password
 
-## deploy an nginx with Pod Security Policoes
+## deploy an nginx with Pod Security Policies
 
+a walkthouh for Pod Security Policies
 see [nginx](../templates/nginx/readme.md)
 
 ## deploy a cloudnative buildpaclk demo container
 
+you can find a walkthrough do deploy the famous cf-app-nodejs here:
 see [cnbp](./cnbp.md)
 
 ## deploying Greenplum for Kubenetes ( Operator )
