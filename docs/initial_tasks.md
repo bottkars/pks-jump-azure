@@ -69,7 +69,7 @@ see [nginx](../templates/nginx/readme.md)
 
 ## deploy a cloudnative buildpaclk demo container
 
-see [cnbp](../cnbp.md)
+see [cnbp](./cnbp.md)
 
 ## deploying Greenplum for Kubenetes ( Operator )
 
