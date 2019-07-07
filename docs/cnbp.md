@@ -2,13 +2,13 @@
 
 Cloudnative Buildpacks are a new way of packing and Maintaining Docker Images using the Buildpack Technology.
 
-let´s re-iterate how CloudFoundry would use your code to Publish an Application to the Cloud.
+let´s re-iterate how a Devloper would use CloudFoundry´s `cf push` experience  to Publish an Application to the Cloud.
 
-Having your Source Code, the only thing a Developer in Cloudfoundry Land would need to do is a `cf push`
+Having the Source Code Ready, the only thing a Developer in Cloudfoundry Land would need to do is a `cf push`
 
 ![image](https://user-images.githubusercontent.com/8255007/60768645-9c6f0100-a0c6-11e9-9bf1-15200beebdf5.png)
 
-the CAPI would take for all necessary steps from selecting the "runtime", creating a "container", to run the "app" and crfeate required routeing / Endpoints:
+the Buildpack Technology and CAPI would take for all necessary steps from selecting the "runtime", creating a "container", to run the "app" and create required routing / endpoints:
 
 ![image](https://user-images.githubusercontent.com/8255007/60768674-e8ba4100-a0c6-11e9-898d-b4b46f83c562.png)
 
