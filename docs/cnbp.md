@@ -73,11 +73,10 @@ pack build node-demo:v1
 
 this will do several things:
 
-- it will download all new layers for the default builder stack
+- download all new layers for the default builder stack
+- download the run layer for the runtime
 
 ![image](https://user-images.githubusercontent.com/8255007/60766293-f7453000-a0a7-11e9-9856-775e0cf5c0bd.png)
-
-- will download the run layer for the runtime
 
 then, the build process starts.
 first, the 'Detector' will be executed to identify the runtime(s) to be used
