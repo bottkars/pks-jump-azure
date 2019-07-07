@@ -125,19 +125,33 @@ browse to [localhost:4000](http://localhost:4000) to view the nodejs demo app
 docker login "https://harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}" --username admin --password ${PIVNET_UAA_TOKEN}
 ```
 
+![image](https://user-images.githubusercontent.com/8255007/60767407-ec929700-a0b7-11e9-8ffd-e97cd5e2b219.png)
+
 publish a version 2 app to harbor, this time with the bionic image
 
 ```bash
 pack build harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/library/node-demo:v2 --publish --builder cloudfoundry/cnb:bionic
 ```
 
-run it locally off from you harbor registry
+the newer bionic stack layer needs to be downloaded:
+
+![image](https://user-images.githubusercontent.com/8255007/60767675-5d877e00-a0bb-11e9-883b-00d8891e53b0.png)
+
+but the run - image will be re-used:
+
+![image](https://user-images.githubusercontent.com/8255007/60767712-accdae80-a0bb-11e9-89ab-ee3ab0b4c966.png)
+
+now we can run the mage locally off from you harbor registry
 
 ```bash
 docker run --rm -p 4001:4000 harbor.pksazure.labbuildr.com/library/node-demo:v2
 ```
 
-browse to http://localhost:4001 to view the nodejs demo app
+only the diff layers (the app itself) are downloaded now.
+this is one of the strength of the layered approach of Cloudnative Buildpacks, where we spilt the stack from middleware and apps.
+![image](https://user-images.githubusercontent.com/8255007/60767733-ed2d2c80-a0bb-11e9-9c5c-c72b662becf8.png)
+
+browse to [localhost:4001](http://localhost:4001) to view the nodejs demo app
 
 ## demo 3: Deploying it to PKS
 
