@@ -1,4 +1,4 @@
-# cloudnative buildpacks and pks demo walk
+# Cloudnative Buildpacks and Enterprise PKC demo walkthrough
 
 ## Prerequirements
 
