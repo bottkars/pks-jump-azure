@@ -122,7 +122,7 @@ browse to [localhost:4000](http://localhost:4000) to view the nodejs demo app
 
 ```bash
 # this is for pks-jump-azure users that have a valid .env
-docker login https://harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} --username admin --password ${PIVNET_UAA_TOKEN}
+docker login "https://harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}" --username admin --password ${PIVNET_UAA_TOKEN}
 ```
 
 publish a version 2 app to harbor, this time with the bionic image
