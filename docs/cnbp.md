@@ -160,11 +160,7 @@ deploying to pks also requires the correct psp´s in place.
 we are using the psp´s form the [nginx demo](../templates/nginx/readme.md))
 
 ```bash
-kubectl run --generator=run-pod/v1 --image=harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/library/node-demo:v2 nodejs-demo-app --port=4000 --namespace ingress-ns
-```
-
-```bash
-cat <<EOF | kubectl apply -f -
+cat <<EOF | kubectl apply --namespace ingress-ns -f -
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -183,14 +179,43 @@ spec:
       serviceAccountName: nginx-sa
       containers:
       - name: nodejs-v2
-        image: {PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/library/node-demo:v2
+        image: harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}/library/node-demo:v2
         ports:
         - containerPort: 4000
 EOF
 ```
 
-create the lb:
+![image](https://user-images.githubusercontent.com/8255007/60768187-52841c00-a0c2-11e9-96f3-f3b5b6056319.png)
+
+
+
+view the deployment:
 
 ```bash
-kubectl create service loadbalancer  nodejs --tcp=80:4000 -n ingress-ns
+kubectl describe deployments/nodejs-app --namespace ingress-ns
 ```
+
+![image](https://user-images.githubusercontent.com/8255007/60768385-b1966080-a0c3-11e9-9cb9-039ce617ab15.png)
+
+in order to reach the service, we need to create an lb endpoint
+
+create a service of tyle `loadbalancer` that mapos port 4000 to 80:
+
+```bash
+kubectl create service loadbalancer  nodejs-app --tcp=80:4000 -n ingress-ns
+```
+
+wait a view moments until the loadbalancer has been provisioned.
+you can view the progress with
+
+```bash
+kubectl get service nodejs-app -n ingress-ns
+```
+
+wait for the `EXTERNAL-IP`to switch from `pending` into an extern ip.  
+
+![image](https://user-images.githubusercontent.com/8255007/60768459-79dbe880-a0c4-11e9-9565-97f611f32e32.png)
+
+now browse to the *external ip:80* to view the nodejs app.  
+
+![image](https://user-images.githubusercontent.com/8255007/60768469-a132b580-a0c4-11e9-923a-3eeaeaf0dc3d.png)
