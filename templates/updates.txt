@@ -5,3 +5,8 @@ https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/stand
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/wavefront.yaml
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/harbor.yaml
 https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/director_config.yaml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/nginx/01-service-account.yml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/nginx/02-pks-privileged.yml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/nginx/03-role.yml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/nginx/04-role-binding.yml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/templates/nginx/05-nginx.yml

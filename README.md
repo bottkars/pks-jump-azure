@@ -81,8 +81,10 @@ When the ARM Deployment is finished, the Post Deployment jobs start
 
 Monitor your Deployment using [debugging section](#debugging-monitoring)
 
+### after the deployment
+
 When the Deployment has finished, continue to
-[getting started after deployment](./initial_tasks.md)
+[getting started after deployment](./docs/initial_tasks.md)
 
 the deployment might pause after opsmanager deployment, if your  opsmanager  fqdn is not resolvable  
 the log file will, at this stage, show the Azure Name Servers that need to be added to your DNS NS Record  

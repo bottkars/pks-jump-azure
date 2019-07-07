@@ -5,15 +5,14 @@ a walkthrough
 on jummphost
 cd to ~/conductor/env
 
-
-##  Service Accounts for Cluster
+## Service Accounts for Cluster
 
 service accounts are used to access the kubeapi server
 every namespace has a default SA created
 
-##Create a namespace
+## Create a namespace
 
-```
+```bash
 kubectl create namespace ingress-ns
 ```
 
@@ -31,13 +30,11 @@ kubectl apply -f 01-service-account.yml --namespace ingress-ns
 
 ## create a pks priviledged psp for pks 1.3,1.2,1.1 ...
 
-** Only if you are < PKS1.4 **
+this applies only **Only if you are < PKS1.4**
 
 ```bash
 kubectl create -f 02-pks-priviledged.yml
 ```
-
-
 
 ## Create a Role and RoleBindings for the service account of namespace
 
@@ -60,18 +57,19 @@ kubectl describe deployment/nginx --namespace ingress-ns
 
 ## create a nodeport to access nginx from workers
 
-```
+```bash
 kubectl create service nodeport nginx --tcp=80:80 -n ingress-ns
 ```
 
 view the nodeport
-```
+
+```bash
 kubectl get services -n ingress-ns
 ```
 
 get the pods
 
-```
+```bash
 kubectl get pods -n ingress-ns
 ```
 
@@ -92,9 +90,9 @@ kubectl delete service nginx -n ingress-ns
 ## create a loadbalancer service
 
 ```bash
-kubectl get services -n ingress-ns
-
+kubectl create service loadbalancer  nginx --tcp=80:80 -n ingress-ns
 ```
+
 get the lb ip
 
 ```bash
@@ -102,4 +100,3 @@ kubectl get services -n ingress-ns
 ```
 
 use your browser to browse to the external IP
-
