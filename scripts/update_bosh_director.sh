@@ -82,7 +82,6 @@ az vm create --name ${ENV_NAME}-ops-manager-vm  --resource-group ${ENV_NAME} \
  --ssh-key-value ${HOME_DIR}/.ssh/authorized_keys
 
  om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
-    --decryption-passphrase $PIVNET_UAA_TOKEN \
     import-installation --installation $EXPORT_FILE
 
 om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
@@ -90,6 +89,5 @@ update-ssl-certificate \
     --certificate-pem "$(cat ${HOME_DIR}/fullchain.cer)" \
     --private-key-pem "$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key)"
 
-
 om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
-apply-changes --skip-unchanged-products    
+    apply-changes --skip-deployed-products    
