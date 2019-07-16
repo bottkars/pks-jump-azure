@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 source ~/.env.sh
+set -eux
 cd ${HOME_DIR}
 MYSELF=$(basename $0)
 mkdir -p ${LOG_DIR}
@@ -29,16 +30,13 @@ esac
 shift
 done
 
-export OM_TARGET=${PCF_OPSMAN_FQDN}
-export OM_USERNAME=${PCF_OPSMAN_USERNAME}
-export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
 EXPORT_FILE=${HOME_DIR}/$(uuidgen)
 om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
     export-installation --output-file ${EXPORT_FILE}
 
 export AZURE_STORAGE_CONNECTION_STRING=$(az storage account show-connection-string \
 --name ${ENV_SHORT_NAME}opsmanager --resource-group ${ENV_NAME})
-export OPSMAN_IMAGE_VERSION=2.5.0-build.158
+export OPSMAN_IMAGE_VERSION=2.6.4-build.166
 
 export OPSMAN_IMAGE_URI=$(dirname ${OPS_MANAGER_IMAGE_URI})/ops-manager-${OPSMAN_IMAGE_VERSION}.vhd
 

@@ -51,10 +51,6 @@ mkdir -p ${LOG_DIR}
 exec &> >(tee -a "${LOG_DIR}/${TILE}.$(date '+%Y-%m-%d-%H').log")
 exec 2>&1
 
-export OM_TARGET=${PCF_OPSMAN_FQDN}
-export OM_USERNAME=${PCF_OPSMAN_USERNAME}
-export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
-
 echo $(date) start deploy ${TILE}
 
 source ${ENV_DIR}/${TILE}.env
