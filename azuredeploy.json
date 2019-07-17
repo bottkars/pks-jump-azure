@@ -31,14 +31,6 @@
                 "description": "Name of Resource Group hosting Azure KeyVault for Secrets within Tenant"
             }
         },
-
-        "envShortName": {
-            "type": "string",
-            "minLength": "3",
-            "metadata": {
-                "description": "will be prefix for pks opsman and director storage accounts"
-            }
-        },
        "PKSDomainName": {
             "type": "string",
             "minLength": "7",
