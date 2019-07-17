@@ -67,12 +67,9 @@ az group deployment validate --resource-group ${JUMPBOX_RG} \
     --parameters \
     adminUsername=${ADMIN_USERNAME} \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
+    keyVaultName=${AZURE_VAULT} \
+    keyVaultRG=${VAULT_RG} \
     JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
-    clientSecret=${AZURE_CLIENT_SECRET} \
-    clientID=${AZURE_CLIENT_ID} \
-    tenantID=${AZURE_TENANT_ID} \
-    subscriptionID=${AZURE_SUBSCRIPTION_ID} \
-    pivnetToken=${PIVNET_UAA_TOKEN} \
     envName=${ENV_NAME} \
     envShortName=${ENV_SHORT_NAME} \
     opsmanImage=${OPS_MANAGER_IMAGE} \
@@ -100,13 +97,10 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/$BRANCH/azuredeploy.json \
     --parameters \
     adminUsername=${ADMIN_USERNAME} \
+    keyVaultName=${AZURE_VAULT} \
+    keyVaultRG=${VAULT_RG} \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
     JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
-    clientSecret=${AZURE_CLIENT_SECRET} \
-    clientID=${AZURE_CLIENT_ID} \
-    tenantID=${AZURE_TENANT_ID} \
-    subscriptionID=${AZURE_SUBSCRIPTION_ID} \
-    pivnetToken=${PIVNET_UAA_TOKEN} \
     envName=${ENV_NAME} \
     envShortName=${ENV_SHORT_NAME} \
     opsmanImage=${OPS_MANAGER_IMAGE} \
@@ -124,7 +118,6 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     WavefrontAPIUrl=${WAVEFRONT_API} \
     WavefrontToken=${WAVEFRONT_TOKEN} \
     opsmanImageRegion=${OPS_MANAGER_IMAGE_REGION}
-
 ```
 
 ## using a parameter file
