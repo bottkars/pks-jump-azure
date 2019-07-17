@@ -79,6 +79,7 @@ az group deployment validate --resource-group ${JUMPBOX_RG} \
     notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
     PKSAutopilot=${PKS_AUTOPILOT} \
     PKSVersion=${PKS_VERSION} \
+    HarborVersion=${HARBOR_VERSION} \
     net16bitmask=${NET_16_BIT_MASK} \
     useSelfCerts=${USE_SELF_CERTS} \
     _artifactsLocation=${ARTIFACTS_LOCATION} \
@@ -97,9 +98,9 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/$BRANCH/azuredeploy.json \
     --parameters \
     adminUsername=${ADMIN_USERNAME} \
+    sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
     keyVaultName=${AZURE_VAULT} \
     keyVaultRG=${VAULT_RG} \
-    sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
     JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
     envName=${ENV_NAME} \
     envShortName=${ENV_SHORT_NAME} \
@@ -110,6 +111,7 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
     PKSAutopilot=${PKS_AUTOPILOT} \
     PKSVersion=${PKS_VERSION} \
+    HarborVersion=${HARBOR_VERSION} \
     net16bitmask=${NET_16_BIT_MASK} \
     useSelfCerts=${USE_SELF_CERTS} \
     _artifactsLocation=${ARTIFACTS_LOCATION} \
@@ -118,6 +120,7 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     WavefrontAPIUrl=${WAVEFRONT_API} \
     WavefrontToken=${WAVEFRONT_TOKEN} \
     opsmanImageRegion=${OPS_MANAGER_IMAGE_REGION}
+
 ```
 
 ## using a parameter file
