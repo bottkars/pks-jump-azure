@@ -71,6 +71,9 @@ pks_worker_identity: "pks-worker"
 wavefront: ${WAVEFRONT}
 wavefront_api: ${WAVEFRONT_API}
 wavefront_token: ${WAVEFRONT_TOKEN}
+singleton_zone: ${SINGLETON_ZONE}
+zones_map: ${ZONES_MAP}
+zones_list: ${ZONES_LIST}
 EOF
 
 if  [ -z ${NO_APPLY} ] ; then

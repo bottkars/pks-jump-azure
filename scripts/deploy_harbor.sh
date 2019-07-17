@@ -67,6 +67,9 @@ pks_key_pem: "$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key | a
 pks_cert_pem: "$(cat ${HOME_DIR}/fullchain.cer | awk '{printf "%s\\r\\n", $0}')"
 pks_cert_ca: "$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.ca.crt | awk '{printf "%s\\r\\n", $0}')"
 harbor_ip: 10.0.12.10
+singleton_zone: ${SINGLETON_ZONE}
+zones_map: ${ZONES_MAP}
+zones_list: ${ZONES_LIST}
 EOF
 ## copy ca cert for registry login
 sudo mkdir -p /etc/docker/certs.d/harbor.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}
