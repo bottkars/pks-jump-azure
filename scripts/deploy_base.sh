@@ -98,7 +98,6 @@ if [[ "${PKS_VERSION}" > "1.3.99" ]] && [[ "${AVAILABILITY_MODE}" == "availabili
   ZONES_MAP="[name: 'zone-1', name: 'zone-2', name: 'zone-3']"
   SINGLETON_ZONE="zone-1"
   AVAILABILITY_MODE=availability_zones
-  
 elif [[ "${PKS_VERSION}" > "1.3.99" ]] && [[ "${AVAILABILITY_MODE}" == "availability_sets" ]]
   then
   ZONES_LIST="Availability Sets"
