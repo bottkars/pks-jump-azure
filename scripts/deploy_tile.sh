@@ -132,7 +132,7 @@ echo $(date) end downloading ${PRODUCT_SLUG}
         --output-directory ${HOME_DIR}
 
         echo $(date) end downloading PKS CLI
-        DOWNLOAD_FILE =$(cat ${HOME_DIR}/download-file.json | jq -r '.product_path')
+        DOWNLOAD_FILE=$(cat ${HOME_DIR}/download-file.json | jq -r '.product_path')
         chmod +x ${DOWNLOAD_FILE}
         chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${DOWNLOAD_FILE}
         sudo cp ${DOWNLOAD_FILE} /usr/local/bin/pks
@@ -147,7 +147,7 @@ echo $(date) end downloading ${PRODUCT_SLUG}
         --pivnet-product-slug ${PRODUCT_SLUG} \
         --product-version ${PCF_VERSION} \
         --output-directory ${HOME_DIR}
-        DOWNLOAD_FILE =$(cat ${HOME_DIR}/download-file.json | jq -r '.product_path')
+        DOWNLOAD_FILE=$(cat ${HOME_DIR}/download-file.json | jq -r '.product_path')
         chmod +x ${DOWNLOAD_FILE}
         chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} ${DOWNLOAD_FILE}
         sudo cp ${DOWNLOAD_FILE} /usr/local/bin/kubectl
