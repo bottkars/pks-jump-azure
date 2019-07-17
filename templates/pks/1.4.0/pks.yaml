@@ -60,11 +60,9 @@ product-properties:
   .properties.plan2_selector.active.name:
     value: medium
   .properties.plan2_selector.active.master_az_placement:
-    value:
-    - ((zones_list))
+    value: ((zones_list))
   .properties.plan2_selector.active.worker_az_placement:
-    value:
-    - ((zones_list))
+    value: ((zones_list))
   .properties.plan2_selector.active.allow_privileged_containers:
     value: true
   .properties.plan2_selector.active.admission_plugins:
@@ -79,11 +77,9 @@ product-properties:
   .properties.plan3_selector.active.worker_instances:
     value: 10
   .properties.plan3_selector.active.master_az_placement:
-    value:
-    - ((zones_list))
+    value: ((zones_list))
   .properties.plan3_selector.active.worker_az_placement:
-    value:
-    - ((zones_list))
+    value: ((zones_list))
   .properties.plan3_selector.active.allow_privileged_containers:
     value: true
   .properties.plan3_selector.active.admission_plugins:
