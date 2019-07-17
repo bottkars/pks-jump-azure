@@ -54,7 +54,7 @@ exec 2>&1
 echo $(date) start deploy ${TILE}
 
 source ${ENV_DIR}/${TILE}.env
-
+PIVNET_UAA_TOKEN=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/PIVNETUAATOKEN?api-version=2016-10-01 -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
 PIVNET_ACCESS_TOKEN=$(curl \
   --fail \
   --header "Content-Type: application/json" \

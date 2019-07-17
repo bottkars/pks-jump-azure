@@ -39,9 +39,7 @@ shift
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 source ~/.env.sh
-export OM_TARGET=${PCF_OPSMAN_FQDN}
-export OM_USERNAME=${PCF_OPSMAN_USERNAME}
-export OM_PASSWORD="${PIVNET_UAA_TOKEN}"
+PIVNET_UAA_TOKEN=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/PIVNETUAATOKEN?api-version=2016-10-01 -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
 
 if  [ -z ${CLUSTER} ] ; then
  echo "Please specify K8S Cluster Name with -c|--K8S_CLUSTER_NAME"

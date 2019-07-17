@@ -24,7 +24,7 @@ done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 source ~/.env.sh
 
-
+PIVNET_UAA_TOKEN=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/PIVNETUAATOKEN?api-version=2016-10-01 -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
 PCF_OPSMAN_ADMIN_PASSWD=${PIVNET_UAA_TOKEN}
 PKS_KEY_PEM=$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key | awk '{printf "%s\\r\\n", $0}')
 PKS_CERT_PEM=$(cat ${HOME_DIR}/fullchain.cer | awk '{printf "%s\\r\\n", $0}')
