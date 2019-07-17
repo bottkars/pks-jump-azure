@@ -119,7 +119,6 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     WavefrontAPIUrl=${WAVEFRONT_API} \
     WavefrontToken=${WAVEFRONT_TOKEN} \
     opsmanImageRegion=${OPS_MANAGER_IMAGE_REGION}
-
 ```
 
 ## using a parameter file

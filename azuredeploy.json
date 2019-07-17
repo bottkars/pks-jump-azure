@@ -11,7 +11,7 @@
             }
         },
         "sshKeyData": {
-            "minLength": "20",
+            "minLength": 20,
             "type": "string",
             "metadata": {
                 "description": "ssh Public Key to log on to the jumpbox"
@@ -33,20 +33,20 @@
         },
        "PKSDomainName": {
             "type": "string",
-            "minLength": "7",
+            "minLength": 7,
             "metadata": {
                 "description": "DNS domain (domain-suffix) for pks ( where subdomain will be created in)"
             }
         },
         "PKSSubdomainName": {
             "type": "string",
-            "minLength": "3",
+            "minLength": 3,
             "metadata": {
                 "description": "subdomain (domain-prefix) for pks"
             }
         },
         "JumphostDNSLabelPrefix": {
-            "minLength": "3",
+            "minLength": 3,
             "type": "string",
             "metadata": {
                 "description": "Unique DNS Name for the Public IP used to access the Jumphost."

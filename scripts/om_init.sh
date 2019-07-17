@@ -54,9 +54,9 @@ function retryop()
 ###
 pushd ${HOME_DIR}
 
-#  FAKING TERRAFORM DOWNLOAD FOR PKS
+#  FAKING TERRAFORM DOWNLOAD FOR PKS 0.40
 PRODUCT_SLUG="elastic-runtime"
-RELEASE_ID="259105"
+RELEASE_ID="412253"
 
 ### updating om
 OM_VER=2.0.1
