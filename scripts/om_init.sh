@@ -143,7 +143,6 @@ EOF
 chmod 755 terraform.tfvars
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} terraform.tfvars
 
-cd ./pivotal-cf-terraforming-azure-*/terraforming-pks
 
 PATCH_SERVER="https://raw.githubusercontent.com/bottkars/pks-jump-azure/testing/patches/0.40/"
 wget -q ${PATCH_SERVER}main.tf -O ./main.tf
