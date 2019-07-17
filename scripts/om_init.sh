@@ -161,9 +161,9 @@ az login --service-principal \
   --tenant ${AZURE_TENANT_ID}
  
 az role definition delete \
-  --name ${TF_VAR_subscription_id}-${ENV_NAME}-pks-worker-role
+  --name ${AZURE_SUBSCRIPTION_ID}-${ENV_NAME}-pks-worker-role
 az role definition delete \
-  --name ${TF_VAR_subscription_id}-${ENV_NAME}-pks-master-role
+  --name ${AZURE_SUBSCRIPTION_ID}-${ENV_NAME}-pks-master-role
 
 terraform init
 
@@ -340,10 +340,10 @@ update-ssl-certificate \
 
 cd ${HOME_DIR}
 cat << EOF > ${TEMPLATE_DIR}/director_vars.yaml
-subscription_id: ${TF_VAR_subscription_id}
-tenant_id: ${TF_VAR_tenant_id}
-client_id: ${TF_VAR_client_id}
-client_secret: ${TF_VAR_client_secret}
+subscription_id: ${AZURE_SUBSCRIPTION_ID}
+tenant_id: ${AZURE_TENANT_ID}
+client_id: ${AZURE_CLIENT_ID}
+client_secret: ${AZURE_CLIENT_SECRET}
 resource_group_name: ${ENV_NAME}
 bosh_storage_account_name: ${BOSH_STORAGE_ACCOUNT_NAME}
 default_security_group: ${BOSH_DEPLOYED_VMS_SECURITY_GROUP_NAME}
