@@ -17,45 +17,21 @@
                 "description": "ssh Public Key to log on to the jumpbox"
             }
         },
-        "clientID": {
-            "minLength": "20",
+        "keyVaultName": {
             "type": "string",
+            "minLength": 3,
             "metadata": {
-                "description": "Azure Service Principal"
+                "description": "Name of Azure Vault for Secrets"
             }
         },
-        "clientSecret": {
-            "type": "securestring",
-            "minLength": "20",
-            "metadata": {
-                "description": "Azure Service Principal Secret"
-            }
-        },        
-        "tenantID": {
+        "keyVaultRG": {
             "type": "string",
-            "minLength": "36",
-            "maxLength": "36",
+            "minLength": 3,
             "metadata": {
-                "description": "Azure Tenant ID for Deployment"
-            }
-        },
-        "subscriptionID": {
-            "type": "string",
-            "minLength": "36",
-            "maxLength": "36",
-            "metadata": {
-                "description": "Azure Subscription ID for Deployment"
+                "description": "Name of Resource Group hosting Azure KeyVault for Secrets within Tenant"
             }
         },
 
-        "pivnetToken": {
-            "type": "securestring",
-            "minLength": "34",
-            "maxLength": "34",
-            "metadata": {
-                "description": "Your UAA API Token from Pivotal Network"
-            }
-        },
         "envShortName": {
             "type": "string",
             "minLength": "3",
@@ -118,11 +94,11 @@
             "allowedValues": [
                 "1.7.3",
                 "1.7.4",
-                "1.7.5"
-            ],
+                "1.7.5",
+                "1.8.1"            ],
             "minLength": 5,
             "maxLength": 13,
-            "defaultValue": "1.7.5",
+            "defaultValue": "1.8.1",
             "metadata": {
                 "description": "The version for the private Harbor Container Registry ( optional )"
             }
@@ -165,11 +141,15 @@
             "allowedValues": [
                 "2.4-build.145",
                 "2.4-build.142",
-                "2.6.1-build.156"
+                "2.6.1-build.156",
+                "2.6.2-build.159",
+                "2.6.3-build.163",
+                "2.6.4-build.166"
+
             ],
-            "defaultValue": "2.6.1-build.156",
+            "defaultValue": "2.6.4-build.166",
             "metadata": {
-                "description": "Image Name of Operation Manager Image, currently only 2.4.2 and 2.4.3"
+                "description": "Image Name of Operation Manager Image"
             }
         },
          "net16bitmask": {
@@ -313,6 +293,47 @@
         ]
     },
     "resources": [
+        {
+            "apiVersion": "2017-05-10",
+            "name": "nestedTemplate",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('keyVaultRG')]",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.KeyVault/vaults/accessPolicies",
+                            "name": "[concat(parameters('keyVaultName'), '/add')]",
+                            "apiVersion": "2018-02-14",
+                            "location": "[parameters('location')]",
+                            "properties": {
+                                "accessPolicies": [
+                                    {
+                                        "tenantId": "[subscription().tenantId]",
+                                        "objectId": "[reference(concat(resourceId('Microsoft.Compute/virtualMachines', variables('vmName')), '/providers/Microsoft.ManagedIdentity/Identities/default'), '2015-08-31-PREVIEW').principalId]",
+                                        "permissions": {
+                                            "secrets": [
+                                                "get",
+                                                "list"
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "parameters": {}
+            }
+        },        
         {
             "type": "Microsoft.Storage/storageAccounts",
             "name": "[variables('DiagnosticsStorageAccountName')]",
@@ -474,12 +495,7 @@
                 "parameters": {
                     "customData": {
                         "value": {
-                            "AZURE_CLIENT_ID": "[parameters('clientID')]",
-                            "AZURE_CLIENT_SECRET": "[parameters('clientSecret')]",
                             "ADMIN_USERNAME": "[parameters('adminUsername')]",
-                            "AZURE_SUBSCRIPTION_ID": "[parameters('subscriptionID')]",
-                            "AZURE_TENANT_ID": "[parameters('tenantID')]",
-                            "PIVNET_UAA_TOKEN": "[parameters('pivnetToken')]",
                             "ENV_NAME": "[parameters('envName')]",
                             "ENV_SHORT_NAME": "[parameters('envShortName')]",
                             "OPS_MANAGER_IMAGE_URI": "[concat('https://opsmanager',parameters('opsmanImageregion'),'.blob.core.windows.net/images/ops-manager-',parameters('opsmanImage'),'.vhd')]",
@@ -520,7 +536,7 @@
                     "timestamp": 2
                 },
                 "protectedSettings": {
-                    "commandToExecute": "[concat('bash -l -c \"./deploy_base.sh', ' ', parameters('tenantID'), ' ', parameters('clientID'), ' ', parameters('clientSecret'), ' 2>&1 | tee /home/', parameters('adminUsername'), '/install.log\"')]"
+                    "commandToExecute": "[concat('bash -l -c \"./deploy_base.sh 2>&1 | tee /home/', parameters('adminUsername'), '/install.log\"')]"
                 }
             }
         }

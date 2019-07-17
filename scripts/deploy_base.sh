@@ -32,19 +32,16 @@ function get_setting() {
   local value=$(echo $settings | jq ".$key" -r)
   echo $value
 }
-
+METADATA=$(curl -s -H Metadata:true "http://169.254.169.254/metadata/instance/compute?api-version=2017-08-01")
 custom_data_file="/var/lib/cloud/instance/user-data.txt"
 settings=$(cat ${custom_data_file})
 ADMIN_USERNAME=$(get_setting ADMIN_USERNAME)
-AZURE_CLIENT_ID=$(get_setting AZURE_CLIENT_ID)
-AZURE_CLIENT_SECRET=$(get_setting AZURE_CLIENT_SECRET)
-AZURE_SUBSCRIPTION_ID=$(get_setting AZURE_SUBSCRIPTION_ID)
-AZURE_TENANT_ID=$(get_setting AZURE_TENANT_ID)
+AZURE_SUBSCRIPTION_ID=$(echo $METADATA | jq -r .subscriptionId)
 PIVNET_UAA_TOKEN=$(get_setting PIVNET_UAA_TOKEN)
 ENV_NAME=$(get_setting ENV_NAME)
 ENV_SHORT_NAME=$(get_setting ENV_SHORT_NAME)
 OPS_MANAGER_IMAGE_URI=$(get_setting OPS_MANAGER_IMAGE_URI)
-LOCATION=$(get_setting LOCATION)
+LOCATION=$(echo $METADATA | jq -r .location)
 PKS_DOMAIN_NAME=$(get_setting PKS_DOMAIN_NAME)
 PKS_SUBDOMAIN_NAME=$(get_setting PKS_SUBDOMAIN_NAME)
 PCF_OPSMAN_USERNAME=$(get_setting PCF_OPSMAN_USERNAME)
@@ -54,7 +51,7 @@ PKS_VERSION=$(get_setting PKS_VERSION)
 NET_16_BIT_MASK=$(get_setting NET_16_BIT_MASK)
 DOWNLOAD_DIR="/datadisks/disk1"
 USE_SELF_CERTS=$(get_setting USE_SELF_CERTS)
-JUMP_RG=$(get_setting JUMP_RG)
+JUMP_RG=$(echo $METADATA  | jq -r .resourceGroupName)
 JUMP_VNET=$(get_setting JUMP_VNET)
 WAVEFRONT_API=$(get_setting WAVEFRONT_API)
 WAVEFRONT_TOKEN=$(get_setting WAVEFRONT_TOKEN)
@@ -97,12 +94,8 @@ fi
 
 $(cat <<-EOF > ${HOME_DIR}/.env.sh
 #!/usr/bin/env bash
+AZURE_VAULT=${AZURE_VAULT}
 ADMIN_USERNAME="${ADMIN_USERNAME}"
-AZURE_CLIENT_SECRET="${AZURE_CLIENT_SECRET}"
-AZURE_CLIENT_ID="${AZURE_CLIENT_ID}"
-AZURE_TENANT_ID="${AZURE_TENANT_ID}"
-AZURE_SUBSCRIPTION_ID="${AZURE_SUBSCRIPTION_ID}"
-PIVNET_UAA_TOKEN="${PIVNET_UAA_TOKEN}"
 ENV_NAME="${ENV_NAME}"
 ENV_SHORT_NAME="${ENV_SHORT_NAME}"
 OPS_MANAGER_IMAGE_URI="${OPS_MANAGER_IMAGE_URI}"
@@ -149,97 +142,25 @@ retryop "sudo apt -y install azure-cli unzip" 10 30
 retryop "sudo apt -y install ruby ruby-dev gcc build-essential g++" 10 30
 sudo gem install cf-uaac
 
-wget -O terraform.zip https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip && \
+wget -O terraform.zip https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.14_linux_amd64.zip && \
   unzip terraform.zip && \
   sudo mv terraform /usr/local/bin
 
-wget -O bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-5.4.0-linux-amd64 && \
+wget -O bosh https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-5.5.1-linux-amd64 && \
   chmod +x bosh && \
   sudo mv bosh /usr/local/bin/
 
-wget -O /tmp/bbr.tar https://github.com/cloudfoundry-incubator/bosh-backup-and-restore/releases/download/v1.2.8/bbr-1.2.8.tar && \
+wget -O /tmp/bbr.tar https://github.com/cloudfoundry-incubator/bosh-backup-and-restore/releases/download/v1.5.1/bbr-1.2.8.tar && \
   tar xvC /tmp/ -f /tmp/bbr.tar && \
   sudo mv /tmp/releases/bbr /usr/local/bin/
 
+wget -O /tmp/credhub.tgz  https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/2.4.0/credhub-linux-2.4.0.tgz
+  tar xzv ./credhub -f /tmp/credhub.tgz && \
+  chmod +x credhub && \
+  mv credhub /usr/local/bin/
 
 cd ${HOME_DIR}
 
-#  FAKING TERRAFORM DOWNLOAD FOR PKS
-PRODUCT_SLUG="elastic-runtime"
-RELEASE_ID="259105"
-#
-
-
-AUTHENTICATION_RESPONSE=$(curl \
-  --fail \
-  --data "{\"refresh_token\": \"${PIVNET_UAA_TOKEN}\"}" \
-  https://network.pivotal.io/api/v2/authentication/access_tokens)
-
-PIVNET_ACCESS_TOKEN=$(echo ${AUTHENTICATION_RESPONSE} | jq -r '.access_token')
-# Get the release JSON for the PKS version you want to install:
-
-RELEASE_JSON=$(curl \
-    --fail \
-    "https://network.pivotal.io/api/v2/products/${PRODUCT_SLUG}/releases/${RELEASE_ID}")
-
-# ACCEPTING EULA
-
-EULA_ACCEPTANCE_URL=$(echo ${RELEASE_JSON} |\
-  jq -r '._links.eula_acceptance.href')
-
-curl \
-  --fail \
-  --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
-  --request POST \
-  ${EULA_ACCEPTANCE_URL}
-
-# GET TERRAFORM FOR PKS AZURE
-
-
-DOWNLOAD_ELEMENT=$(echo ${RELEASE_JSON} |\
-  jq -r '.product_files[] | select(.aws_object_key | contains("terraforming-azure"))')
-
-FILENAME=$(echo ${DOWNLOAD_ELEMENT} |\
-  jq -r '.aws_object_key | split("/") | last')
-
-URL=$(echo ${DOWNLOAD_ELEMENT} |\
-  jq -r '._links.download.href')
-
-# download terraform
-
-curl \
-  --fail \
-  --location \
-  --output ${FILENAME} \
-  --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
-  ${URL}
-sudo -S -u ${ADMIN_USERNAME} unzip ${FILENAME}
-cd ./pivotal-cf-terraforming-azure-*/
-cd terraforming-pks
-NET_16_BIT_MASK="10.0" # static for now due to bug
- # preparation work for terraform
-cat << EOF > terraform.tfvars
-client_id             = "${AZURE_CLIENT_ID}"
-client_secret         = "${AZURE_CLIENT_SECRET}"
-subscription_id       = "${AZURE_SUBSCRIPTION_ID}"
-tenant_id             = "${AZURE_TENANT_ID}"
-env_name              = "${ENV_NAME}"
-env_short_name        = "${ENV_SHORT_NAME}"
-ops_manager_image_uri = "${OPS_MANAGER_IMAGE_URI}"
-location              = "${LOCATION}"
-dns_suffix            = "${PKS_DOMAIN_NAME}"
-dns_subdomain         = "${PKS_SUBDOMAIN_NAME}"
-ops_manager_private_ip = "${NET_16_BIT_MASK}.8.4"
-# pcf_infrastructure_subnet = "${NET_16_BIT_MASK}.8.0/26"
-# pks_subnet_cidrs = "${NET_16_BIT_MASK}.0.0/22"
-# services_subnet_cidrs = "${NET_16_BIT_MASK}.4.0/22"
-pcf_virtual_network_address_space = ["${NET_16_BIT_MASK}.0.0/16"]
-EOF
-# patch terraform for managed identity if tf is 0.29
-
-
-chmod 755 terraform.tfvars
-chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} terraform.tfvars
 ${SCRIPT_DIR}/deploy_docker.sh ${HOME_DIR} 
 
 END_BASE_DEPLOY_TIME=$(date)

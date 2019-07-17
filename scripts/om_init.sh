@@ -53,11 +53,98 @@ function retryop()
 }
 ###
 pushd ${HOME_DIR}
+
+#  FAKING TERRAFORM DOWNLOAD FOR PKS
+PRODUCT_SLUG="elastic-runtime"
+RELEASE_ID="259105"
+
 ### updating om
-wget -O om https://github.com/pivotal-cf/om/releases/download/1.1.0/om-linux && \
+wget -O om https://github.com/pivotal-cf/om/releases/download/2.0.1/om-linux-2.0.1
+ && \
   chmod +x om && \
   sudo mv om /usr/local/bin/
 ###  
+
+###  setting secret env from vault 
+
+
+TOKEN=$(curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -s -H Metadata:true | jq -r .access_token)
+
+export TF_VAR_subscription_id=$(curl -s -H Metadata:true "http://169.254.169.254/metadata/instance/compute?api-version=2017-08-01" | jq -r .subscriptionId)
+export TF_VAR_client_secret=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/AZURECLIENTSECRET?api-version=2016-10-01 -s -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
+export TF_VAR_client_id=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/AZURECLIENTID?api-version=2016-10-01 -s -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
+export TF_VAR_tenant_id=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/AZURETENANTID?api-version=2016-10-01 -s -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
+PIVNET_UAA_TOKEN=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/PIVNETUAATOKEN?api-version=2016-10-01 -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
+
+###
+
+AUTHENTICATION_RESPONSE=$(curl \
+  --fail \
+  --data "{\"refresh_token\": \"${PIVNET_UAA_TOKEN}\"}" \
+  https://network.pivotal.io/api/v2/authentication/access_tokens)
+
+PIVNET_ACCESS_TOKEN=$(echo ${AUTHENTICATION_RESPONSE} | jq -r '.access_token')
+# Get the release JSON for the PKS version you want to install:
+
+RELEASE_JSON=$(curl \
+    --fail \
+    "https://network.pivotal.io/api/v2/products/${PRODUCT_SLUG}/releases/${RELEASE_ID}")
+
+# ACCEPTING EULA
+
+EULA_ACCEPTANCE_URL=$(echo ${RELEASE_JSON} |\
+  jq -r '._links.eula_acceptance.href')
+
+curl \
+  --fail \
+  --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
+  --request POST \
+  ${EULA_ACCEPTANCE_URL}
+
+# GET TERRAFORM FOR PKS AZURE
+
+
+DOWNLOAD_ELEMENT=$(echo ${RELEASE_JSON} |\
+  jq -r '.product_files[] | select(.aws_object_key | contains("terraforming-azure"))')
+
+FILENAME=$(echo ${DOWNLOAD_ELEMENT} |\
+  jq -r '.aws_object_key | split("/") | last')
+
+URL=$(echo ${DOWNLOAD_ELEMENT} |\
+  jq -r '._links.download.href')
+
+# download terraform
+
+curl \
+  --fail \
+  --location \
+  --output ${FILENAME} \
+  --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
+  ${URL}
+sudo -S -u ${ADMIN_USERNAME} unzip ${FILENAME}
+cd ./pivotal-cf-terraforming-azure-*/
+cd terraforming-pks
+NET_16_BIT_MASK="10.0" # static for now due to bug
+ # preparation work for terraform
+cat << EOF > terraform.tfvars
+env_name              = "${ENV_NAME}"
+env_short_name        = "${ENV_SHORT_NAME}"
+ops_manager_image_uri = "${OPS_MANAGER_IMAGE_URI}"
+location              = "${LOCATION}"
+dns_suffix            = "${PKS_DOMAIN_NAME}"
+dns_subdomain         = "${PKS_SUBDOMAIN_NAME}"
+ops_manager_private_ip = "${NET_16_BIT_MASK}.8.4"
+# pcf_infrastructure_subnet = "${NET_16_BIT_MASK}.8.0/26"
+# pks_subnet_cidrs = "${NET_16_BIT_MASK}.0.0/22"
+# services_subnet_cidrs = "${NET_16_BIT_MASK}.4.0/22"
+pcf_virtual_network_address_space = ["${NET_16_BIT_MASK}.0.0/16"]
+EOF
+# patch terraform for managed identity if tf is 0.29
+
+
+chmod 755 terraform.tfvars
+chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} terraform.tfvars
+
 cd ./pivotal-cf-terraforming-azure-*/terraforming-pks
 
 PATCH_SERVER="https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/"
@@ -66,15 +153,20 @@ wget -q ${PATCH_SERVER}variables.tf -O ./variables.tf
 wget -q ${PATCH_SERVER}modules/pks/networking.tf -O ../modules/pks/networking.tf
 wget -q ${PATCH_SERVER}modules/pks/variables.tf -O ../modules/pks/variables.tf
 # end patch 
+TOKEN=$(curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -s -H Metadata:true | jq -r .access_token)
+AZURE_SUBSCRIPTION_ID=$(curl -s -H Metadata:true "http://169.254.169.254/metadata/instance/compute?api-version=2017-08-01" | jq -r .subscriptionId)
+AZURE_CLIENT_SECRET=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/AZURECLIENTSECRET?api-version=2016-10-01 -s -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
+AZURE_CLIENT_ID=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/AZURECLIENTID?api-version=2016-10-01 -s -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
+AZURE_TENANT_ID=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/AZURETENANTID?api-version=2016-10-01 -s -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
 az login --service-principal \
   --username ${AZURE_CLIENT_ID} \
   --password ${AZURE_CLIENT_SECRET} \
   --tenant ${AZURE_TENANT_ID}
  
 az role definition delete \
-  --name ${AZURE_SUBSCRIPTION_ID}-${ENV_NAME}-pks-worker-role
+  --name ${TF_VAR_subscription_id}-${ENV_NAME}-pks-worker-role
 az role definition delete \
-  --name ${AZURE_SUBSCRIPTION_ID}-${ENV_NAME}-pks-master-role
+  --name ${TF_VAR_subscription_id}-${ENV_NAME}-pks-master-role
 
 terraform init
 
@@ -246,10 +338,10 @@ update-ssl-certificate \
 
 cd ${HOME_DIR}
 cat << EOF > ${TEMPLATE_DIR}/director_vars.yaml
-subscription_id: ${AZURE_SUBSCRIPTION_ID}
-tenant_id: ${AZURE_TENANT_ID}
-client_id: ${AZURE_CLIENT_ID}
-client_secret: ${AZURE_CLIENT_SECRET}
+subscription_id: ${TF_VAR_subscription_id}
+tenant_id: ${TF_VAR_tenant_id}
+client_id: ${TF_VAR_client_id}
+client_secret: ${TF_VAR_client_secret}
 resource_group_name: ${ENV_NAME}
 bosh_storage_account_name: ${ENV_SHORT_NAME}director
 default_security_group: ${BOSH_DEPLOYED_VMS_SECURITY_GROUP_NAME}
