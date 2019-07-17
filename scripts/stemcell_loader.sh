@@ -123,6 +123,8 @@ upload-stemcell \
 --stemcell $STEMCELL_DIR/$PRODUCT_FILENAME
 
 }
+TOKEN=$(curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -s -H Metadata:true | jq -r .access_token)
+PIVNET_UAA_TOKEN=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/PIVNETUAATOKEN?api-version=2016-10-01 -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
 
 getstemcell ${SLUG_ID} ${STEMCELL_VER} $DOWNLOAD_DIR $PIVNET_UAA_TOKEN
 # getstemcell 233 97 $DOWNLOAD_DIR $PIVNET_UAA_TOKEN
