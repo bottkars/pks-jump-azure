@@ -1,13 +1,12 @@
 product-name: pivotal-container-service
 network-properties:
-  singleton_availability_zone:
-    name: 'null'
-  other_availability_zones:
-  - name: 'null'
   network:
     name: pks-subnet
   service_network:
-    name: pks-services-subnet   
+    name: pks-services-subnet
+  other_availability_zones: ((zones_map))
+  singleton_availability_zone:
+    name: ((singleton_zone))     
 product-properties:
   .properties.cloud_provider:
     value: Azure
@@ -39,10 +38,10 @@ product-properties:
     value: small
   .properties.plan1_selector.active.master_az_placement:
     value:
-    - 'null'
+    - ((singleton_zone))
   .properties.plan1_selector.active.worker_az_placement:
     value:
-    - 'null'
+    - ((singleton_zone))
   .properties.plan1_selector.active.allow_privileged_containers:
     value: true
   .properties.plan1_selector.active.admission_plugins:
@@ -62,10 +61,10 @@ product-properties:
     value: medium
   .properties.plan2_selector.active.master_az_placement:
     value:
-    - 'null'
+    - ((zones_list))
   .properties.plan2_selector.active.worker_az_placement:
     value:
-    - 'null'
+    - ((zones_list))
   .properties.plan2_selector.active.allow_privileged_containers:
     value: true
   .properties.plan2_selector.active.admission_plugins:
@@ -81,10 +80,10 @@ product-properties:
     value: 10
   .properties.plan3_selector.active.master_az_placement:
     value:
-    - 'null'
+    - ((zones_list))
   .properties.plan3_selector.active.worker_az_placement:
     value:
-    - 'null'
+    - ((zones_list))
   .properties.plan3_selector.active.allow_privileged_containers:
     value: true
   .properties.plan3_selector.active.admission_plugins:
