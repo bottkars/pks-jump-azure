@@ -258,7 +258,7 @@ echo ${START_OPSMAN_DEPLOY_TIME} start opsman deployment
 
 
 NET_16_BIT_MASK="10.0" #this is static in terraform 0.29
-BOSH_STORAGE_ACCOUNT_NAME=$(terraform output ops_manager_storage_account)
+BOSH_STORAGE_ACCOUNT_NAME=$(terraform output bosh_root_storage_account)
 AZURE_NAMESERVERS=$(terraform output env_dns_zone_name_servers)
 SSH_PRIVATE_KEY="$(terraform output -json ops_manager_ssh_private_key | jq .value)"
 SSH_PUBLIC_KEY="$(terraform output ops_manager_ssh_public_key)"
