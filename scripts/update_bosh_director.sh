@@ -35,12 +35,12 @@ om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
     export-installation --output-file ${EXPORT_FILE}
 
 export AZURE_STORAGE_CONNECTION_STRING=$(az storage account show-connection-string \
---name ${ENV_SHORT_NAME}opsmanager --resource-group ${ENV_NAME})
+--name ${BOSH_STORAGE_ACCOUNT_NAME} --resource-group ${ENV_NAME})
 export OPSMAN_IMAGE_VERSION=$(grep -A1 'OPSMAN_IMAGE:' ${ENV_DIR}/opsman.yml | tail -n1 | cut -c15- )
 
 export OPSMAN_IMAGE_URI=$(dirname ${OPS_MANAGER_IMAGE_URI})/ops-manager-${OPSMAN_IMAGE_VERSION}.vhd
 
-AZURE_STORAGE_ENDPOINT=$(az storage account show --name ${ENV_SHORT_NAME}opsmanager \
+AZURE_STORAGE_ENDPOINT=$(az storage account show --name ${BOSH_STORAGE_ACCOUNT_NAME} \
  --resource-group ${ENV_NAME} \
   --query '[primaryEndpoints.blob]' --output tsv)
 OPSMAN_LOCAL_IMAGE=${AZURE_STORAGE_ENDPOINT}opsmanagerimage/opsman-image-${OPSMAN_IMAGE_VERSION}.vhd

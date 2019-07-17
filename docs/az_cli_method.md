@@ -50,7 +50,6 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     subscriptionID=${AZURE_SUBSCRIPTION_ID} \
     pivnetToken=${PIVNET_UAA_TOKEN} \
     envName=${ENV_NAME} \
-    envShortName=${ENV_SHORT_NAME} \
     PKSDomainName=${PKS_DOMAIN_NAME} \
     PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \
     opsmanUsername=${PKS_OPSMAN_USERNAME} \
@@ -71,7 +70,6 @@ az group deployment validate --resource-group ${JUMPBOX_RG} \
     keyVaultRG=${VAULT_RG} \
     JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
     envName=${ENV_NAME} \
-    envShortName=${ENV_SHORT_NAME} \
     opsmanImage=${OPS_MANAGER_IMAGE} \
     PKSDomainName=${PKS_DOMAIN_NAME} \
     PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \
@@ -103,7 +101,6 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     keyVaultRG=${VAULT_RG} \
     JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
     envName=${ENV_NAME} \
-    envShortName=${ENV_SHORT_NAME} \
     opsmanImage=${OPS_MANAGER_IMAGE} \
     PKSDomainName=${PKS_DOMAIN_NAME} \
     PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \

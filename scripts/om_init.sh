@@ -127,7 +127,6 @@ NET_16_BIT_MASK="10.0" # static for now due to bug
  # preparation work for terraform
 cat << EOF > terraform.tfvars
 env_name              = "${ENV_NAME}"
-env_short_name        = "${ENV_SHORT_NAME}"
 ops_manager_image_uri = "${OPS_MANAGER_IMAGE_URI}"
 location              = "${LOCATION}"
 dns_suffix            = "${PKS_DOMAIN_NAME}"
@@ -259,6 +258,7 @@ echo ${START_OPSMAN_DEPLOY_TIME} start opsman deployment
 
 
 NET_16_BIT_MASK="10.0" #this is static in terraform 0.29
+BOSH_STORAGE_ACCOUNT_NAME=$(terraform output ops_manager_storage_account)
 AZURE_NAMESERVERS=$(terraform output env_dns_zone_name_servers)
 SSH_PRIVATE_KEY="$(terraform output -json ops_manager_ssh_private_key | jq .value)"
 SSH_PUBLIC_KEY="$(terraform output ops_manager_ssh_public_key)"
@@ -270,6 +270,10 @@ PKS_SUBNET_CIDRS="$(terraform output pks_subnet_cidrs)"
 SERVICES_SUBNET_GATEWAY="$(terraform output services_subnet_gateway)"
 PKS_SUBNET_GATEWAY="$(terraform output pks_subnet_gateway)"
 INFRASTRUCTURE_SUBNET_GATEWAY="$(terraform output infrastructure_subnet_gateway)"
+
+echo "BOSH_STORAGE_ACCOUNT_NAME=${BOSH_STORAGE_ACCOUNT_NAME}"  >> ${HOME_DIR}/.env.sh
+
+
 echo "checking opsman api ready using the new fqdn ${PCF_OPSMAN_FQDN},
 if the . keeps showing, check if ns record for ${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} has
 ${AZURE_NAMESERVERS}
@@ -342,7 +346,7 @@ tenant_id: ${TF_VAR_tenant_id}
 client_id: ${TF_VAR_client_id}
 client_secret: ${TF_VAR_client_secret}
 resource_group_name: ${ENV_NAME}
-bosh_storage_account_name: ${ENV_SHORT_NAME}director
+bosh_storage_account_name: ${BOSH_STORAGE_ACCOUNT_NAME}
 default_security_group: ${BOSH_DEPLOYED_VMS_SECURITY_GROUP_NAME}
 ssh_public_key: ${SSH_PUBLIC_KEY}
 ssh_private_key: ${SSH_PRIVATE_KEY}
@@ -360,6 +364,8 @@ pks_subnet_cidrs: "${PKS_SUBNET_CIDRS}"
 pks_subnet_gateway: "${PKS_SUBNET_GATEWAY}"
 pks_subnet_range: "${NET_16_BIT_MASK}.12.1-${NET_16_BIT_MASK}.12.4"
 fullchain: "$(cat ${HOME_DIR}/fullchain.cer | awk '{printf "%s\\r\\n", $0}')"
+availability_mode: ${AVAILABILITY_MODE}
+singleton_availability_zone: "${SINGLETON_ZONE}"
 EOF
 
 #infrastructure_cidr: "${INFRASTRUCTURE_CIDR}"

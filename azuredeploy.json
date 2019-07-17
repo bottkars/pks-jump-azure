@@ -501,7 +501,6 @@
                             "ADMIN_USERNAME": "[parameters('adminUsername')]",
                             "AZURE_VAULT": "[parameters('keyVaultName')]",
                             "ENV_NAME": "[parameters('envName')]",
-                            "ENV_SHORT_NAME": "[parameters('envShortName')]",
                             "OPS_MANAGER_IMAGE_URI": "[concat('https://opsmanager',parameters('opsmanImageregion'),'.blob.core.windows.net/images/ops-manager-',parameters('opsmanImage'),'.vhd')]",
                             "LOCATION": "[parameters('location')]",
                             "PKS_DOMAIN_NAME": "[parameters('PKSDomainName')]",

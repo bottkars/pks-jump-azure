@@ -13,7 +13,6 @@
  AZURE_TENANT_ID   |   |   | yes  |
  PIVNET_UAA_TOKEN  |   |   | yes  | will also be password for OpsManager and k8sadmin
  ENV_NAME  |   | pks  | no  |
- ENV_SHORT_NAME  |   |   |yes |
  OPS_MANAGER_IMAGE  |opsManImage   | ops-manager-2.4-build.152.vhd | no  |
  PKS_DOMAIN_NAME  |   |   | yes  |
  PKS_SUBDOMAIN_NAME  |   |   | yes  |

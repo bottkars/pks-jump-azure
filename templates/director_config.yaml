@@ -44,6 +44,8 @@ networks-configuration:
 network-assignment:
  network:
   name: pks-infrastructure-subnet
+ singleton_availability_zone:
+  name: ((singleton_availability_zone))
 resource-configuration:
   director:
     instances: automatic
