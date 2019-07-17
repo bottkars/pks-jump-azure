@@ -68,7 +68,17 @@
                 "description": "environment name for azure resource group and resources"
             }
         },
-      
+        "availabilityMode": {
+            "type": "string",
+            "defaultValue": "availability_sets",
+            "allowedValues": [
+                "availability_sets",
+                "availability_zones"
+            ],
+            "metadata": {
+                "description": "Availability Mode. Note that Zones are only available in Central US, East US, East US 2, France Central, North Europe, Southeast Asia, West Europe, West US 2"
+            }
+        },
         "PKSVersion": {
             "type": "string",
             "allowedValues": [
@@ -515,7 +525,8 @@
                             "JUMP_VNET": "[variables('virtualNetworkName')]",
                             "JUMP_RG": "[resourceGroup().name]",
                             "WAVEFRONT_API": "[parameters('WavefrontAPIUrl')]",
-                            "WAVEFRONT_TOKEN": "[parameters('WavefrontToken')]"
+                            "WAVEFRONT_TOKEN": "[parameters('WavefrontToken')]",
+                            "AVAILABILITY_MODE": "[parameters('availabilityMode')]"
                         }
                     }
                 }

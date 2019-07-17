@@ -55,6 +55,7 @@ JUMP_RG=$(echo $METADATA  | jq -r .resourceGroupName)
 JUMP_VNET=$(get_setting JUMP_VNET)
 WAVEFRONT_API=$(get_setting WAVEFRONT_API)
 WAVEFRONT_TOKEN=$(get_setting WAVEFRONT_TOKEN)
+AVAILABILITY_MODE=$(get_setting AVAILABILITY_MODE)
 HOME_DIR="/home/${ADMIN_USERNAME}"
 LOG_DIR="${HOME_DIR}/conductor/logs"
 SCRIPT_DIR="${HOME_DIR}/conductor/scripts"
