@@ -35,6 +35,7 @@ function get_setting() {
 METADATA=$(curl -s -H Metadata:true "http://169.254.169.254/metadata/instance/compute?api-version=2017-08-01")
 custom_data_file="/var/lib/cloud/instance/user-data.txt"
 settings=$(cat ${custom_data_file})
+AZURE_VAULT=$(get_setting AZURE_VAULT)
 ADMIN_USERNAME=$(get_setting ADMIN_USERNAME)
 AZURE_SUBSCRIPTION_ID=$(echo $METADATA | jq -r .subscriptionId)
 PIVNET_UAA_TOKEN=$(get_setting PIVNET_UAA_TOKEN)
@@ -142,7 +143,7 @@ retryop "sudo apt -y install azure-cli unzip" 10 30
 retryop "sudo apt -y install ruby ruby-dev gcc build-essential g++" 10 30
 sudo gem install cf-uaac
 
-wget -O terraform.zip https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.14_linux_amd64.zip && \
+wget -O terraform.zip https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_linux_amd64.zip && \
   unzip terraform.zip && \
   sudo mv terraform /usr/local/bin
 

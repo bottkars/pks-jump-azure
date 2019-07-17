@@ -59,8 +59,8 @@ PRODUCT_SLUG="elastic-runtime"
 RELEASE_ID="259105"
 
 ### updating om
-wget -O om https://github.com/pivotal-cf/om/releases/download/2.0.1/om-linux-2.0.1
- && \
+OM_VER=2.0.1
+wget -O om https://github.com/pivotal-cf/om/releases/download/${OM_VER}/om-linux-${OM_VER} && \
   chmod +x om && \
   sudo mv om /usr/local/bin/
 ###  
@@ -122,8 +122,7 @@ curl \
   --header "Authorization: Bearer ${PIVNET_ACCESS_TOKEN}" \
   ${URL}
 sudo -S -u ${ADMIN_USERNAME} unzip ${FILENAME}
-cd ./pivotal-cf-terraforming-azure-*/
-cd terraforming-pks
+cd ${HOME_DIR}/pivotal-cf-terraforming-azure-*/terraforming-pks
 NET_16_BIT_MASK="10.0" # static for now due to bug
  # preparation work for terraform
 cat << EOF > terraform.tfvars
