@@ -1,4 +1,4 @@
-https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/pks/1.4.1/pks.env
-https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/harbor/1.8.1/harbor.env
-https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/greenplum/1.2.0/greenplum.env
-https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/env/opsman.yml
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/testing/env/pks/1.4.1/pks.env
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/testing/env/harbor/1.8.1/harbor.env
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/testing/env/greenplum/1.2.0/greenplum.env
+https://raw.githubusercontent.com/bottkars/pks-jump-azure/testing/env/opsman.yml
