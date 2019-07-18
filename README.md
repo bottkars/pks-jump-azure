@@ -30,16 +30,20 @@ For that, the Tiles and required Stemcell(s) are downloaded automatically.
 ## features
 
 - automated opsman deployment and configuration
-- pks infrastructure paving
-- autopilot for deploying pks
+- jumphost with additional datadisk for tiles and sw uploads, pks, k8s, uaac, bbr and other cli´s
+- secure deployment bey using system managed identities and keyvault
+- pks infrastructure paving using terraform
+- autopilot for deploying pks + harbor
 - certificate generation using selfsigned or let´s encrypt [certificates](#certificates)
 - dns registration of api loadbalancer ip
 - network peering from jumphost to pks networks
-- installation of cf-uaac, bosh cli
 - dns configuration and check
 - creation of public lb and dns a records for k8s clusters
 - [script for additional k8s clusters](docs/create_cluster.md)
 - load balancer rules for uaa and api access
+- example templates for psp´s and nginx
+- deployment of greenplum
+- drafted pas on k8s
 
 ## requirements
 
