@@ -37,18 +37,26 @@ AZURE_CLIENT_ID=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/AZURECLIEN
 AZURE_TENANT_ID=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/AZURETENANTID?api-version=2016-10-01 -s -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
 PIVNET_UAA_TOKEN=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/PIVNETUAATOKEN?api-version=2016-10-01 -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
 
+az login --service-principal \
+  --username ${AZURE_CLIENT_ID} \
+  --password ${AZURE_CLIENT_SECRET} \
+  --tenant ${AZURE_TENANT_ID}
+
+
+OPS_MANAGER_STORAGE_ACCOUNT=$(terraform output -state ~/pivotal-cf-terraforming-azure-*/terraforming-pks/terraform.tfstate ops_manager_storage_account)
+
 
 EXPORT_FILE=${HOME_DIR}/$(uuidgen)
 om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
     export-installation --output-file ${EXPORT_FILE}
 
 export AZURE_STORAGE_CONNECTION_STRING=$(az storage account show-connection-string \
---name ${BOSH_STORAGE_ACCOUNT_NAME} --resource-group ${ENV_NAME})
+--name ${OPS_MANAGER_STORAGE_ACCOUNT} --resource-group ${ENV_NAME})
 export OPSMAN_IMAGE_VERSION=$(grep -A1 'OPSMAN_IMAGE:' ${ENV_DIR}/opsman.yml | tail -n1 | cut -c15- )
 
 export OPSMAN_IMAGE_URI=$(dirname ${OPS_MANAGER_IMAGE_URI})/ops-manager-${OPSMAN_IMAGE_VERSION}.vhd
 
-AZURE_STORAGE_ENDPOINT=$(az storage account show --name ${BOSH_STORAGE_ACCOUNT_NAME} \
+AZURE_STORAGE_ENDPOINT=$(az storage account show --name ${OPS_MANAGER_STORAGE_ACCOUNT} \
  --resource-group ${ENV_NAME} \
   --query '[primaryEndpoints.blob]' --output tsv)
 OPSMAN_LOCAL_IMAGE=${AZURE_STORAGE_ENDPOINT}opsmanagerimage/opsman-image-${OPSMAN_IMAGE_VERSION}.vhd
@@ -98,4 +106,4 @@ update-ssl-certificate \
     --private-key-pem "$(cat ${HOME_DIR}/${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}.key)"
 
 om --env "${HOME_DIR}/om_${ENV_NAME}.env"  \
-    apply-changes --skip-deployed-products    
+    apply-changes --skip-deploy-products      
