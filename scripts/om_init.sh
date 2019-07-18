@@ -144,7 +144,7 @@ chmod 755 terraform.tfvars
 chown ${ADMIN_USERNAME}.${ADMIN_USERNAME} terraform.tfvars
 
 
-PATCH_SERVER="https://raw.githubusercontent.com/bottkars/pks-jump-azure/testing/patches/0.40/"
+PATCH_SERVER="https://raw.githubusercontent.com/bottkars/pks-jump-azure/master/patches/0.40/"
 wget -q ${PATCH_SERVER}main.tf -O ./main.tf
 wget -q ${PATCH_SERVER}variables.tf -O ./variables.tf
 wget -q ${PATCH_SERVER}modules/pks/networking.tf -O ../modules/pks/networking.tf
