@@ -46,14 +46,14 @@ az tag create --name K8SCLUSTER
 az network public-ip create \
     --resource-group ${ENV_NAME} \
     --name ${CLUSTER}-public-ip \
-    --sku basic \
+    --sku standard \
     --tags K8SCLUSTER=${CLUSTER} \
     --allocation-method static
 
 az network lb create \
     --resource-group ${ENV_NAME} \
     --name ${CLUSTER}-lb \
-    --sku basic \
+    --sku standard \
     --tags K8SCLUSTER=${CLUSTER} \
     --public-ip-address ${CLUSTER}-public-ip \
     --frontend-ip-name ${CLUSTER}-fe \

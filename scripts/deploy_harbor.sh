@@ -94,13 +94,13 @@ az login --service-principal \
 az network public-ip create \
     --resource-group ${ENV_NAME} \
     --name harbor-public-ip \
-    --sku basic \
+    --sku standard \
     --allocation-method static
 
 az network lb create \
     --resource-group ${ENV_NAME} \
     --name harbor-lb \
-    --sku basic \
+    --sku standard \
     --tags K8SCLUSTER=harbor \
     --public-ip-address harbor-public-ip \
     --frontend-ip-name harbor-fe \

@@ -27,12 +27,9 @@ if  [ -z ${CLUSTER} ] ; then
  echo "Please specify K8S Cluster Name with -c|--K8S_CLUSTER_NAME"
  exit 1
 fi 
-
 source ~/.env.sh
 TOKEN=$(curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -s -H Metadata:true | jq -r .access_token)
 PIVNET_UAA_TOKEN=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/PIVNETUAATOKEN?api-version=2016-10-01 -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
-
-
 pks login -a api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} -u k8sadmin -p ${PIVNET_UAA_TOKEN} --skip-ssl-validation
 echo "creating cluster ${CLUSTER}, this may take a while"
 pks create-cluster ${CLUSTER} \
