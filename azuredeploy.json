@@ -283,13 +283,13 @@
             "[concat(variables('baseUri'),  '/scripts/deploy_tile.sh')]",
             "[concat(variables('baseUri'),  '/scripts/deploy_greenplum.sh')]",
             "[concat(variables('baseUri'),  '/env/greenplum/',parameters('GreenplumVersion'),'/greenplum.env')]",
-            "[concat(variables('baseUri'),  '/env/pks/',parameters('PKSVersion'),'/pks.env')]",
+            "[concat(variables('baseUri'),  '/env/pks//pks.env')]",
             "[concat(variables('baseUri'),  '/env/harbor/',parameters('HarborVersion'),'/harbor.env')]",
             "[concat(variables('baseUri'),  '/templates/director_config.yaml')]",
             "[concat(variables('baseUri'),  '/templates/shared_storage.yaml')]",
             "[concat(variables('baseUri'),  '/templates/standard_storage.yaml')]",
             "[concat(variables('baseUri'),  '/templates/harbor.yaml')]",
-            "[concat(variables('baseUri'),  '/templates/pks.yaml')]",
+            "[concat(variables('baseUri'),  '/templates/',parameters('PKSVersion'),'/pks.yaml')]",
             "[concat(variables('baseUri'),  '/templates/wavefront.yaml')]",            
             "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/shared_scripts/ubuntu/vm-disk-utils-0.1.sh"
         ]
