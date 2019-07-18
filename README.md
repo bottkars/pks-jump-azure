@@ -22,10 +22,10 @@ For that, the Tiles and required Stemcell(s) are downloaded automatically.
 
 ## Supported Versions
 
-- OpsManager 2.4x <a href="https://network.pivotal.io/products/ops-manager"><img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_pivotal_generic@2x.png" height="16" title="OpsManager 2.4x"> </a>
-- Pivotal PKS 1.3.x <a href="https://network.pivotal.io/products/pivotal-container-service"><img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_pivotalcontainerservice@2x.png" height="16"> </a>
+- OpsManager 2.5x and 2.6x <a href="https://network.pivotal.io/products/ops-manager"><img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_pivotal_generic@2x.png" height="16" title="OpsManager 2.6x"> </a>
+- Pivotal PKS 1.4.x <a href="https://network.pivotal.io/products/pivotal-container-service"><img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_pivotalcontainerservice@2x.png" height="16"> </a>
 - Harbor >=1.7.3 <a href="https://network.pivotal.io/products/harbor-container-registry"><img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_vmware_harbor@2x.png" height="16" title="Harbor"> </a>
-- Greenplum for Kubernetes 0.8.x <a href="https://network.pivotal.io/products/greenplum-for-kubernetes/"><img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_gpdb@2x.png" height="16" Title = "Greenplum for Kubernetes"> </a>
+- Greenplum for Kubernetes >= 0.8.x <a href="https://network.pivotal.io/products/greenplum-for-kubernetes/"><img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_gpdb@2x.png" height="16" Title = "Greenplum for Kubernetes"> </a>
 
 ## features
 
@@ -42,8 +42,8 @@ For that, the Tiles and required Stemcell(s) are downloaded automatically.
 - load balancer rules for uaa and api access
 
 ## requirements
-
-- service principal needs to have owner rights on subscription in order to create custom roles and Managed Identities
+- a Azure Key Vault hosting all credentials / secrets required
+- service principal, needs to have owner rights on subscription in order to create custom roles and Managed Identities
 - a [pivotal network account ( pivnet )](network.pivotal.io) and a UAA access token
 
 ## usage
@@ -56,6 +56,25 @@ both methods require an SSH Keypair
 
 ```bash
 ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
+```
+
+### Create and Populate an  Azure Key Vault
+
+```bash
+## Set temporary Variables
+PIVNET_UAA_TOKEN=<your pivnet refresh token>
+SERVICE_PRINCIPAL=$(az ad sp create-for-rbac --name ServicePrincipalforPKS --output json)
+## SET the Following Secrets from the temporary Variables
+az keyvault secret set --vault-name ${AZURE_VAULT} \
+--name "AZURECLIENTID" --value $(echo $SERVICE_PRINCIPAL | jq -r .appId) --output none
+az keyvault secret set --vault-name ${AZURE_VAULT} \
+--name "AZURETENANTID" --value $(echo $SERVICE_PRINCIPAL | jq -r .tenant) --output none
+az keyvault secret set --vault-name ${AZURE_VAULT} \
+--name "AZURECLIENTSECRET" --value $(echo $SERVICE_PRINCIPAL | jq -r .password) --output none
+az keyvault secret set --vault-name ${AZURE_VAULT} \
+--name "PIVNETUAATOKEN" --value ${PIVNET_UAA_TOKEN} --output none
+## unset the temporary variables
+unset SERVICE_PRINCIPAL
 ```
 
 ### installation using Template Deployment (Preferred for First Time Users)

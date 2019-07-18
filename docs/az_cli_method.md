@@ -43,18 +43,19 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     --parameters \
     adminUsername=${ADMIN_USERNAME} \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
+    keyVaultName=${AZURE_VAULT} \
+    keyVaultRG=${VAULT_RG} \
     JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
     clientSecret=${AZURE_CLIENT_SECRET} \
     clientID=${AZURE_CLIENT_ID} \
     tenantID=${AZURE_TENANT_ID} \
     subscriptionID=${AZURE_SUBSCRIPTION_ID} \
-    pivnetToken=${PIVNET_UAA_TOKEN} \
     envName=${ENV_NAME} \
     PKSDomainName=${PKS_DOMAIN_NAME} \
     PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \
     opsmanUsername=${PKS_OPSMAN_USERNAME} \
     _artifactsLocation=${ARTIFACTS_LOCATION} \
-    vmSize=${VMSIZE} 
+    vmSize=${VMSIZE}
 ```
 
 ### validate using customized parameters
