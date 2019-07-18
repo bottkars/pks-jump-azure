@@ -42,6 +42,7 @@ For that, the Tiles and required Stemcell(s) are downloaded automatically.
 - load balancer rules for uaa and api access
 
 ## requirements
+
 - a Azure Key Vault hosting all credentials / secrets required
 - service principal, needs to have owner rights on subscription in order to create custom roles and Managed Identities
 - a [pivotal network account ( pivnet )](network.pivotal.io) and a UAA access token
@@ -95,6 +96,7 @@ see this [Document](docs/az_cli_method.md) for installation using AZ CLI
 ## What´s next
 
 ### Monitoring the deployment
+
 When the ARM Deployment is finished, the Post Deployment jobs start
 
 Monitor your Deployment using [debugging section](#debugging-monitoring)
@@ -111,6 +113,7 @@ the log file will, at this stage, show the Azure Name Servers that need to be ad
 once fixed, the deployment will continue.
 
 ### Updating the deployment
+
 a helper script is available to update the deployment
 this can be
 
@@ -152,4 +155,4 @@ az role definition delete --name ${AZURE_SUBSCRIPTION_ID}-${ENV_NAME}-pks-master
 
 ## Advanced tasks
 
-see [advanced tasks](docs/advanced.md) that can make your life easy
+see [advanced tasks](docs/advanced.md) that can make your life easy  

@@ -2,7 +2,6 @@
 tlsCert="$(cat /home/bottkars/.acme.sh/pksazure.labbuildr.com/pksazure.labbuildr.com.cer | base64 -w 0)"
 tlsKey="$(cat /home/bottkars/.acme.sh/pksazure.labbuildr.com/pksazure.labbuildr.com.key | base64 -w 0)"
 
-
 cat << EOF | kubectl create -f -
 ---
 apiVersion: v1
@@ -28,4 +27,4 @@ duffle install my-build-service -c /tmp/credentials.yml  \
     --set registry_password=${PIVNET_UAA_TOKEN} \
     --set uaa_url=api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME}:8443 \
     -f /datadisks/disk1/build-service/0.0.1/bundle.json \
-    -m /tmp/relocated.json
+    -m /tmp/relocated.json  

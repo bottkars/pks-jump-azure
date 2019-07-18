@@ -25,5 +25,5 @@
  NET_16_BIT_MASK  |   |   | no  |
  USE_SELF_CERTS  |   | true  | no  |
  OPS_MANAGER_IMAGE_REGION  | opsmanImageRegion  | westeurope  | yes  |opsmanager image region, westus, easus, westeurope or southeasasia
-WAVEFRONT_API |    WavefrontAPIUrl | |no|
-WAVEFRONT_TOKEN |    WavefrontToken | |no|
+ WAVEFRONT_API |    WavefrontAPIUrl | |no|  
+ WAVEFRONT_TOKEN |    WavefrontToken | |no|

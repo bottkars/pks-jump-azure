@@ -143,11 +143,17 @@
             "allowedValues": [
                 "2.4-build.145",
                 "2.4-build.142",
+                "2.5.5-build.194",
+                "2.5.6-build.198",
+                "2.5.7-build.208",
+                "2.5.8-build.212",
+                "2.5.9-build.216",
+                "2.5.10-build.219",
+                "2.6.0-build.138",
                 "2.6.1-build.156",
                 "2.6.2-build.159",
                 "2.6.3-build.163",
                 "2.6.4-build.166"
-
             ],
             "defaultValue": "2.6.4-build.166",
             "metadata": {

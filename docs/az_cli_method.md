@@ -3,7 +3,8 @@
 create an .env file using the [example](.env.example)  
 see [parameters and variables](#parameters-and-variables) for details.  
 
-source the env file  
+source the env file
+
 ```bash
 source .env
 ```
