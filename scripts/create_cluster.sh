@@ -86,11 +86,11 @@ az vm nic list --resource-group $ENV_NAME \
 --vm-name )
 
 
-MASTER_NIC_IP_CONFIG=$(az network nic show \
+MASTER_NIC_IP_CONFIG_IDS=$(az network nic show \
 --ids $MASTER_NIC_IDS \
---query "ipConfigurations[].id" --out tsv)
+--query "ipConfigurations[].id || [].ipConfigurations[].id" --out tsv)
 
-az network nic ip-config update --ids ${MASTER_NIC_IP_CONFIG} \
+az network nic ip-config update --ids ${MASTER_NIC_IP_CONFIG_IDS} \
 --lb-address-pools ${CLUSTER}-be --lb-name ${CLUSTER}-lb
 
 kubectl apply -f ${TEMPLATE_DIR}/shared_storage.yaml
