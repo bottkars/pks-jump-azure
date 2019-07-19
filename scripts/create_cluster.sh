@@ -33,7 +33,7 @@ if  [ -z ${CLUSTER} ] ; then
  exit 1
 fi 
 if  [ -z ${PLAN_NAME} ] ; then
- echo "Please specify PKS PLAN Name with -c|--K8S_CLUSTER_NAME"
+ echo "Please specify PKS PLAN Name with -p|--PLAN_NAME"
  exit 1
 fi 
 source ~/.env.sh
