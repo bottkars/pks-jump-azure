@@ -60,6 +60,8 @@ there are are multiple ways to deploy the ARM template. we will describe [Azure 
 both methods require an SSH Keypair
 
 ```bash
+JUMPBOX_NAME=<you jumpbox name, must be unique>
+ADMIN_USERNAME=ubuntu
 ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
 ```
 
