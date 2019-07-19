@@ -14,6 +14,11 @@ case $key in
     shift # past argument
     shift # past value
     ;;
+    -p|--PLAN_NAME)
+    PLAN_NAME="$2"
+    shift # past argument
+    shift # past value
+    ;;    
     *)    # unknown option
     POSITIONAL+=("$1") # save it in an array for later
     shift # past argument
@@ -27,6 +32,10 @@ if  [ -z ${CLUSTER} ] ; then
  echo "Please specify K8S Cluster Name with -c|--K8S_CLUSTER_NAME"
  exit 1
 fi 
+if  [ -z ${PLAN_NAME} ] ; then
+ echo "Please specify PKS PLAN Name with -c|--K8S_CLUSTER_NAME"
+ exit 1
+fi 
 source ~/.env.sh
 TOKEN=$(curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -s -H Metadata:true | jq -r .access_token)
 PIVNET_UAA_TOKEN=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/PIVNETUAATOKEN?api-version=2016-10-01 -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
@@ -34,7 +43,7 @@ pks login -a api.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} -u k8sadmin -p ${PIVNE
 echo "creating cluster ${CLUSTER}, this may take a while"
 pks create-cluster ${CLUSTER} \
 -e ${CLUSTER}.${PKS_SUBDOMAIN_NAME}.${PKS_DOMAIN_NAME} \
- --plan small \
+ --plan ${PLAN_NAME} \
  --num-nodes 3 --json --wait
 TOKEN=$(curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -s -H Metadata:true | jq -r .access_token)
 AZURE_SUBSCRIPTION_ID=$(curl -s -H Metadata:true "http://169.254.169.254/metadata/instance/compute?api-version=2017-08-01" | jq -r .subscriptionId)
@@ -55,6 +64,15 @@ MASTER_VM_IDS=$(az vm availability-set show  \
 --output tsv \
 --query "virtualMachines[].id" )
 
+MASTER_VM_IDS=$(az vm list \
+ --resource-group $ENV_NAME \
+ --query "[?tags.job == 'master' && tags.deployment == 'service-instance_${PKS_UUID}'].id" --output tsv)
+
+WORKER_VM_IDS=$(az vm list \
+ --resource-group $ENV_NAME \
+ --query "[?tags.job == 'worker' && tags.deployment == 'service-instance_${PKS_UUID}'].id" --output tsv )
+
+
 MASTER_VM_NAME=$(az vm show -d --ids ${MASTER_VM_IDS} \
 --query "name" \
 --output tsv)
@@ -68,10 +86,14 @@ az vm identity assign \
 --identities pks-master \
 --ids ${MASTER_VM_IDS}
 
-MASTER_NIC_ID=$(az vm nic list \
---vm-name ${MASTER_VM_NAME} \
---resource-group $ENV_NAME \
---query "[].id" --output tsv)
+MASTER_NIC_IDS=$(az vm show -d \
+--ids ${MASTER_VM_IDS} \
+--query "name || [].name" \
+--output tsv | xargs -n1 \
+az vm nic list --resource-group $ENV_NAME \
+--query "[].id" --output tsv \
+--vm-name )
+
 
 MASTER_NIC_IP_CONFIG=$(az network nic show \
 --ids $MASTER_NIC_ID \

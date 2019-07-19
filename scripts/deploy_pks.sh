@@ -90,7 +90,7 @@ if  [ -z ${NO_APPLY} ] ; then
   echo "now creating k8s loadbalancer k8s1"
   ${SCRIPT_DIR}/create_lb.sh --K8S_CLUSTER_NAME k8s1
   echo "now creating k8s cluster k8s1"
-  ${SCRIPT_DIR}/create_cluster.sh --K8S_CLUSTER_NAME k8s1
+  ${SCRIPT_DIR}/create_cluster.sh --K8S_CLUSTER_NAME k8s1 --PLAN_NAME small
 else
   echo "No Product Apply"
 fi

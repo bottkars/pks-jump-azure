@@ -7,7 +7,7 @@ exec 2>&1
 TOKEN=$(curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -s -H Metadata:true | jq -r .access_token)
 PIVNET_UAA_TOKEN=$(curl https://${AZURE_VAULT}.vault.azure.net/secrets/PIVNETUAATOKEN?api-version=2016-10-01 -H "Authorization: Bearer ${TOKEN}" | jq -r .value)
 export $( \
-  om \
+  om --env ${HOME_DIR}/om_${ENV_NAME}.env \
     --skip-ssl-validation \
     curl \
       --silent \
@@ -18,11 +18,7 @@ export $( \
 sudo mkdir -p /var/tempest/workspaces/default
 
 sudo sh -c \
-  "om \
-    --skip-ssl-validation \
-    --target ${PCF_OPSMAN_FQDN} \
-    --username ${PCF_OPSMAN_USERNAME} \
-    --password ${PIVNET_UAA_TOKEN} \
+  "om --env ${HOME_DIR}/om_${ENV_NAME}.env \
     curl \
       --silent \
       --path "/api/v0/security/root_ca_certificate" |
