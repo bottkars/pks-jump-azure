@@ -27,7 +27,6 @@ esac
 done
 
 set -- "${POSITIONAL[@]}" # restore positional parameters
-set -eu
 if  [ -z ${CLUSTER} ] ; then
  echo "Please specify K8S Cluster Name with -c|--K8S_CLUSTER_NAME"
  exit 1
