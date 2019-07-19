@@ -27,7 +27,7 @@ esac
 done
 
 set -- "${POSITIONAL[@]}" # restore positional parameters
-
+set -eu
 if  [ -z ${CLUSTER} ] ; then
  echo "Please specify K8S Cluster Name with -c|--K8S_CLUSTER_NAME"
  exit 1
@@ -58,11 +58,6 @@ az login --service-principal \
 
 PKS_UUID=$(pks show-cluster ${CLUSTER}  --json | jq -r '.uuid')
 pks get-credentials ${CLUSTER} 
-MASTER_VM_IDS=$(az vm availability-set show  \
---name p-bosh-service-instance-${PKS_UUID}-master \
---resource-group ${ENV_NAME} \
---output tsv \
---query "virtualMachines[].id" )
 
 MASTER_VM_IDS=$(az vm list \
  --resource-group $ENV_NAME \
@@ -73,9 +68,6 @@ WORKER_VM_IDS=$(az vm list \
  --query "[?tags.job == 'worker' && tags.deployment == 'service-instance_${PKS_UUID}'].id" --output tsv )
 
 
-MASTER_VM_NAME=$(az vm show -d --ids ${MASTER_VM_IDS} \
---query "name" \
---output tsv)
 
 echo "Assigning pks-worker role to Workers"
 az vm identity assign \
