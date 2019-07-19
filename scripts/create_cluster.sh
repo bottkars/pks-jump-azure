@@ -87,7 +87,7 @@ az vm nic list --resource-group $ENV_NAME \
 
 
 MASTER_NIC_IP_CONFIG=$(az network nic show \
---ids $MASTER_NIC_ID \
+--ids $MASTER_NIC_IDS \
 --query "ipConfigurations[].id" --out tsv)
 
 az network nic ip-config update --ids ${MASTER_NIC_IP_CONFIG} \
