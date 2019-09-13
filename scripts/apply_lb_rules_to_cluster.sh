@@ -44,26 +44,23 @@ az login --service-principal \
 
 PKS_UUID=$(pks show-cluster ${CLUSTER}  --json | jq -r '.uuid')
 pks get-credentials ${CLUSTER} 
-MASTER_VM_IDS=$(az vm availability-set show  \
---name p-bosh-service-instance-${PKS_UUID}-master \
---resource-group ${ENV_NAME} \
---output tsv \
---query "virtualMachines[].id" )
+MASTER_VM_IDS=$(az vm list \
+ --resource-group $ENV_NAME \
+ --query "[?tags.job == 'master' && tags.deployment == 'service-instance_${PKS_UUID}'].id" --output tsv)
 
-MASTER_VM_NAME=$(az vm show -d --ids ${MASTER_VM_IDS} \
---query "name" \
---output tsv)
+MASTER_NIC_IDS=$(az vm show -d \
+--ids ${MASTER_VM_IDS} \
+--query "name || [].name" \
+--output tsv | xargs -n1 \
+az vm nic list --resource-group $ENV_NAME \
+--query "[].id" --output tsv \
+--vm-name )
 
-echo "Updating Master Nic´s backend rulez"
 
-MASTER_NIC_ID=$(az vm nic list \
---vm-name ${MASTER_VM_NAME} \
---resource-group $ENV_NAME \
---query "[].id" --output tsv)
+MASTER_NIC_IP_CONFIG_IDS=$(az network nic show \
+--ids $MASTER_NIC_IDS \
+--query "ipConfigurations[].id || [].ipConfigurations[].id" --out tsv)
 
-MASTER_NIC_IP_CONFIG=$(az network nic show \
---ids $MASTER_NIC_ID \
---query "ipConfigurations[].id" --out tsv)
-
-az network nic ip-config update --ids ${MASTER_NIC_IP_CONFIG} \
+az network nic ip-config update --ids ${MASTER_NIC_IP_CONFIG_IDS} \
 --lb-address-pools ${CLUSTER}-be --lb-name ${CLUSTER}-lb
+

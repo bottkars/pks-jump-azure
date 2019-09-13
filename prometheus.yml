@@ -1,0 +1,11 @@
+apiVersion: pksapi.io/v1beta1
+kind: ClusterMetricSink
+metadata:
+  name: prometheus-sink
+spec:
+  inputs:
+  outputs:
+    - type: prometheus_client
+      listen: ":9978"
+
+
