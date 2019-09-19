@@ -59,7 +59,7 @@ PRODUCT_SLUG="elastic-runtime"
 RELEASE_ID="412253"
 
 ### updating om
-OM_VER=2.0.1
+OM_VER=4.0.1
 wget -O om https://github.com/pivotal-cf/om/releases/download/${OM_VER}/om-linux-${OM_VER} && \
   chmod +x om && \
   sudo mv om /usr/local/bin/
