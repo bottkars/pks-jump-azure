@@ -100,9 +100,13 @@ if [[ "${PKS_VERSION}" > "1.3.99" ]] && [[ "${AVAILABILITY_MODE}" == "availabili
   AVAILABILITY_MODE=availability_zones
 elif [[ "${PKS_VERSION}" > "1.3.99" ]] && [[ "${AVAILABILITY_MODE}" == "availability_sets" ]]
   then
-  ZONES_LIST="['Availability Sets']"
-  ZONES_MAP="[name: 'Availability Sets']"
-  SINGLETON_ZONE="Availability Sets"
+   echo "Applying Availability Sets Based Config PKS FIX"
+  ZONES="'null'"
+  SINGLETON_ZONE="'null'"
+  AVAILABILITY_MODE=availability_sets
+  #ZONES_LIST="['Availability Sets']"
+  #ZONES_MAP="[name: 'Availability Sets']"
+  #SINGLETON_ZONE="Availability Sets"
   AVAILABILITY_MODE=availability_sets
 else
   echo "Applying Availability Sets Based Config"
