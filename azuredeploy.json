@@ -82,12 +82,14 @@
                 "1.3.6",
                 "1.4.0",
                 "1.4.1",
-                "1.5.0"
+                "1.5.0",
+                "1.5.1",
+                "1.6.0"
 
             ],
             "minLength": 5,
             "maxLength": 14,
-            "defaultValue": "1.5.0",
+            "defaultValue": "1.5.1",
             "metadata": {
                 "description": "The version for the Pivotal Container Service"
             }
@@ -99,11 +101,16 @@
                 "1.7.4",
                 "1.7.5",
                 "1.8.1",
-                "1.8.2"
+                "1.8.2",
+                "1.8.3",
+                "1.8.4",
+                "1.8.5",
+                "1.8.6",
+                "1.9.3",
             ],
             "minLength": 5,
             "maxLength": 13,
-            "defaultValue": "1.8.1",
+            "defaultValue": "1.8.6",
             "metadata": {
                 "description": "The version for the private Harbor Container Registry ( optional )"
             }
@@ -116,12 +123,17 @@
                 "1.0.0",
                 "1.0.1",
                 "1.1.0",
-                "1.2.0"
-
+                "1.2.0",
+                "1.3.2",
+                "1.4.0",
+                "1.6.0",
+                "1.7.0",
+                "1.8.0",
+                "1.10.0"
             ],
             "minLength": 5,
             "maxLength": 13,
-            "defaultValue": "1.2.0",
+            "defaultValue": "1.10.0",
             "metadata": {
                 "description": "The version for the Greenplum Database ( optional )"
             }
@@ -157,9 +169,13 @@
                 "2.6.2-build.159",
                 "2.6.3-build.163",
                 "2.6.4-build.166",
-                "2.6.11-build.210"
+                "2.6.11-build.210",
+                "2.7.5-build.218",
+                "2.7.6-build.223",
+                "2.7.8-build.234",
+                "2.8.0-build.187"
             ],
-            "defaultValue": "2.6.11-build.210",
+            "defaultValue": "2.7.8-build.234",
             "metadata": {
                 "description": "Image Name of Operation Manager Image"
             }
