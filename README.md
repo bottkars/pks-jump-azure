@@ -65,7 +65,21 @@ ADMIN_USERNAME=ubuntu
 ssh-keygen -t rsa -f ~/${JUMPBOX_NAME} -C ${ADMIN_USERNAME}
 ```
 
-### Create and Populate an  Azure Key Vault
+### Create the Resource Group for Azure Key Vault if it does not exist
+
+```bash
+## Create the resource group
+az group create --name ${VAULT_RG} --location ${AZURE_REGION}
+```
+
+### Create the Azure Key Vault if it does not exist
+
+```bash
+## Create the key vault
+az keyvault create --resource-group ${VAULT_RG} --name ${AZURE_VAULT} --location ${AZURE_REGION}
+```
+
+### Populate an  Azure Key Vault
 
 ```bash
 ## Set temporary Variables
