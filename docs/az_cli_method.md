@@ -47,10 +47,6 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     keyVaultName=${AZURE_VAULT} \
     keyVaultRG=${VAULT_RG} \
     JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
-    clientSecret=${AZURE_CLIENT_SECRET} \
-    clientID=${AZURE_CLIENT_ID} \
-    tenantID=${AZURE_TENANT_ID} \
-    subscriptionID=${AZURE_SUBSCRIPTION_ID} \
     envName=${ENV_NAME} \
     PKSDomainName=${PKS_DOMAIN_NAME} \
     PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \
@@ -66,29 +62,17 @@ az group create --name ${JUMPBOX_RG} --location ${AZURE_REGION}
 az group deployment validate --resource-group ${JUMPBOX_RG} \
     --template-uri https://raw.githubusercontent.com/bottkars/pks-jump-azure/$BRANCH/azuredeploy.json \
     --parameters \
-    availabilityMode=${AVAILABILITY_MODE} \
     adminUsername=${ADMIN_USERNAME} \
     sshKeyData="$(cat ~/${JUMPBOX_NAME}.pub)" \
     keyVaultName=${AZURE_VAULT} \
     keyVaultRG=${VAULT_RG} \
     JumphostDNSLabelPrefix=${JUMPBOX_NAME} \
     envName=${ENV_NAME} \
-    opsmanImage=${OPS_MANAGER_IMAGE} \
     PKSDomainName=${PKS_DOMAIN_NAME} \
     PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \
-    opsmanUsername=${PCF_OPSMAN_USERNAME} \
-    notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
-    PKSAutopilot=${PKS_AUTOPILOT} \
-    PKSVersion=${PKS_VERSION} \
-    HarborVersion=${HARBOR_VERSION} \
-    net16bitmask=${NET_16_BIT_MASK} \
-    useSelfCerts=${USE_SELF_CERTS} \
+    opsmanUsername=${PKS_OPSMAN_USERNAME} \
     _artifactsLocation=${ARTIFACTS_LOCATION} \
-    vmSize=${VMSIZE} \
-    opsmanImage=${OPS_MANAGER_IMAGE} \
-    WavefrontAPIUrl=${WAVEFRONT_API} \
-    WavefrontToken=${WAVEFRONT_TOKEN} \
-    opsmanImageRegion=${OPS_MANAGER_IMAGE_REGION}
+    vmSize=${VMSIZE}
 ```
 
 installation using customized parameter set´s all required parameters from variables in your .env file
