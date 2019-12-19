@@ -92,7 +92,7 @@ az group deployment create --resource-group ${JUMPBOX_RG} \
     opsmanImage=${OPS_MANAGER_IMAGE} \
     PKSDomainName=${PKS_DOMAIN_NAME} \
     PKSSubdomainName=${PKS_SUBDOMAIN_NAME} \
-    opsmanUsername=${PCF_OPSMAN_USERNAME} \
+    opsmanUsername=${PKS_OPSMAN_USERNAME} \
     notificationsEmail=${PKS_NOTIFICATIONS_EMAIL} \
     PKSAutopilot=${PKS_AUTOPILOT} \
     PKSVersion=${PKS_VERSION} \
